@@ -1,0 +1,4 @@
+baseURL: https://louisdo2108.github.io/
+languageCode: en-us
+title: My New Hugo Site
+theme: "PaperMod"
