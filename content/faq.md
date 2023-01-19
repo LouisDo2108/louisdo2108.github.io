@@ -1,7 +1,6 @@
 ---
-title: "FAQ" # in any language you want
-layout: "faq" # is necessary
+title: "FAQ"
+layout: "faq"
 url: "/faq"
-# description: "Description for Search"
 summary: "faq"
 ---

@@ -13,19 +13,69 @@ languages:
           series: series
         menu:
             main:
-                - name: Archive
-                  url: archives
-                  weight: 4
-                - name: Search
-                  url: search/
+                - name: Posts
+                  url: "/"
                   weight: 1
-                - name: Tags
-                  url: tags/
+                - name: Search
+                  url: "/search/"
                   weight: 2
-                - name: FAQ
-                  url: faq/
+                - name: Tags
+                  url: "/tags/"
                   weight: 3
-
+                - name: FAQ
+                  url: "/faq/"
+                  weight: 4
+                - name: Archive
+                  url: "/archives/"
+                  weight: 5
+    zh-tw:
+        languageName: "中文"
+        weight: 2
+        taxonomies:
+          category: categories
+          tag: tags
+          series: series
+        menu:
+            main:
+                - name: Posts
+                  url: "/"
+                  weight: 1
+                - name: Search
+                  url: "/search/"
+                  weight: 2
+                - name: Tags
+                  url: "/tags/"
+                  weight: 3
+                - name: FAQ
+                  url: "/faq/"
+                  weight: 4
+                - name: Archive
+                  url: "/archives/"
+                  weight: 5
+    vi:
+        languageName: "Tiếng Việt"
+        weight: 3
+        taxonomies:
+          category: categories
+          tag: tags
+          series: series
+        menu:
+            main:
+                - name: Posts
+                  url: "/"
+                  weight: 1
+                - name: Search
+                  url: "/search/"
+                  weight: 2
+                - name: Tags
+                  url: "/tags/"
+                  weight: 3
+                - name: FAQ
+                  url: "/faq/"
+                  weight: 4
+                - name: Archive
+                  url: "/archives/"
+                  weight: 5
 outputs:
     home:
         - HTML
@@ -38,7 +88,7 @@ params:
     author: LouisDo2108
     # author: ["Me", "You"] # multiple authors
 
-    defaultTheme: auto
+    defaultTheme: dark #auto
     # disableThemeToggle: true
     ShowShareButtons: false
     ShowReadingTime: true
@@ -95,7 +145,9 @@ params:
     #     apple_touch_icon: "<link / abs url>"
     #     safari_pinned_tab: "<link / abs url>"
 
-    # cover:
+    cover:
+        responsiveImages: false
+        linkFullImages: true
     #     hidden: true # hide everywhere but not in structured data
     #     hiddenInList: true # hide on list pages and home
     #     hiddenInSingle: true # hide on single page
