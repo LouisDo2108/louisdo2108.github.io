@@ -1,10 +1,10 @@
 ---
-title: "My First Post 2"
-date: 2023-01-17T14:35:45+07:00
-draft: true
+title: "My First Post"
+date: Jan 19, 2023
+categories: [playaround]
+tags: [hugo]
+draft: False
 ---
 ## Introduction
 
-This is **bold** text, and this is *emphasized* text.
-
-Visit the [Hugo](https://gohugo.io) website!
+This is my first post.
