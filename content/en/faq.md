@@ -1,6 +1,6 @@
 ---
 title: "FAQ"
 layout: "faq"
-url: "/en/faq"
+# url: "/en/faq"
 summary: "faq"
 ---

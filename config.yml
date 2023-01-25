@@ -19,16 +19,16 @@ languages:
         menu:
             main:
                 - name: Posts
-                  url: "/en/"
+                  url: "/"
                   weight: 1
                 - name: Search
-                  url: "/en/search/"
+                  url: "/search/"
                   weight: 2
                 - name: Tags
-                  url: "/en/tags/"
+                  url: "/tags/"
                   weight: 3
                 - name: FAQ
-                  url: "/en/faq/"
+                  url: "/faq/"
                   weight: 4
                 - name: Archive
                   url: "/archives/"

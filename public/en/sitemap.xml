@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://louisdo2108.github.io/en/archives/</loc>
+    <loc>https://louisdo2108.github.io/archives/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
@@ -21,7 +21,7 @@
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://louisdo2108.github.io/en/archives/"
+                href="https://louisdo2108.github.io/archives/"
                 />
   </url><url>
     <loc>https://louisdo2108.github.io/categories/</loc>
@@ -46,7 +46,7 @@
                 href="https://louisdo2108.github.io/categories/"
                 />
   </url><url>
-    <loc>https://louisdo2108.github.io/en/faq/</loc>
+    <loc>https://louisdo2108.github.io/faq/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
@@ -65,7 +65,7 @@
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://louisdo2108.github.io/en/faq/"
+                href="https://louisdo2108.github.io/faq/"
                 />
   </url><url>
     <loc>https://louisdo2108.github.io/tags/hugo/</loc>
@@ -178,7 +178,7 @@
                 href="https://louisdo2108.github.io/posts/"
                 />
   </url><url>
-    <loc>https://louisdo2108.github.io/en/search/</loc>
+    <loc>https://louisdo2108.github.io/search/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
@@ -197,7 +197,7 @@
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://louisdo2108.github.io/en/search/"
+                href="https://louisdo2108.github.io/search/"
                 />
   </url><url>
     <loc>https://louisdo2108.github.io/series/</loc>
@@ -244,7 +244,7 @@
                 href="https://louisdo2108.github.io/tags/"
                 />
   </url><url>
-    <loc>https://louisdo2108.github.io/en/tags/</loc>
+    <loc>https://louisdo2108.github.io/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
@@ -263,7 +263,7 @@
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://louisdo2108.github.io/en/tags/"
+                href="https://louisdo2108.github.io/tags/"
                 />
   </url>
 </urlset>
