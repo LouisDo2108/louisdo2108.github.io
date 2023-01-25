@@ -9,47 +9,29 @@
     
     <item>
       <title>FAQ</title>
-      <link>https://louisdo2108.github.io/faq/</link>
+      <link>https://louisdo2108.github.io/en/faq/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://louisdo2108.github.io/faq/</guid>
+      <guid>https://louisdo2108.github.io/en/faq/</guid>
       <description>faq</description>
     </item>
     
     <item>
       <title>My First Post</title>
-      <link>https://louisdo2108.github.io/en/posts/hugo_test/my-first-post/</link>
+      <link>https://louisdo2108.github.io/posts/hugo_test/my-first-post/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://louisdo2108.github.io/en/posts/hugo_test/my-first-post/</guid>
-      <description>Introduction This is my first post.</description>
-    </item>
-    
-    <item>
-      <title>My First Post</title>
-      <link>https://louisdo2108.github.io/vi/posts/hugo_test/my-first-post/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://louisdo2108.github.io/vi/posts/hugo_test/my-first-post/</guid>
-      <description>Introduction This is my first post.</description>
-    </item>
-    
-    <item>
-      <title>My First Post</title>
-      <link>https://louisdo2108.github.io/zh-tw/posts/hugo_test/my-first-post/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://louisdo2108.github.io/zh-tw/posts/hugo_test/my-first-post/</guid>
+      <guid>https://louisdo2108.github.io/posts/hugo_test/my-first-post/</guid>
       <description>Introduction This is my first post.</description>
     </item>
     
     
     <item>
       <title>Tags</title>
-      <link>https://louisdo2108.github.io/tags/</link>
+      <link>https://louisdo2108.github.io/en/tags/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://louisdo2108.github.io/tags/</guid>
+      <guid>https://louisdo2108.github.io/en/tags/</guid>
       <description>tags</description>
     </item>
     

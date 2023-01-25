@@ -1,6 +1,6 @@
 ---
 title: "FAQ"
 layout: "faq"
-url: "/faq"
+url: "/yue/faq"
 summary: "faq"
 ---

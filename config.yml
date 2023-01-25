@@ -7,6 +7,11 @@ languages:
     en:
         languageName: "English"
         weight: 1
+        contentDir: content/en
+        homeInfoParams:
+          Title: "LouisDo's Blog"
+          Content: >
+              This is Louis Do. I am interested in Medical Image Computing and sometimes I note things down.
         taxonomies:
           category: categories
           tag: tags
@@ -14,16 +19,16 @@ languages:
         menu:
             main:
                 - name: Posts
-                  url: "/"
+                  url: "/en/"
                   weight: 1
                 - name: Search
-                  url: "/search/"
+                  url: "/en/search/"
                   weight: 2
                 - name: Tags
-                  url: "/tags/"
+                  url: "/en/tags/"
                   weight: 3
                 - name: FAQ
-                  url: "/faq/"
+                  url: "/en/faq/"
                   weight: 4
                 - name: Archive
                   url: "/archives/"
@@ -31,16 +36,21 @@ languages:
     zh-tw:
         languageName: "中文"
         weight: 2
+        contentDir: content/zh-tw
+        homeInfoParams:
+          Title: "杜俊力 Blog"
+          Content: >
+              大家好，我是杜俊力。我對醫學影像計算感興趣。我經常記錄下我所學到的知識。
         taxonomies:
           category: categories
           tag: tags
           series: series
         menu:
             main:
-                - name: Posts
+                - name: 網誌
                   url: "/"
                   weight: 1
-                - name: Search
+                - name: 搜索
                   url: "/search/"
                   weight: 2
                 - name: Tags
@@ -49,22 +59,56 @@ languages:
                 - name: FAQ
                   url: "/faq/"
                   weight: 4
-                - name: Archive
+                - name: 檔案
+                  url: "/archives/"
+                  weight: 5
+    yue:
+        languageName: "粵語"
+        weight: 3
+        contentDir: content/yue
+        homeInfoParams:
+          Title: "杜俊力 Blog"
+          Content: >
+              大家好，我係杜俊力。我鍾意研究醫學影像計算。耐唔中我會抄底我學到啲嘢。
+        taxonomies:
+          category: categories
+          tag: tags
+          series: series
+        menu:
+            main:
+                - name: 網誌
+                  url: "/"
+                  weight: 1
+                - name: 搜索
+                  url: "/search/"
+                  weight: 2
+                - name: Tags
+                  url: "/tags/"
+                  weight: 3
+                - name: FAQ
+                  url: "/faq/"
+                  weight: 4
+                - name: 檔案
                   url: "/archives/"
                   weight: 5
     vi:
         languageName: "Tiếng Việt"
-        weight: 3
+        weight: 4
+        contentDir: content/vi
+        homeInfoParams:
+          Title: "Blog của Louis Do"
+          Content: >
+              Chào mọi người, mình là Lực. Mình đang nghiên cứu về xử lý ảnh y học và mình hay ghi chép lại những gì mình học và đọc được.
         taxonomies:
           category: categories
           tag: tags
           series: series
         menu:
             main:
-                - name: Posts
+                - name: Bài Viết
                   url: "/"
                   weight: 1
-                - name: Search
+                - name: Tìm Kiếm
                   url: "/search/"
                   weight: 2
                 - name: Tags
@@ -73,7 +117,7 @@ languages:
                 - name: FAQ
                   url: "/faq/"
                   weight: 4
-                - name: Archive
+                - name: Lưu trữ
                   url: "/archives/"
                   weight: 5
 outputs:
@@ -84,7 +128,7 @@ outputs:
 
 params:
     env: production # to enable google analytics, opengraph, twitter-cards and schema.
-    description: "LouisDo2108"
+    description: "LouisDo"
     author: LouisDo2108
     # author: ["Me", "You"] # multiple authors
 
@@ -115,13 +159,21 @@ params:
     #         - name: Tags
     #           url: tags
 
-    homeInfoParams:
-        Title: "LouisDo2108's Blog"
-        Content: >
-            This is Louis Do. I am interested in Medical Imaging and sometimes I note things down.
+    # homeInfoParams:
+    #     Title: "LouisDo2108's Blog"
+    #     Content: >
+    #         This is Louis Do. I am interested in Medical Imaging and sometimes I note things down.
     socialIcons:
         - name: github
           url: "https://github.com/LouisDo2108"
+        - name: linkedin
+          url: "https://www.linkedin.com/in/htluc2001/"
+        - name: googlescholar
+          url: "https://scholar.google.com/citations?user=QFkhDJcAAAAJ&hl=en"
+        - name: soundcloud
+          url: "https://soundcloud.com/user-759044871"
+        - name: twitter
+          url: "https://twitter.com/LouisAckerman74"
 
     # editPost:
     #     URL: "https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content"

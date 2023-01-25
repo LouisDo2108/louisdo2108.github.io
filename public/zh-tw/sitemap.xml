@@ -10,6 +10,11 @@
                 />
     <xhtml:link
                 rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
                 hreflang="vi"
                 href="https://louisdo2108.github.io/vi/categories/"
                 />
@@ -19,11 +24,60 @@
                 href="https://louisdo2108.github.io/zh-tw/categories/"
                 />
   </url><url>
+    <loc>https://louisdo2108.github.io/zh-tw/faq/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://louisdo2108.github.io/en/faq/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/faq/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://louisdo2108.github.io/vi/faq/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://louisdo2108.github.io/zh-tw/faq/"
+                />
+  </url><url>
+    <loc>https://louisdo2108.github.io/zh-tw/tags/hugo/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://louisdo2108.github.io/tags/hugo/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/tags/hugo/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://louisdo2108.github.io/vi/tags/hugo/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://louisdo2108.github.io/zh-tw/tags/hugo/"
+                />
+  </url><url>
     <loc>https://louisdo2108.github.io/zh-tw/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
                 href="https://louisdo2108.github.io/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -36,11 +90,60 @@
                 href="https://louisdo2108.github.io/zh-tw/"
                 />
   </url><url>
+    <loc>https://louisdo2108.github.io/zh-tw/categories/playaround/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://louisdo2108.github.io/categories/playaround/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/categories/playaround/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://louisdo2108.github.io/vi/categories/playaround/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://louisdo2108.github.io/zh-tw/categories/playaround/"
+                />
+  </url><url>
+    <loc>https://louisdo2108.github.io/zh-tw/posts/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://louisdo2108.github.io/posts/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/posts/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://louisdo2108.github.io/vi/posts/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://louisdo2108.github.io/zh-tw/posts/"
+                />
+  </url><url>
     <loc>https://louisdo2108.github.io/zh-tw/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
                 href="https://louisdo2108.github.io/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/series/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -61,6 +164,11 @@
                 />
     <xhtml:link
                 rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
                 hreflang="vi"
                 href="https://louisdo2108.github.io/vi/tags/"
                 />
@@ -68,6 +176,94 @@
                 rel="alternate"
                 hreflang="zh-tw"
                 href="https://louisdo2108.github.io/zh-tw/tags/"
+                />
+  </url><url>
+    <loc>https://louisdo2108.github.io/zh-tw/posts/hugo_test/my-first-post/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://louisdo2108.github.io/posts/hugo_test/my-first-post/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/posts/hugo_test/my-first-post/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://louisdo2108.github.io/vi/posts/hugo_test/my-first-post/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://louisdo2108.github.io/zh-tw/posts/hugo_test/my-first-post/"
+                />
+  </url><url>
+    <loc>https://louisdo2108.github.io/zh-tw/search/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://louisdo2108.github.io/en/search/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/search/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://louisdo2108.github.io/vi/search/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://louisdo2108.github.io/zh-tw/search/"
+                />
+  </url><url>
+    <loc>https://louisdo2108.github.io/zh-tw/tags/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://louisdo2108.github.io/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://louisdo2108.github.io/vi/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://louisdo2108.github.io/zh-tw/tags/"
+                />
+  </url><url>
+    <loc>https://louisdo2108.github.io/zh-tw/archives/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://louisdo2108.github.io/en/archives/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="yue"
+                href="https://louisdo2108.github.io/yue/archives/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="vi"
+                href="https://louisdo2108.github.io/vi/archives/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://louisdo2108.github.io/zh-tw/archives/"
                 />
   </url>
 </urlset>

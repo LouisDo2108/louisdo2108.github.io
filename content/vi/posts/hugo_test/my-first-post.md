@@ -1,10 +1,10 @@
 ---
-title: "My First Post"
+title: "Blog đầu tiên"
 date: Jan 19, 2023
 categories: [playaround]
 tags: [hugo]
 draft: False
 ---
-## Introduction
+## Giới thiệu
 
-This is my first post.
+Đây là blog đầu tiên của tôi.

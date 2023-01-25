@@ -1,10 +1,10 @@
 ---
-title: "My First Post"
+title: "第一個Blog"
 date: Jan 19, 2023
 categories: [playaround]
 tags: [hugo]
 draft: False
 ---
-## Introduction
+## 介紹
 
-This is my first post.
+這是我第一個Blog。
