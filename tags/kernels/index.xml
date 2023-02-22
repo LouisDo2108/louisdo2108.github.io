@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>kernels on LD&#39;Blog</title>
+    <link>https://louisdo2108.github.io/tags/kernels/</link>
+    <description>Recent content in kernels on LD&#39;Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://louisdo2108.github.io/tags/kernels/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Separable Convolutions</title>
+      <link>https://louisdo2108.github.io/posts/separableconvolutions/separableconvolutions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://louisdo2108.github.io/posts/separableconvolutions/separableconvolutions/</guid>
+      <description>Spatial Separable Convolutions Have significant limitations → not heavily used in deep learning. Deal primarily with the spatial dimensions of an image and kernel. Fig 1. Separating a 3x3 kernel spatially Fig 2. Comparing simple and spatial separable convolution Split the 3x3 kernel into 2 separable kernel 3x1 and 1x3 to achieve the same effect but have lower computational complexity. Fig 3. Separating the Sobel kernel DRAWBACK: not all kernels can be “separated”.</description>
+    </item>
+    
+  </channel>
+</rss>
