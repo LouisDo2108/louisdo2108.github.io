@@ -1,6 +1,7 @@
 ---
 title: "BraTS 2018"
 date: 2023-02-22T16:21:36+07:00
+tags: [brats2018, brain imaging, medical imaging, mri, brats, miccai]
 draft: false
 ---
 
