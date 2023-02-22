@@ -1,6 +1,7 @@
 ---
 title: "BraTS 2018"
 date: 2023-02-22T16:21:36+07:00
+categories: [computer_vision]
 tags: [brats2018, brain imaging, medical imaging, mri, brats, miccai]
 draft: false
 ---
@@ -75,19 +76,7 @@ Brain imaging modalities can help visualize different aspects of the brain and i
 - T2-weighted scan (T2): This type of MRI scan visualizes the brain's white matter and fluid-filled spaces. It helps to identify conditions such as hydrocephalus, brain swelling, and multiple sclerosis.
 - T2 Fluid Attenuated Inversion Recovery (T2-FLAIR): This type of MRI scan visualizes the brain's white matter and fluid-filled spaces. It is performed after the application of a specific pulse sequence that helps to suppress the signal from cerebrospinal fluid, making it easier to visualize lesions and other abnormalities in the white matter.
 
-⇒ It is common to use a combination of these scans to get a more complete picture of the brain and its structures. More information about brain imaging modalities can be found at **[MRI Basics (case.edu)](https://case.edu/med/neurology/NR/MRI%20Basics.htm)**.
-
-![Fig. 1. An example taken from the BraTS 2014-15 data, showing different kind of glioma sub-regions. From left to right: 
-The whole tumor (yellow) visible in T2-FLAIR (A)
-The tumor core (red) visible in T2 (B)
-The active tumor structures (light blue) visible in T1Gd, surrounding the cystic/necrotic components of the core (green) (C)
-The segmentations are combined to generate the final labels of the tumor sub-regions (D): ED (yellow), NET (red), NCR cores (green), AT (blue). ](BraTS%202018%2052b4ee911c654b679882413db52bce0f/Untitled.png)
-
-Fig. 1. An example taken from the BraTS 2014-15 data, showing different kind of glioma sub-regions. From left to right:
-The whole tumor (yellow) visible in T2-FLAIR (A)
-The tumor core (red) visible in T2 (B)
-The active tumor structures (light blue) visible in T1Gd, surrounding the cystic/necrotic components of the core (green) (C)
-The segmentations are combined to generate the final labels of the tumor sub-regions (D): ED (yellow), NET (red), NCR cores (green), AT (blue).
+⇒ It is common to use a combination of these scans to get a more complete picture of the brain and its structures. More information about brain imaging modalities can be found at **[this link](https://case.edu/med/neurology/NR/MRI%20Basics.htm)**.
 
 # How to differentiate between MRI brain modalities?
 
@@ -111,7 +100,7 @@ The segmentations are combined to generate the final labels of the tumor sub-reg
    - If they follow the logical sense (GM is gray and WM is white) or if WM is brighter than GM → T1.
    - If they do not follow the logical sense → T2-FLAIR.
 
-If you are still unclear, make sure to checkout these two Youtube videos: [Video1](https://www.youtube.com/watch?v=ka-HBXP5ERA) and [Video2](https://www.youtube.com/watch?v=UKLvLsK36qo).
+If you are still unclear, make sure to checkout these two Youtube videos: **[Video1](https://www.youtube.com/watch?v=ka-HBXP5ERA)** and **[Video2](https://www.youtube.com/watch?v=UKLvLsK36qo)**.
 
 # Annotations and Structures
 
@@ -192,7 +181,7 @@ If you are still unclear, make sure to checkout these two Youtube videos: [Video
 
 ⇒ By following these steps, you can obtain both Label 1, 3, and 4 so that you can union them all and get TC.
 
-I hope you enjoy reading. If you want to learn more about the brain's anatomy, I recommend visiting this [site](https://www.imaios.com/en/e-anatomy/brain/), which has fantastic visualizations. I sometimes update old posts to keep them up-to-date.
+I hope you enjoy reading. If you want to learn more about the brain's anatomy, I recommend visiting **[this site](https://www.imaios.com/en/e-anatomy/brain/)**, which has fantastic visualizations. I sometimes update old posts to keep them up-to-date.
 
 # References
 
