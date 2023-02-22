@@ -46,6 +46,10 @@
                 href="https://louisdo2108.github.io/categories/"
                 />
   </url><url>
+    <loc>https://louisdo2108.github.io/tags/cnn/</loc>
+  </url><url>
+    <loc>https://louisdo2108.github.io/categories/computer_vision/</loc>
+  </url><url>
     <loc>https://louisdo2108.github.io/faq/</loc>
     <xhtml:link
                 rel="alternate"
@@ -89,6 +93,8 @@
                 hreflang="en"
                 href="https://louisdo2108.github.io/tags/hugo/"
                 />
+  </url><url>
+    <loc>https://louisdo2108.github.io/tags/kernels/</loc>
   </url><url>
     <loc>https://louisdo2108.github.io/</loc>
     <xhtml:link
@@ -199,6 +205,8 @@
                 hreflang="en"
                 href="https://louisdo2108.github.io/search/"
                 />
+  </url><url>
+    <loc>https://louisdo2108.github.io/posts/separableconvolutions/separableconvolutions/</loc>
   </url><url>
     <loc>https://louisdo2108.github.io/series/</loc>
     <xhtml:link
