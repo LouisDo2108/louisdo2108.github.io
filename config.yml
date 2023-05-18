@@ -27,8 +27,8 @@ languages:
                 - name: Tags
                   url: "/tags/"
                   weight: 3
-                - name: FAQ
-                  url: "/faq/"
+                - name: About
+                  url: "/about/"
                   weight: 4
                 - name: Archive
                   url: "/archives/"
@@ -56,8 +56,8 @@ languages:
                 - name: Tags
                   url: "/tags/"
                   weight: 3
-                - name: FAQ
-                  url: "/faq/"
+                - name: 關於我
+                  url: "/about/"
                   weight: 4
                 - name: 檔案
                   url: "/archives/"
@@ -85,8 +85,8 @@ languages:
                 - name: Tags
                   url: "/tags/"
                   weight: 3
-                - name: FAQ
-                  url: "/faq/"
+                - name: 關於我
+                  url: "/about/"
                   weight: 4
                 - name: 檔案
                   url: "/archives/"
@@ -105,17 +105,17 @@ languages:
           series: series
         menu:
             main:
-                - name: Bài Viết
+                - name: Bài viết
                   url: "/"
                   weight: 1
-                - name: Tìm Kiếm
+                - name: Tìm kiếm
                   url: "/search/"
                   weight: 2
                 - name: Tags
                   url: "/tags/"
                   weight: 3
-                - name: FAQ
-                  url: "/faq/"
+                - name: Giới thiệu
+                  url: "/about/"
                   weight: 4
                 - name: Lưu trữ
                   url: "/archives/"
@@ -191,6 +191,7 @@ params:
 
     assets:
         disableHLJS: true
+        gmail: "/icons/gmail.ico"
     #     favicon: "<link / abs url>"
     #     favicon16x16: "<link / abs url>"
     #     favicon32x32: "<link / abs url>"

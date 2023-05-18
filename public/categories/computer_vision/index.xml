@@ -5,14 +5,15 @@
     <link>https://louisdo2108.github.io/categories/computer_vision/</link>
     <description>Recent content in computer_vision on LD&#39;Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://louisdo2108.github.io/categories/computer_vision/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Feb 2023 16:21:36 +0700</lastBuildDate><atom:link href="https://louisdo2108.github.io/categories/computer_vision/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Separable Convolutions</title>
-      <link>https://louisdo2108.github.io/posts/separableconvolutions/separableconvolutions/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>BraTS 2018</title>
+      <link>https://louisdo2108.github.io/posts/brats2018/brats2018/</link>
+      <pubDate>Wed, 22 Feb 2023 16:21:36 +0700</pubDate>
       
-      <guid>https://louisdo2108.github.io/posts/separableconvolutions/separableconvolutions/</guid>
-      <description>Spatial Separable Convolutions Have significant limitations → not heavily used in deep learning. Deal primarily with the spatial dimensions of an image and kernel. Fig 1. Separating a 3x3 kernel spatially Fig 2. Comparing simple and spatial separable convolution Split the 3x3 kernel into 2 separable kernel 3x1 and 1x3 to achieve the same effect but have lower computational complexity. Fig 3. Separating the Sobel kernel DRAWBACK: not all kernels can be “separated”.</description>
+      <guid>https://louisdo2108.github.io/posts/brats2018/brats2018/</guid>
+      <description>Brain tumor segmentation is a critical task in medical image analysis, and the BraTS (Brain Tumor Segmentation) challenge dataset is one of the most widely used benchmarks in the field. However, getting started with brain imaging can be intimidating, especially if you&amp;rsquo;re not familiar with the complex medical jargon and annotations used in the data. In this blog post, we&amp;rsquo;ll provide a beginner-friendly tutorial to the BraTS 2018 dataset, designed to help you get up to speed with the basics of brain imaging and understand the annotations used in the data.</description>
     </item>
     
   </channel>

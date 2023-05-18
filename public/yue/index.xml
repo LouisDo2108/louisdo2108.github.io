@@ -6,15 +6,6 @@
     <description>Recent content on LD&#39;Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="https://louisdo2108.github.io/yue/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>FAQ</title>
-      <link>https://louisdo2108.github.io/yue/faq/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://louisdo2108.github.io/yue/faq/</guid>
-      <description>faq</description>
-    </item>
-    
     
     <item>
       <title>標簽</title>
@@ -33,6 +24,15 @@
       
       <guid>https://louisdo2108.github.io/yue/posts/hugo_test/my-first-post/</guid>
       <description>介紹 呢個係我第一個Blog。</description>
+    </item>
+    
+    <item>
+      <title>關於我</title>
+      <link>https://louisdo2108.github.io/yue/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://louisdo2108.github.io/yue/about/</guid>
+      <description>關於我</description>
     </item>
     
   </channel>

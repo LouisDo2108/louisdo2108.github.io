@@ -46,26 +46,26 @@
                 href="https://louisdo2108.github.io/vi/categories/"
                 />
   </url><url>
-    <loc>https://louisdo2108.github.io/vi/faq/</loc>
+    <loc>https://louisdo2108.github.io/vi/about/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://louisdo2108.github.io/faq/"
+                href="https://louisdo2108.github.io/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://louisdo2108.github.io/zh-tw/faq/"
+                href="https://louisdo2108.github.io/zh-tw/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="yue"
-                href="https://louisdo2108.github.io/yue/faq/"
+                href="https://louisdo2108.github.io/yue/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="vi"
-                href="https://louisdo2108.github.io/vi/faq/"
+                href="https://louisdo2108.github.io/vi/about/"
                 />
   </url><url>
     <loc>https://louisdo2108.github.io/vi/tags/hugo/</loc>

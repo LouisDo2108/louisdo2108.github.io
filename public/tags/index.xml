@@ -5,13 +5,59 @@
     <link>https://louisdo2108.github.io/tags/</link>
     <description>Recent content in Tags on LD&#39;Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://louisdo2108.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Feb 2023 16:21:36 +0700</lastBuildDate><atom:link href="https://louisdo2108.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>cnn</title>
-      <link>https://louisdo2108.github.io/tags/cnn/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>brain imaging</title>
+      <link>https://louisdo2108.github.io/tags/brain-imaging/</link>
+      <pubDate>Wed, 22 Feb 2023 16:21:36 +0700</pubDate>
       
-      <guid>https://louisdo2108.github.io/tags/cnn/</guid>
+      <guid>https://louisdo2108.github.io/tags/brain-imaging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>brats</title>
+      <link>https://louisdo2108.github.io/tags/brats/</link>
+      <pubDate>Wed, 22 Feb 2023 16:21:36 +0700</pubDate>
+      
+      <guid>https://louisdo2108.github.io/tags/brats/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>brats2018</title>
+      <link>https://louisdo2108.github.io/tags/brats2018/</link>
+      <pubDate>Wed, 22 Feb 2023 16:21:36 +0700</pubDate>
+      
+      <guid>https://louisdo2108.github.io/tags/brats2018/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>medical imaging</title>
+      <link>https://louisdo2108.github.io/tags/medical-imaging/</link>
+      <pubDate>Wed, 22 Feb 2023 16:21:36 +0700</pubDate>
+      
+      <guid>https://louisdo2108.github.io/tags/medical-imaging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>miccai</title>
+      <link>https://louisdo2108.github.io/tags/miccai/</link>
+      <pubDate>Wed, 22 Feb 2023 16:21:36 +0700</pubDate>
+      
+      <guid>https://louisdo2108.github.io/tags/miccai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mri</title>
+      <link>https://louisdo2108.github.io/tags/mri/</link>
+      <pubDate>Wed, 22 Feb 2023 16:21:36 +0700</pubDate>
+      
+      <guid>https://louisdo2108.github.io/tags/mri/</guid>
       <description></description>
     </item>
     
@@ -21,15 +67,6 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://louisdo2108.github.io/tags/hugo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kernels</title>
-      <link>https://louisdo2108.github.io/tags/kernels/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://louisdo2108.github.io/tags/kernels/</guid>
       <description></description>
     </item>
     

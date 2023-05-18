@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>brain imaging on LD&#39;Blog</title>
+    <link>https://louisdo2108.github.io/tags/brain-imaging/</link>
+    <description>Recent content in brain imaging on LD&#39;Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Feb 2023 16:21:36 +0700</lastBuildDate><atom:link href="https://louisdo2108.github.io/tags/brain-imaging/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BraTS 2018</title>
+      <link>https://louisdo2108.github.io/posts/brats2018/brats2018/</link>
+      <pubDate>Wed, 22 Feb 2023 16:21:36 +0700</pubDate>
+      
+      <guid>https://louisdo2108.github.io/posts/brats2018/brats2018/</guid>
+      <description>Brain tumor segmentation is a critical task in medical image analysis, and the BraTS (Brain Tumor Segmentation) challenge dataset is one of the most widely used benchmarks in the field. However, getting started with brain imaging can be intimidating, especially if you&amp;rsquo;re not familiar with the complex medical jargon and annotations used in the data. In this blog post, we&amp;rsquo;ll provide a beginner-friendly tutorial to the BraTS 2018 dataset, designed to help you get up to speed with the basics of brain imaging and understand the annotations used in the data.</description>
+    </item>
+    
+  </channel>
+</rss>
