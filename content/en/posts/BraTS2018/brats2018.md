@@ -183,6 +183,25 @@ If you are still unclear, make sure to checkout these two Youtube videos: **[Vid
 
 I hope you enjoy reading. If you want to learn more about the brain's anatomy, I recommend visiting **[this site](https://www.imaios.com/en/e-anatomy/brain/)**, which has fantastic visualizations. I sometimes update old posts to keep them up-to-date.
 
+
+# Citation
+
+Please cite as:
+> Huynh, Tuan-Luc. (Feb 2023). BraTS 2018. louisdo2108.github.io. https://louisdo2108.github.io/posts/brats2018/brats2018/.
+
+Or 
+```{bibtex}
+@article{huynh_brats2018_2023,
+  title   = "BraTS 2018",
+  author  = "Tuan-Luc, Huynh",
+  journal = "louisdo2108.github.io",
+  year    = "2023",
+  month   = "Feb",
+  url     = "https://louisdo2108.github.io/posts/brats2018/brats2018/"
+}
+```
+
+
 # References
 
 1. Bakas, Spyridon, et al [2018 International MICCAI BraTS Challenge - CBICA](https://www.cbica.upenn.edu/sbia/Spyridon.Bakas/MICCAI_BraTS/MICCAI_BraTS_2018_proceedings_shortPapers.pdf) MICCAI 2018.
