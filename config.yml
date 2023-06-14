@@ -8,10 +8,10 @@ languages:
         languageName: "English"
         weight: 1
         contentDir: content/en
-        homeInfoParams:
-          Title: "LouisDo's Blog"
-          Content: >
-              This is Louis Do. I am interested in Medical Image Computing and sometimes I note things down.
+        # homeInfoParams:
+        #   Title: "LouisDo's Blog"
+        #   Content: >
+        #       This is Louis Do. I am interested in Medical Image Computing and sometimes I note things down.
         taxonomies:
           category: categories
           tag: tags
@@ -37,10 +37,10 @@ languages:
         languageName: "中文"
         weight: 2
         contentDir: content/zh-tw
-        homeInfoParams:
-          Title: "杜俊力 Blog"
-          Content: >
-              大家好，我是杜俊力。我對醫學影像計算感興趣。我經常記錄下我所學到的知識。
+        # homeInfoParams:
+        #   Title: "杜俊力 Blog"
+        #   Content: >
+        #       大家好，我是杜俊力。我對醫學影像計算感興趣。我經常記錄下我所學到的知識。
         taxonomies:
           category: categories
           tag: tags
@@ -62,14 +62,19 @@ languages:
                 - name: 檔案
                   url: "/archives/"
                   weight: 5
+        params:
+          homeInfoParams:
+            Title: "杜俊力 Blog"
+            Content: >
+                大家好，我是杜俊力。我對醫學影像計算感興趣。我經常記錄下我所學到的知識。
     yue:
         languageName: "粵語"
         weight: 3
         contentDir: content/yue
-        homeInfoParams:
-          Title: "杜俊力 Blog"
-          Content: >
-              大家好，我係杜俊力。我鍾意研究醫學影像計算。耐唔中我會抄底我學到啲嘢。
+        # homeInfoParams:
+        #   Title: "杜俊力 Blog"
+        #   Content: >
+        #       大家好，我係杜俊力。我鍾意研究醫學影像計算。耐唔中我會抄底我學到啲嘢。
         taxonomies:
           category: categories
           tag: tags
@@ -91,14 +96,20 @@ languages:
                 - name: 檔案
                   url: "/archives/"
                   weight: 5
+                  params:
+        params:
+            homeInfoParams:
+              Title: "杜俊力 Blog"
+              Content: >
+                  大家好，我係杜俊力。我鍾意研究醫學影像計算。耐唔中我會抄底我學到啲嘢
     vi:
         languageName: "Tiếng Việt"
         weight: 4
         contentDir: content/vi
-        homeInfoParams:
-          Title: "Blog của Louis Do"
-          Content: >
-              Chào mọi người, mình là Lực. Mình đang nghiên cứu về xử lý ảnh y học và mình hay ghi chép lại những gì mình học và đọc được.
+        # homeInfoParams:
+        #   Title: "Blog của Louis Do"
+        #   Content: >
+        #       Chào mọi người, mình là Lực. Mình đang nghiên cứu về xử lý ảnh y học và mình hay ghi chép lại những gì mình học và đọc được.
         taxonomies:
           category: categories
           tag: tags
@@ -120,6 +131,13 @@ languages:
                 - name: Lưu trữ
                   url: "/archives/"
                   weight: 5
+        params:
+          homeInfoParams:
+            Title: "Blog của Louis Do"
+            Content: > 
+                Chào mọi người, mình là Lực. Mình đang nghiên cứu về xử lý ảnh y học và mình hay ghi chép lại những gì mình học và đọc được.
+          
+
 outputs:
     home:
         - HTML
@@ -159,10 +177,10 @@ params:
     #         - name: Tags
     #           url: tags
 
-    # homeInfoParams:
-    #     Title: "LouisDo2108's Blog"
-    #     Content: >
-    #         This is Louis Do. I am interested in Medical Imaging and sometimes I note things down.
+    homeInfoParams:
+        Title: "LouisDo2108's Blog"
+        Content: >
+            This is Louis Do. I am interested in Medical Imaging and sometimes I note things down.
     socialIcons:
         - name: github
           url: "https://github.com/LouisDo2108"
@@ -214,6 +232,7 @@ params:
         minMatchCharLength: 0
         keys: ["title", "permalink", "summary", "content"]
 
+
 markup:
     goldmark:
         renderer:
@@ -225,6 +244,7 @@ markup:
         # guessSyntax: true
         # lineNos: true
         # style: monokai
+
 
 privacy:
     vimeo:
@@ -243,6 +263,7 @@ privacy:
     youtube:
         disabled: false
         privacyEnhanced: true
+
 
 services:
     instagram:
