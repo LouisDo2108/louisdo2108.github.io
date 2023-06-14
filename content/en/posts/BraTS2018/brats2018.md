@@ -190,7 +190,7 @@ Please cite as:
 > Huynh, Tuan-Luc. (Feb 2023). BraTS 2018. louisdo2108.github.io. https://louisdo2108.github.io/posts/brats2018/brats2018/.
 
 Or 
-```{bibtex}
+```
 @article{huynh_brats2018_2023,
   title   = "BraTS 2018",
   author  = "Tuan-Luc, Huynh",
