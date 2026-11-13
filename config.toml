@@ -1,0 +1,54 @@
+# Zola configuration — https://www.getzola.org/documentation/getting-started/configuration/
+base_url = "https://louisdo2108.github.io"
+title = "Tuan-Luc Huynh"
+description = "Tuan-Luc Huynh (Louis Do) — research engineer working on continual learning, retrieval and multimodal representation learning."
+default_language = "en"
+
+compile_sass = true
+minify_html = false
+build_search_index = false
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+
+taxonomies = [
+  { name = "tags", feed = true },
+]
+
+[markdown]
+highlight_code = true
+highlight_theme = "css"
+highlight_themes_css = [
+  { theme = "one-dark", filename = "syntax.css" },
+]
+smart_punctuation = true
+external_links_target_blank = true
+external_links_no_referrer = true
+
+[slugify]
+paths = "safe"
+anchors = "on"
+
+[extra]
+# Everything below is used by the templates. Edit freely.
+name = "Tuan-Luc Huynh"
+nickname = "Louis Do"
+role = "PhD researcher · Applied ML"
+affiliation = "Monash University"
+location = "Melbourne, Australia"
+email = "tuan.huynh1@monash.edu"
+cv = "/files/cv.pdf"
+
+# Top navigation
+nav = [
+  { name = "Research", url = "/publications/" },
+  { name = "Writing", url = "/posts/" },
+  { name = "About", url = "/about/" },
+]
+
+# Social links (icon names map to SVGs in templates/macros/icons.html)
+socials = [
+  { name = "GitHub", icon = "github", url = "https://github.com/LouisDo2108" },
+  { name = "Google Scholar", icon = "scholar", url = "https://scholar.google.com/citations?user=QFkhDJcAAAAJ&hl=en" },
+  { name = "LinkedIn", icon = "linkedin", url = "https://www.linkedin.com/in/louisdo2108" },
+  { name = "Email", icon = "mail", url = "mailto:tuan.huynh1@monash.edu" },
+]

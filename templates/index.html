@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% import "macros/pubs.html" as pubs %}
+{% import "macros/icons.html" as icons %}
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+{%- set profile = load_data(path="data/profile.toml") -%}
+{%- set pubdata = load_data(path="data/publications.toml") -%}
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span>{{ config.extra.role }} · {{ config.extra.affiliation }}</p>
+    <h1 class="hero-title reveal">
+      Hi, I'm {{ config.extra.name }}<span class="aka">— or just <em>{{ config.extra.nickname }}</em>.</span>
+    </h1>
+    <div class="hero-lede reveal">{{ section.content | safe }}</div>
+    <div class="hero-actions reveal">
+      <a class="btn btn-primary" href="{{ get_url(path='/publications/') }}">See my research {{ icons::icon(name="arrow") }}</a>
+      <a class="btn" href="{{ get_url(path=config.extra.cv) }}">{{ icons::icon(name="file") }} Download CV</a>
+      <div class="hero-socials">
+        {%- for s in config.extra.socials %}
+        <a href="{{ s.url }}" aria-label="{{ s.name }}" title="{{ s.name }}"{% if not s.url is starting_with("mailto:") %} target="_blank" rel="noopener"{% endif %}>{{ icons::icon(name=s.icon) }}</a>
+        {%- endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual reveal" aria-hidden="true">
+    <canvas id="embedding-canvas"></canvas>
+    <p class="visual-caption mono">fig. 0 — a slowly drifting embedding space</p>
+  </div>
+</section>
+
+<section class="block">
+  <header class="block-head reveal">
+    <p class="kicker mono">// focus</p>
+    <h2>What I work on</h2>
+  </header>
+  <div class="focus-grid">
+    {%- for f in profile.focus %}
+    <article class="card focus-card reveal">
+      <span class="focus-num mono">{{ f.label }}</span>
+      <h3>{{ f.title }}</h3>
+      <p>{{ f.body }}</p>
+    </article>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="block">
+  <header class="block-head reveal">
+    <p class="kicker mono">// selected publications</p>
+    <h2>Recent research</h2>
+    <a class="block-more" href="{{ get_url(path='/publications/') }}">All publications {{ icons::icon(name="arrow") }}</a>
+  </header>
+  <div class="pub-list">
+    {%- for p in pubdata.pubs | filter(attribute="featured", value=true) %}
+      {{ pubs::pub(p=p, compact=true) }}
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="block">
+  <header class="block-head reveal">
+    <p class="kicker mono">// toolkit</p>
+    <h2>Skills</h2>
+  </header>
+  <div class="skills">
+    {%- for g in profile.skills %}
+    <div class="skill-group reveal">
+      <h3 class="mono">{{ g.group }}</h3>
+      <ul class="chips">
+        {%- for item in g.items %}<li class="chip">{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="block two-col">
+  <div>
+    <header class="block-head reveal">
+      <p class="kicker mono">// writing</p>
+      <h2>Notes &amp; posts</h2>
+      <a class="block-more" href="{{ get_url(path='/posts/') }}">All writing {{ icons::icon(name="arrow") }}</a>
+    </header>
+    {%- set posts = get_section(path="posts/_index.md") %}
+    <ul class="post-list">
+      {%- for p in posts.pages | slice(end=4) %}
+      <li class="post-item reveal">
+        <a href="{{ p.permalink }}">
+          <span class="post-date mono">{{ p.date | date(format="%b %Y") }}</span>
+          <span class="post-title">{{ p.title }}</span>
+          <span class="post-meta mono">{{ p.reading_time }} min</span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+  <div>
+    <header class="block-head reveal">
+      <p class="kicker mono">// open source</p>
+      <h2>Code</h2>
+    </header>
+    <div class="project-list">
+      {%- for pr in profile.projects %}
+      <a class="card project reveal" href="{{ pr.url }}" target="_blank" rel="noopener">
+        <h3>{{ pr.name }} {{ icons::icon(name="arrow") }}</h3>
+        <p>{{ pr.body }}</p>
+        <ul class="tags">{% for t in pr.tags %}<li>{{ t }}</li>{% endfor %}</ul>
+      </a>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{% endblock content %}

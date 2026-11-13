@@ -1,0 +1,90 @@
+# Profile data used by the home and about pages. Edit freely.
+# (Plain keys must come before any [[table]] sections in TOML.)
+
+# ── Highlights (about page) ───────────────────────────────────────
+highlights = [
+  "Best Paper Award — PSIVT 2023",
+  "2nd place — SHREC 2023 sketch-based 3D animal retrieval",
+  "Distinctive Mention — MediaEval 2022 Medico task",
+  "1st place NewsImage & 2nd place FakeNews — MediaEval 2021",
+  "Academic Excellence Award & full-tuition scholarship — University of Science, 2021–22",
+]
+
+# ── What I work on (home page cards) ──────────────────────────────
+[[focus]]
+label = "01"
+title = "Continual learning"
+body = "Models that keep learning after deployment — absorbing new data and tasks without forgetting, and without replaying everything they have seen."
+
+[[focus]]
+label = "02"
+title = "Information retrieval"
+body = "Generative and dense retrieval over corpora that change every day: indexing, updating and serving with predictable cost."
+
+[[focus]]
+label = "03"
+title = "Multimodal representations"
+body = "Vision–language embeddings (CLIP-style) and how to adapt them efficiently with adapters, LoRA and prompts."
+
+[[focus]]
+label = "04"
+title = "Medical imaging"
+body = "Where I started: 3D segmentation, detection and tracking for MRI, endoscopy and laryngoscopy data."
+
+# ── Toolkit (grouped skill chips) ─────────────────────────────────
+[[skills]]
+group = "Modelling"
+items = ["Continual / lifelong learning", "Generative & dense retrieval", "Parameter-efficient fine-tuning (LoRA, MoE, prompts)", "Vision–language models", "3D segmentation (nnU-Net)", "Detection & tracking (YOLO)"]
+
+[[skills]]
+group = "Engineering"
+items = ["Python", "PyTorch", "Hugging Face Transformers / PEFT", "scikit-learn", "C++", "Multi-GPU training", "Slurm / HPC", "Git & Linux"]
+
+[[skills]]
+group = "Research craft"
+items = ["Experiment design & ablations", "Benchmark building", "Reproducing papers from scratch", "Technical writing (LaTeX)", "Challenge & workshop organisation"]
+
+# ── Experience timeline (about page) ──────────────────────────────
+[[experience]]
+when = "2023 — now"
+what = "PhD Researcher"
+where = "Monash University"
+detail = "Continual learning for information retrieval and multimodal models. Work published at EMNLP and ECML PKDD."
+
+[[experience]]
+when = "2022 — 2023"
+what = "Research Assistant"
+where = "Software Engineering Lab (SELAB), University of Science, VNU-HCM"
+detail = "Medical imaging and retrieval projects; co-organised the MediaEval 2023 Medical Multimedia task."
+
+[[experience]]
+when = "2022"
+what = "Data Scientist Intern"
+where = "Center of Applied Data Science, FPT Telecom"
+detail = "Customer propensity modelling on transaction data: EDA, feature engineering and AutoML pipelines."
+
+[[experience]]
+when = "2019 — 2023"
+what = "B.Sc. Computer Science (Advanced Program)"
+where = "University of Science, VNU-HCM"
+detail = "GPA 3.95 / 4. Thesis: efficient brain tumor segmentation with nnU-Net."
+
+
+# ── Open source (home page) ───────────────────────────────────────
+[[projects]]
+name = "Awesome Continual Learning for IR"
+url = "https://github.com/LouisDo2108/Awesome-Continual-Learning-for-Information-Retrieval"
+body = "A curated, venue-tagged reading list on continual learning for text, multimodal and recommendation retrieval."
+tags = ["curation", "IR"]
+
+[[projects]]
+name = "C-CLIP (re-implementation)"
+url = "https://github.com/LouisDo2108/cclip"
+body = "Standalone re-implementation of ICLR'25 C-CLIP: per-task LoRA + contrastive knowledge consolidation for continual vision–language learning."
+tags = ["PyTorch", "CLIP", "LoRA"]
+
+[[projects]]
+name = "Perceptual Camouflage Score"
+url = "https://github.com/LouisDo2108/Perceptual-Camouflage-Score"
+body = "Unofficial re-implementation of the camouflage metric from “The Making and Breaking of Camouflage” (ICCV'23)."
+tags = ["vision", "metrics"]

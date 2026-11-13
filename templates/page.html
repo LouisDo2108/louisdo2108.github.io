@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% import "macros/icons.html" as icons %}
+
+{% block head_extra %}
+{%- if page.extra.math | default(value=false) %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+{%- endif %}
+{% endblock head_extra %}
+
+{% block body_class %}post{% endblock %}
+{% block main_class %}container post-layout{% endblock %}
+
+{% block content %}
+<div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+<article class="post-article">
+  <header class="post-head">
+    <a class="back mono" href="{{ get_url(path='/posts/') }}">← all writing</a>
+    <h1>{{ page.title }}</h1>
+    {%- if page.description %}<p class="post-desc">{{ page.description }}</p>{% endif %}
+    <div class="post-info mono">
+      <time datetime="{{ page.date }}">{{ page.date | date(format="%B %d, %Y") }}</time>
+      <span>·</span><span>{{ page.reading_time }} min read</span>
+      {%- if page.updated %}<span>·</span><span>updated {{ page.updated | date(format="%b %Y") }}</span>{% endif %}
+    </div>
+    {%- if page.taxonomies.tags %}
+    <ul class="tags">{% for t in page.taxonomies.tags %}<li><a href="{{ get_taxonomy_url(kind='tags', name=t) }}">#{{ t }}</a></li>{% endfor %}</ul>
+    {%- endif %}
+  </header>
+
+  <div class="prose">
+    {{ page.content | safe }}
+  </div>
+
+  {%- if page.extra.cite | default(value=true) %}
+  <section class="cite">
+    <h2>Cite this note</h2>
+    <p class="muted small">{{ config.extra.name }}. ({{ page.date | date(format="%b %Y") }}). {{ page.title }}. {{ config.base_url | replace(from="https://", to="") }}. {{ page.permalink }}</p>
+<pre class="cite-bib"><code>@misc{huynh{{ page.date | date(format="%Y") }}{{ page.slug | replace(from="-", to="") }},
+  title  = "{{ page.title }}",
+  author = "Huynh, Tuan-Luc",
+  year   = "{{ page.date | date(format="%Y") }}",
+  month  = "{{ page.date | date(format="%b") }}",
+  url    = "{{ page.permalink }}"
+}</code></pre>
+  </section>
+  {%- endif %}
+
+  <nav class="post-nav">
+    {%- if page.higher %}<a class="card" href="{{ page.higher.permalink }}"><span class="mono muted">← newer</span>{{ page.higher.title }}</a>{% else %}<span></span>{% endif %}
+    {%- if page.lower %}<a class="card right" href="{{ page.lower.permalink }}"><span class="mono muted">older →</span>{{ page.lower.title }}</a>{% endif %}
+  </nav>
+</article>
+
+{%- if page.toc and page.extra.toc | default(value=true) %}
+<aside class="toc" aria-label="Table of contents">
+  <p class="mono toc-title">On this page</p>
+  <ol>
+    {%- for h in page.toc %}
+    <li><a href="#{{ h.id }}">{{ h.title }}</a>
+      {%- if h.children %}
+      <ol>{% for c in h.children %}<li><a href="#{{ c.id }}">{{ c.title }}</a></li>{% endfor %}</ol>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ol>
+</aside>
+{%- endif %}
+{% endblock content %}
+
+{% block scripts %}
+{%- if page.extra.math | default(value=false) %}
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.querySelector('.prose'),{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]})"></script>
+{%- endif %}
+{% endblock scripts %}

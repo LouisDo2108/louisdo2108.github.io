@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% import "macros/icons.html" as icons %}
+
+{% block content %}
+{%- set profile = load_data(path="data/profile.toml") -%}
+<header class="page-head about-head">
+  <img class="avatar reveal" src="{{ get_url(path='avatar.png') }}" alt="Avatar" width="132" height="132">
+  <div>
+    <p class="kicker mono reveal">// about</p>
+    <h1 class="reveal">{{ config.extra.name }} <span class="muted">({{ config.extra.nickname }})</span></h1>
+    <p class="mono muted reveal">{{ config.extra.role }} · {{ config.extra.affiliation }} · {{ config.extra.location }}</p>
+  </div>
+</header>
+
+<div class="about-grid">
+  <div class="prose reveal">{{ page.content | safe }}</div>
+
+  <aside class="about-side">
+    <section class="reveal">
+      <h2 class="kicker mono">// highlights</h2>
+      <ul class="highlights">
+        {%- for h in profile.highlights %}<li>{{ h }}</li>{% endfor %}
+      </ul>
+    </section>
+    <section class="reveal">
+      <h2 class="kicker mono">// contact</h2>
+      <ul class="contact">
+        {%- for s in config.extra.socials %}
+        <li><a href="{{ s.url }}"{% if not s.url is starting_with("mailto:") %} target="_blank" rel="noopener"{% endif %}>{{ icons::icon(name=s.icon) }} {{ s.name }}</a></li>
+        {%- endfor %}
+        <li><a href="{{ get_url(path=config.extra.cv) }}">{{ icons::icon(name="file") }} CV (PDF)</a></li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+<section class="block">
+  <header class="block-head reveal">
+    <p class="kicker mono">// path so far</p>
+    <h2>Experience &amp; education</h2>
+  </header>
+  <ol class="timeline">
+    {%- for e in profile.experience %}
+    <li class="reveal">
+      <span class="when mono">{{ e.when }}</span>
+      <div>
+        <h3>{{ e.what }}</h3>
+        <p class="where">{{ e.where }}</p>
+        <p class="muted">{{ e.detail }}</p>
+      </div>
+    </li>
+    {%- endfor %}
+  </ol>
+</section>
+{% endblock content %}

@@ -1,0 +1,26 @@
+{# Render one publication. `me` is highlighted in the author list. #}
+{% macro pub(p, compact=false) %}
+{%- set me = config.extra.name -%}
+<article class="pub reveal" data-topics="{{ p.topic | join(sep=' ') }}">
+  <div class="pub-venue">
+    <span class="venue-tag">{{ p.venue_short }}</span>
+    {%- if p.award %}<span class="award">★ {{ p.award }}</span>{% endif -%}
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title">
+      {%- set main = p.links.paper | default(value=p.links.arxiv | default(value=p.links.pdf | default(value=""))) -%}
+      {%- if main %}<a href="{{ main }}" target="_blank" rel="noopener">{{ p.title }}</a>{% else %}{{ p.title }}{% endif -%}
+    </h3>
+    {%- if not compact %}
+    <p class="pub-authors">{{ p.authors | replace(from=me, to="<strong class='me'>" ~ me ~ "</strong>") | safe }}{% if p.note %} <em class="pub-note">({{ p.note }})</em>{% endif %}</p>
+    <p class="pub-venue-full">{{ p.venue }}</p>
+    {%- endif %}
+    {%- if p.tldr %}<p class="pub-tldr">{{ p.tldr }}</p>{% endif %}
+    <div class="pub-links">
+      {%- for kind in ["paper", "arxiv", "pdf", "code"] %}
+        {%- if p.links[kind] is defined %}<a class="chip-link" href="{{ p.links[kind] }}" target="_blank" rel="noopener">{{ kind }}</a>{% endif %}
+      {%- endfor %}
+    </div>
+  </div>
+</article>
+{% endmacro pub %}

@@ -1,11 +1,67 @@
 # louisdo2108.github.io
-Hi, recently I have just built my GitHub pages using Hugo-Paper mod. There are some issues that worth mentioning: \
-a. You should go for Method 3 in installation. This way, you wouldn't need to worry about submodule. You can probably be able to update in the future. \
-b. The thing that confused me the most was how to automatically create a gh-pages branch. If my memory is perfect, then the procedures would be:
-   1. You should use this [.github/workflows/gh-pages.yml](https://gohugo.io/hosting-and-deployment/hosting-on-github/#build-hugo-with-github-action) available on the official Hugo site.
-   2. Go to your username.github.io repository -> Settings tab -> Pages tab -> Build and deployment -> Source -> Change to Github Actions and paste the previous gh-pages.yml into the Github Actions file.
-   3. Make sure to build your sites using the `hugo` command on the terminal, then commit + push. Github should build your page now and the gh-pages branch will miraculously appear :).
-   4. Finally, you can now switch back to deploy from branch: Go to your username.github.io repository -> Settings tab -> Pages tab -> Build and deployment -> Source -> Change to deploy from a branch -> Set to gh-pages.
-   5. Done! Enjoy your new site. ^^ \
 
-P/s: At first, I tried to modify theme/PaperMod/.github/workflows/gh-pages.yml and ended up wasting 3 days. You should not repeat my mistake. Please do read the [official documents](https://gohugo.io/getting-started/quick-start/). Stay tuned for my future post.
+Personal site of Tuan-Luc Huynh (Louis Do), built with [Zola](https://www.getzola.org), a fast static site generator written in Rust. It uses a hand-made dark theme with no JS framework and no Node build step.
+
+## Quick start
+
+```bash
+# install Zola once (single binary): https://www.getzola.org/documentation/getting-started/installation/
+#   macOS:  brew install zola
+#   Linux:  download the release tarball, or `cargo install --locked zola`
+zola serve        # http://127.0.0.1:1111 with live reload
+zola build        # outputs to ./public
+```
+
+Pushing to `main` builds the site and deploys it to the `gh-pages` branch (`.github/workflows/gh-pages.yml`).
+GitHub Pages should be set to **Deploy from a branch → `gh-pages` / root**.
+
+## Where things live
+
+| What you want to change | File |
+|---|---|
+| Name, role, links, nav | `config.toml` → `[extra]` |
+| Home page intro paragraph | `content/_index.md` |
+| Publications | `data/publications.toml` (`featured = true` shows it on the home page) |
+| Focus cards, skills, experience, highlights, open-source projects | `data/profile.toml` |
+| About page text | `content/about.md` |
+| Blog posts / notes | `content/posts/<slug>/index.md` (+ images in the same folder) |
+| CV | `static/files/cv.pdf` |
+| Colours, fonts, spacing | `sass/main.scss` (tokens at the top) |
+| Animations / small interactions | `static/js/site.js` |
+
+## Writing a post
+
+Create `content/posts/my-note/index.md`:
+
+```toml
++++
+title = "My note"
+description = "One-line summary shown in lists and link previews."
+date = 2026-11-13
+[taxonomies]
+tags = ["retrieval", "notes"]
+[extra]
+math = true      # enable KaTeX: $inline$ and $$display$$
+# toc = false    # hide the table of contents
+# cite = false   # hide the "cite this note" box
++++
+
+Intro paragraph shown in the list.
+
+<!-- more -->
+
+## First section
+...
+```
+
+Shortcodes:
+
+```
+{{ figure(src="plot.png", caption="Fig. 1. Something *interesting*.", width="70%") }}
+
+{% note(kind="tip", title="Takeaway") %}
+Markdown **inside** a callout. kind = note | tip | warn
+{% end %}
+```
+
+Set `draft = true` in the front matter to keep a post out of the published site.

@@ -1,0 +1,5 @@
+{#- Usage: {% note(kind="tip") %} markdown body {% end %} — kinds: note, tip, warn -#}
+<aside class="callout callout-{{ kind | default(value='note') }}">
+  <p class="callout-label mono">{{ title | default(value=kind | default(value='note')) }}</p>
+  {{ body | markdown | safe }}
+</aside>
