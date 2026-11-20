@@ -24,9 +24,14 @@
       </div>
     </div>
   </div>
-  <div class="hero-visual reveal" aria-hidden="true">
-    <canvas id="embedding-canvas"></canvas>
-    <p class="visual-caption mono">fig. 0 — a slowly drifting embedding space</p>
+  <div class="hero-visual reveal" data-viz-group>
+    <canvas data-mode="retrieval" role="img" aria-label="Animated embedding space: image and caption embeddings drift when the encoder is updated on a new task, and the correct caption falls out of the image query's nearest neighbours."></canvas>
+    <div class="viz-hud" aria-hidden="true">
+      <span class="viz-pill mono" data-phase>task t · encoder after training</span>
+      <span class="viz-pill mono">R@1 <b data-metric="r1">100%</b></span>
+    </div>
+    <p class="visual-caption mono" aria-hidden="true">fig. 0 — labels survive, neighbours don't</p>
+    <div class="viz-tip mono" hidden></div>
   </div>
 </section>
 
@@ -43,6 +48,50 @@
       <p>{{ f.body }}</p>
     </article>
     {%- endfor %}
+  </div>
+</section>
+
+<section class="block" id="why-retrieval">
+  <header class="block-head reveal">
+    <p class="kicker mono">// the problem, in one picture</p>
+    <h2>Why continual retrieval is harder than classification</h2>
+  </header>
+  <div class="viz-group reveal" data-viz-group>
+    <div class="viz-panels">
+      <figure class="viz-panel">
+        <figcaption>
+          <span class="mono">Continual classification</span>
+          <span class="viz-stat mono">accuracy <b data-metric="acc">100%</b><span class="meter"><span data-bar="acc"></span></span></span>
+        </figcaption>
+        <div class="viz-stage"><canvas data-mode="classification" role="img" aria-label="Class regions for woman, child and man. After the encoder update the points move but stay inside their regions, so predictions are unchanged."></canvas></div>
+      </figure>
+      <figure class="viz-panel">
+        <figcaption>
+          <span class="mono">Continual retrieval</span>
+          <span class="viz-stat mono">Recall@1 <b data-metric="r1">100%</b><span class="meter"><span data-bar="r1"></span></span></span>
+        </figcaption>
+        <div class="viz-stage"><canvas data-mode="retrieval" role="img" aria-label="Image-to-caption retrieval. After the encoder update the nearest captions change and the correct caption drops out of the top results."></canvas></div>
+      </figure>
+    </div>
+    <div class="viz-controls">
+      <button type="button" class="viz-btn viz-play" aria-pressed="true">❚❚ pause</button>
+      <label class="viz-slider">
+        <span class="mono">task t</span>
+        <input class="viz-range" type="range" min="0" max="1000" value="0" aria-label="Encoder update, from task t to task t+1">
+        <span class="mono">task t+1</span>
+      </label>
+      <button type="button" class="viz-btn viz-toggle" aria-pressed="false">consolidation</button>
+      <span class="viz-phase mono" data-phase aria-live="off">task t · encoder after training</span>
+    </div>
+    <p class="viz-caption">
+      Squares are image embeddings, circles are captions, and colours are concepts. When the encoder is fine-tuned on
+      task <em>t+1</em> (new data: strawberries), old embeddings drift; faint ghosts mark where they were.
+      They stay inside their class regions, so <strong>classification accuracy holds</strong>. But nearest neighbours
+      reshuffle, the right caption leaves the top-<em>k</em>, and <strong>Recall@1 collapses</strong>.
+      Retrieval needs methods that preserve the <em>geometry</em> of the space, not just the labels.
+      <span class="muted">Hover a point to read it · click any square to make it the query · drag the slider to scrub.</span>
+    </p>
+    <div class="viz-tip mono" hidden></div>
   </div>
 </section>
 
@@ -113,3 +162,7 @@
   </div>
 </section>
 {% endblock content %}
+
+{% block scripts %}
+<script src="{{ get_url(path='js/embedding-viz.js', cachebust=true) }}" defer></script>
+{% endblock scripts %}
