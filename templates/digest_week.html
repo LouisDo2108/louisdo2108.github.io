@@ -8,7 +8,7 @@
   <p class="kicker mono reveal">// weekly digest · {{ page.extra.iso_week }}</p>
   <h1 class="reveal">{{ page.title }}</h1>
   <p class="digest-meta mono muted reveal">{{ papers | length }} new papers · {{ revision | length }} to revise · {{ page.date | date(format="%a %d %b") }} – {{ page.extra.week_end | date(format="%a %d %b %Y") }}</p>
-  <p class="digest-ai small muted reveal">Curated weekly with AI assistance. Summaries can contain mistakes, so check the paper before citing.</p>
+  <p class="digest-ai small muted reveal">Curated weekly with AI assistance. Summaries can contain mistakes, so check the paper before citing. Figures are reproduced for review with credit to the authors; <a href="mailto:{{ config.extra.email }}">contact me</a> to have one removed.</p>
   {%- if page.extra.prototype %}
   <p class="digest-proto reveal">Prototype: these are sample papers used only to preview the layout.</p>
   {%- endif %}

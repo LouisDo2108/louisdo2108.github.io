@@ -8,8 +8,8 @@ Usage:
         → downloads figure N (default: first caption that looks like an architecture/overview,
           else the first figure) to <out_dir>/<slug>.<ext>, shrinks it to ≤1400 px on macOS,
           and prints {"file": ..., "caption": ..., "source": ..., "license": ...} or {"error": ...}.
-        Only papers whose arXiv licence allows reuse (CC BY, BY-SA, BY-NC, BY-NC-SA, CC0) are
-        downloaded; otherwise it returns {"error": "license does not allow reuse", "license": ...}.
+        "license" is the paper's arXiv licence label (e.g. "CC BY 4.0", "arXiv non-exclusive"),
+        used for the caption credit. Figures are shown for review with credit to the authors.
 
 Standard library + curl only (curl uses the system trust store).
 """
@@ -114,13 +114,9 @@ def main():
         return
     out_dir, slug = args[1], re.sub(r"[^a-z0-9-]", "-", args[2].lower())
     try:
-        lic_url, lic_label, reusable = license_of(arxiv_id)
-    except Exception as e:  # noqa: BLE001
-        print(json.dumps({"error": f"licence lookup failed: {e}"}))
-        return
-    if not reusable:
-        print(json.dumps({"error": "license does not allow reuse", "license": lic_label}))
-        return
+        _, lic_label, _ = license_of(arxiv_id)
+    except Exception:  # noqa: BLE001
+        lic_label = "unknown"
     if not figs:
         print(json.dumps({"error": "no figure images in arXiv HTML"}))
         return

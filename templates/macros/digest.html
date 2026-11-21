@@ -36,7 +36,7 @@
     <a href="{{ base }}{{ p.figure.file }}" target="_blank" rel="noopener" title="Open full size">
       <img src="{{ base }}{{ p.figure.file }}" alt="{{ p.figure.caption | default(value='Key figure') | truncate(length=120) }}" loading="lazy">
     </a>
-    {%- if p.figure.caption %}<figcaption>{{ p.figure.caption }} <span class="digest-fig-src">Source: the paper{% if p.figure.license %} · {{ p.figure.license }}{% endif %}.</span></figcaption>{% endif %}
+    {%- if p.figure.caption %}<figcaption>{{ p.figure.caption }} <span class="digest-fig-src">Source: the paper{% if p.figure.license and p.figure.license is starting_with("CC") %} · {{ p.figure.license }}{% endif %}.</span></figcaption>{% endif %}
   </figure>
   {%- endif %}
 </article>
