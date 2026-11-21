@@ -55,7 +55,6 @@
         {%- set active = cp is starting_with(href) %}
         <li><a href="{{ get_url(path=href) }}"{% if active %} class="active" aria-current="page"{% endif %}>{{ trans(key=item.key, lang=lang) }}</a></li>
         {%- endfor %}
-        <li><a class="nav-cv" href="{{ get_url(path=config.extra.cv) }}">{{ trans(key="nav_cv", lang=lang) }}</a></li>
         <li><a class="nav-lang" href="{{ get_url(path=alt_path) }}" hreflang="{{ alt_hreflang }}" lang="{{ alt_hreflang }}" aria-label="{{ trans(key='lang_switch_label', lang=lang) }}" title="{{ trans(key='lang_switch_label', lang=lang) }}">{{ trans(key="lang_switch", lang=lang) }}</a></li>
       </ul>
     </nav>

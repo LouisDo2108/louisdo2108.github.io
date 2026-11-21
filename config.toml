@@ -46,11 +46,9 @@ skip = "跳到內容"
 nav_research = "研究"
 nav_writing = "文章"
 nav_about = "關於"
-nav_cv = "履歷"
 lang_switch = "EN"
 lang_switch_label = "English version"
 see_research = "睇我嘅研究"
-download_cv = "下載履歷（英文）"
 kicker_now = "// 而家"
 kicker_focus = "// 研究方向"
 h_focus = "我做緊乜"
@@ -76,7 +74,6 @@ h_code = "程式碼"
 kicker_about = "// 關於"
 kicker_highlights = "// 發生過嘅事"
 kicker_contact = "// 聯絡"
-cv_pdf = "履歷（PDF，英文）"
 kicker_path = "// 一路走嚟"
 h_path = "經歷同學歷"
 avatar_alt = "頭像"
@@ -100,11 +97,9 @@ skip = "Skip to content"
 nav_research = "Research"
 nav_writing = "Writing"
 nav_about = "About"
-nav_cv = "CV"
 lang_switch = "粵"
 lang_switch_label = "廣東話版本"
 see_research = "See my research"
-download_cv = "Download CV"
 kicker_now = "// now"
 kicker_focus = "// focus"
 h_focus = "What I work on"
@@ -130,7 +125,6 @@ h_code = "Code"
 kicker_about = "// about"
 kicker_highlights = "// things that happened"
 kicker_contact = "// contact"
-cv_pdf = "CV (PDF)"
 kicker_path = "// path so far"
 h_path = "Experience &amp; education"
 avatar_alt = "Avatar"
@@ -144,8 +138,7 @@ nickname = "Louis Do"
 role = "PhD student · Applied ML"
 affiliation = "Monash University"
 location = "Melbourne, Australia"
-email = "tuan.huynh1@monash.edu"
-cv = "/cv.pdf"   # same URL as the old Hugo site, so existing links keep working
+email = "louisdo2108@gmail.com"
 
 # Top navigation
 # `key` is looked up in the translations below; `zh_url` is the Cantonese page, if there is one.
@@ -160,5 +153,5 @@ socials = [
   { name = "GitHub", icon = "github", url = "https://github.com/LouisDo2108" },
   { name = "Google Scholar", icon = "scholar", url = "https://scholar.google.com/citations?user=QFkhDJcAAAAJ&hl=en" },
   { name = "LinkedIn", icon = "linkedin", url = "https://www.linkedin.com/in/louis-tuan-luc-huynh/" },
-  { name = "Email", icon = "mail", url = "mailto:tuan.huynh1@monash.edu" },
+  { name = "Email", icon = "mail", url = "mailto:louisdo2108@gmail.com" },
 ]

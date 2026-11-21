@@ -30,7 +30,6 @@
         {%- for s in config.extra.socials %}
         <li><a href="{{ s.url }}"{% if not s.url is starting_with("mailto:") %} target="_blank" rel="noopener"{% endif %}>{{ icons::icon(name=s.icon) }} {{ s.name }}</a></li>
         {%- endfor %}
-        <li><a href="{{ get_url(path=config.extra.cv) }}">{{ icons::icon(name="file") }} {{ trans(key="cv_pdf", lang=lang) }}</a></li>
       </ul>
     </section>
   </aside>
