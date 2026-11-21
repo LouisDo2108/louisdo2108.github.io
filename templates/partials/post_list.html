@@ -1,8 +1,8 @@
 {%- set list = section.pages | default(value=term.pages | default(value=[])) %}
-{%- set current_year = 0 %}
+{%- set_global current_year = 0 %}
 <div class="archive">
 {%- for p in list %}
-  {%- set y = p.date | date(format="%Y") %}
+  {%- set y = p.year %}
   {%- if y != current_year %}
     {%- if not loop.first %}</ul>{% endif %}
     <h2 class="year mono">{{ y }}</h2>

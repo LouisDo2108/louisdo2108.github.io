@@ -46,8 +46,9 @@
   {%- endif %}
 
   <nav class="post-nav">
-    {%- if page.higher %}<a class="card" href="{{ page.higher.permalink }}"><span class="mono muted">← newer</span>{{ page.higher.title }}</a>{% else %}<span></span>{% endif %}
-    {%- if page.lower %}<a class="card right" href="{{ page.lower.permalink }}"><span class="mono muted">older →</span>{{ page.lower.title }}</a>{% endif %}
+    {#- Posts are sorted newest first, so Zola's `lower` is the newer post and `higher` the older one. #}
+    {%- if page.lower %}<a class="card" href="{{ page.lower.permalink }}"><span class="mono muted">← newer</span>{{ page.lower.title }}</a>{% else %}<span></span>{% endif %}
+    {%- if page.higher %}<a class="card right" href="{{ page.higher.permalink }}"><span class="mono muted">older →</span>{{ page.higher.title }}</a>{% endif %}
   </nav>
 </article>
 

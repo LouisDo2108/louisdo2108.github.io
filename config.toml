@@ -1,6 +1,7 @@
 # Zola configuration — https://www.getzola.org/documentation/getting-started/configuration/
 base_url = "https://louisdo2108.github.io"
 title = "Tuan-Luc Huynh"
+author = "Tuan-Luc Huynh"
 description = "Tuan-Luc Huynh (Louis Do) — research engineer working on continual learning, retrieval and multimodal representation learning."
 default_language = "en"
 
@@ -36,7 +37,7 @@ role = "PhD researcher · Applied ML"
 affiliation = "Monash University"
 location = "Melbourne, Australia"
 email = "tuan.huynh1@monash.edu"
-cv = "/files/cv.pdf"
+cv = "/cv.pdf"   # same URL as the old Hugo site, so existing links keep working
 
 # Top navigation
 nav = [
