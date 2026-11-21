@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% import "macros/pubs.html" as pubs %}
+{% import "macros/icons.html" as icons %}
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+{%- set profile = load_data(path="data/profile.toml") -%}
+{%- set pubdata = load_data(path="data/publications.toml") -%}
+{%- set zh = lang == "zh-hk" -%}
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span>{{ trans(key="role", lang=lang) }} · {{ trans(key="affiliation", lang=lang) }}</p>
+    <h1 class="hero-title reveal">
+      {% if zh %}你好，我係{{ trans(key="name", lang=lang) }}{% else %}Hi, I'm {{ trans(key="name", lang=lang) }}{% endif %}<span class="aka">{{ trans(key="aka", lang=lang) | safe }}</span>
+    </h1>
+    <div class="hero-lede reveal">{{ section.content | safe }}</div>
+    <div class="hero-actions reveal">
+      <a class="btn btn-primary" href="{{ get_url(path='/publications/') }}">{{ trans(key="see_research", lang=lang) }} {{ icons::icon(name="arrow") }}</a>
+      <div class="hero-socials">
+        {%- for s in config.extra.socials %}
+        <a href="{{ s.url }}" aria-label="{{ s.name }}" title="{{ s.name }}"{% if not s.url is starting_with("mailto:") %} target="_blank" rel="noopener"{% endif %}>{{ icons::icon(name=s.icon) }}</a>
+        {%- endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual reveal" data-viz-group>
+    <canvas data-mode="retrieval" role="img" aria-label="Animated embedding space: image and caption embeddings drift when the encoder is updated on a new task, and the correct caption falls out of the image query's nearest neighbours."></canvas>
+    <div class="viz-hud" aria-hidden="true">
+      <span class="viz-pill mono" data-phase>task t · encoder after training</span>
+      <span class="viz-pill mono">R@1 <b data-metric="r1">100%</b></span>
+    </div>
+    <p class="visual-caption mono">{{ trans(key="fig0", lang=lang) | safe }}</p>
+    <div class="viz-tip mono" hidden></div>
+  </div>
+</section>
+
+<section class="block now-block reveal">
+  <p class="kicker mono">{{ trans(key="kicker_now", lang=lang) }}</p>
+  <p class="now-text">{% if zh %}{{ profile.now_zh }}{% else %}{{ profile.now }}{% endif %}</p>
+</section>
+
+<section class="block">
+  <header class="block-head reveal">
+    <p class="kicker mono">{{ trans(key="kicker_focus", lang=lang) }}</p>
+    <h2>{{ trans(key="h_focus", lang=lang) }}</h2>
+  </header>
+  <div class="focus-grid">
+    {%- for f in profile.focus %}
+    <article class="card focus-card reveal">
+      <span class="focus-num mono">{{ f.label }}</span>
+      <h3>{% if zh %}{{ f.title_zh }}{% else %}{{ f.title }}{% endif %}</h3>
+      <p>{% if zh %}{{ f.body_zh }}{% else %}{{ f.body }}{% endif %}</p>
+    </article>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="block" id="why-retrieval">
+  <header class="block-head reveal">
+    <p class="kicker mono">{{ trans(key="kicker_problem", lang=lang) }}</p>
+    <h2>{{ trans(key="h_problem", lang=lang) }}</h2>
+  </header>
+  <div class="viz-group reveal" data-viz-group>
+    <div class="viz-panels">
+      <figure class="viz-panel">
+        <figcaption>
+          <span class="mono">{{ trans(key="viz_cls", lang=lang) }}</span>
+          <span class="viz-stat mono">{{ trans(key="viz_acc", lang=lang) }} <b data-metric="acc">100%</b><span class="meter"><span data-bar="acc"></span></span></span>
+        </figcaption>
+        <div class="viz-stage"><canvas data-mode="classification" role="img" aria-label="Class regions for woman, child and man. After the encoder update the points move but stay inside their regions, so predictions are unchanged."></canvas></div>
+      </figure>
+      <figure class="viz-panel">
+        <figcaption>
+          <span class="mono">{{ trans(key="viz_ret", lang=lang) }}</span>
+          <span class="viz-stat mono">Recall@1 <b data-metric="r1">100%</b><span class="meter"><span data-bar="r1"></span></span></span>
+        </figcaption>
+        <div class="viz-stage"><canvas data-mode="retrieval" role="img" aria-label="Image-to-caption retrieval. After the encoder update the nearest captions change and the correct caption drops out of the top results."></canvas></div>
+      </figure>
+    </div>
+    <div class="viz-controls">
+      <button type="button" class="viz-btn viz-play" aria-pressed="true">❚❚ pause</button>
+      <label class="viz-slider">
+        <span class="mono">task t</span>
+        <input class="viz-range" type="range" min="0" max="1000" value="0" aria-label="Encoder update, from task t to task t+1">
+        <span class="mono">task t+1</span>
+      </label>
+      <button type="button" class="viz-btn viz-toggle" aria-pressed="false">consolidation</button>
+      <span class="viz-phase mono" data-phase aria-live="off">task t · encoder after training</span>
+    </div>
+    <p class="viz-caption">
+      {{ trans(key="viz_caption", lang=lang) | safe }}
+      <span class="viz-credit">{{ trans(key="viz_credit", lang=lang) | safe }}</span>
+      <span class="muted">{{ trans(key="viz_hint", lang=lang) }}</span>
+    </p>
+    <div class="viz-tip mono" hidden></div>
+  </div>
+</section>
+
+<section class="block">
+  <header class="block-head reveal">
+    <p class="kicker mono">{{ trans(key="kicker_pubs", lang=lang) }}</p>
+    <h2>{{ trans(key="h_pubs", lang=lang) }}</h2>
+    <a class="block-more" href="{{ get_url(path='/publications/') }}">{{ trans(key="all_pubs", lang=lang) }} {{ icons::icon(name="arrow") }}</a>
+  </header>
+  <div class="pub-list">
+    {%- for p in pubdata.pubs | filter(attribute="featured", value=true) %}
+      {{ pubs::pub(p=p, compact=true) }}
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="block">
+  <header class="block-head reveal">
+    <p class="kicker mono">{{ trans(key="kicker_skills", lang=lang) }}</p>
+    <h2>{{ trans(key="h_skills", lang=lang) }}</h2>
+  </header>
+  <div class="skills">
+    {%- for g in profile.skills %}
+    <div class="skill-group reveal">
+      <h3 class="mono">{{ g.group }}</h3>
+      <ul class="chips">
+        {%- for item in g.items %}<li class="chip">{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="block two-col">
+  <div>
+    <header class="block-head reveal">
+      <p class="kicker mono">{{ trans(key="kicker_writing", lang=lang) }}</p>
+      <h2>{{ trans(key="h_writing", lang=lang) | safe }}</h2>
+      <a class="block-more" href="{{ get_url(path='/posts/') }}">{{ trans(key="all_writing", lang=lang) }} {{ icons::icon(name="arrow") }}</a>
+    </header>
+    {%- set posts = get_section(path="posts/_index.md") %}
+    <ul class="post-list">
+      {%- for p in posts.pages | slice(end=4) %}
+      <li class="post-item reveal">
+        <a href="{{ p.permalink }}">
+          <span class="post-date mono">{{ p.date | date(format="%b %Y") }}</span>
+          <span class="post-title">{{ p.title }}</span>
+          <span class="post-meta mono">{{ p.reading_time }} min</span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+  <div>
+    <header class="block-head reveal">
+      <p class="kicker mono">{{ trans(key="kicker_code", lang=lang) }}</p>
+      <h2>{{ trans(key="h_code", lang=lang) }}</h2>
+    </header>
+    <div class="project-list">
+      {%- for pr in profile.projects %}
+      <a class="card project reveal" href="{{ pr.url }}" target="_blank" rel="noopener">
+        <h3>{{ pr.name }} {{ icons::icon(name="arrow") }}</h3>
+        <p>{{ pr.body }}</p>
+        <ul class="tags">{% for t in pr.tags %}<li>{{ t }}</li>{% endfor %}</ul>
+      </a>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{{ get_url(path='js/embedding-viz.js', cachebust=true) }}" defer></script>
+{% endblock scripts %}

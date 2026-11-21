@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="page-head">
+  <p class="kicker mono reveal">// writing</p>
+  <h1 class="reveal">{{ section.title }}</h1>
+  <div class="page-lede reveal">{{ section.content | safe }}</div>
+  {%- set tags = get_taxonomy(kind="tags") %}
+  {%- if tags.items %}
+  <ul class="tags tag-cloud reveal">
+    {%- for t in tags.items %}<li><a href="{{ t.permalink }}">#{{ t.name }} <span class="count">{{ t.pages | length }}</span></a></li>{% endfor %}
+  </ul>
+  {%- endif %}
+</header>
+{% include "partials/post_list.html" %}
+{% endblock content %}

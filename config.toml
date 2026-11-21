@@ -1,0 +1,157 @@
+# Zola configuration — https://www.getzola.org/documentation/getting-started/configuration/
+base_url = "https://louisdo2108.github.io"
+title = "Tuan-Luc Huynh"
+author = "Tuan-Luc Huynh"
+description = "Tuan-Luc Huynh (Louis Do) — PhD student at Monash University working on continual adaptation of neural retrieval: generative and dense retrievers, RAG and multimodal retrieval."
+default_language = "en"
+
+compile_sass = true
+minify_html = false
+build_search_index = false
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+
+taxonomies = [
+  { name = "tags", feed = true },
+]
+
+[markdown]
+highlight_code = true
+highlight_theme = "css"
+highlight_themes_css = [
+  { theme = "one-dark", filename = "syntax.css" },
+]
+smart_punctuation = true
+external_links_target_blank = true
+external_links_no_referrer = true
+
+# ── Languages ───────────────────────────────────────────────────
+# English is the default. The Cantonese (Traditional Chinese) version lives under /zh-hk/
+# and only covers the home and about pages; everything else links to the English pages.
+[languages.zh-hk]
+title = "杜俊力"
+description = "杜俊力（Tuan-Luc Huynh / Louis Do）— 蒙納士大學博士生，研究神經檢索模型嘅持續調整：生成式同稠密檢索、RAG 同多模態檢索。"
+generate_feeds = false
+build_search_index = false
+
+[languages.zh-hk.translations]
+description = "杜俊力（Tuan-Luc Huynh / Louis Do）— 蒙納士大學博士生，研究神經檢索模型嘅持續調整：生成式同稠密檢索、RAG 同多模態檢索。"
+name = "杜俊力"
+aka = "— 又叫 Tuan-Luc Huynh，或者 <em>Louis Do</em> 都得。"
+brand = "杜俊力"
+role = "博士生 · 應用機器學習"
+affiliation = "蒙納士大學"
+location = "澳洲墨爾本"
+skip = "跳到內容"
+nav_research = "研究"
+nav_writing = "文章"
+nav_about = "關於"
+lang_switch = "EN"
+lang_switch_label = "English version"
+see_research = "睇我嘅研究"
+kicker_now = "// 而家"
+kicker_focus = "// 研究方向"
+h_focus = "我做緊乜"
+kicker_problem = "// 一幅圖講晒個問題"
+h_problem = "點解持續檢索比分類難"
+viz_cls = "持續分類"
+viz_ret = "持續檢索"
+viz_acc = "準確率"
+fig0 = "圖 0 — 標籤留得低，鄰居就唔一定 · <a href=\"#why-retrieval\">改編自 DAR ↓</a>"
+viz_caption = "方形係圖片嵌入，圓形係文字描述（caption），顏色代表概念。Encoder 喺任務 <em>t+1</em>（新資料：士多啤梨）上面 fine-tune 之後，舊嘅嵌入會漂移；淡淡嘅影子標住佢哋原本嘅位置。佢哋仲留喺自己嘅類別區域入面，所以<strong>分類準確率冇跌</strong>。但係最近鄰會重新洗牌，正確嘅 caption 跌出 top-<em>k</em>，<strong>Recall@1 就冧咗</strong>。檢索需要嘅方法要保住成個空間嘅<em>幾何結構</em>，唔只係標籤。"
+viz_credit = "改編自《<em>Beyond Classification: Dynamic Adapter Routing for Continual Multimodal Retrieval</em>》入面嘅一幅圖。啲點只係示意，唔係真嘅模型嵌入。"
+viz_hint = "將滑鼠移到點上面睇內容 · 撳任何方形將佢變做查詢 · 拖動滑桿逐格睇。"
+kicker_pubs = "// 精選論文"
+h_pubs = "近期研究"
+all_pubs = "全部論文（英文）"
+kicker_skills = "// 工具箱"
+h_skills = "技能"
+kicker_writing = "// 文章"
+h_writing = "筆記同文章（英文）"
+all_writing = "全部文章"
+kicker_code = "// 開源"
+h_code = "程式碼"
+kicker_about = "// 關於"
+kicker_highlights = "// 發生過嘅事"
+kicker_contact = "// 聯絡"
+kicker_path = "// 一路走嚟"
+h_path = "經歷同學歷"
+avatar_alt = "頭像"
+footer_built = "用 <a href=\"https://www.getzola.org\" target=\"_blank\" rel=\"noopener\">Zola</a>（Rust）砌 · 天生深色。"
+rss = "RSS feed（英文）"
+
+[slugify]
+paths = "safe"
+anchors = "on"
+
+# English UI strings (the default language). Keys must match [languages.zh-hk.translations].
+[translations]
+description = ""
+name = "Tuan-Luc Huynh"
+aka = "— or just <em>Louis Do</em>."
+brand = "Louis Do"
+role = "PhD student · Applied ML"
+affiliation = "Monash University"
+location = "Melbourne, Australia"
+skip = "Skip to content"
+nav_research = "Research"
+nav_writing = "Writing"
+nav_about = "About"
+lang_switch = "粵"
+lang_switch_label = "廣東話版本"
+see_research = "See my research"
+kicker_now = "// now"
+kicker_focus = "// focus"
+h_focus = "What I work on"
+kicker_problem = "// the problem, in one picture"
+h_problem = "Why continual retrieval is harder than classification"
+viz_cls = "Continual classification"
+viz_ret = "Continual retrieval"
+viz_acc = "accuracy"
+fig0 = "fig. 0 — labels survive, neighbours don't · <a href=\"#why-retrieval\">adapted from DAR ↓</a>"
+viz_caption = "Squares are image embeddings, circles are captions, and colours are concepts. When the encoder is fine-tuned on task <em>t+1</em> (new data: strawberries), old embeddings drift; faint ghosts mark where they were. They stay inside their class regions, so <strong>classification accuracy holds</strong>. But nearest neighbours reshuffle, the right caption leaves the top-<em>k</em>, and <strong>Recall@1 collapses</strong>. Retrieval needs methods that preserve the <em>geometry</em> of the space, not just the labels."
+viz_credit = "Adapted from a figure in <em>Beyond Classification: Dynamic Adapter Routing for Continual Multimodal Retrieval</em>. The points are illustrative, not real model embeddings."
+viz_hint = "Hover a point to read it · click any square to make it the query · drag the slider to scrub."
+kicker_pubs = "// selected publications"
+h_pubs = "Recent research"
+all_pubs = "All publications"
+kicker_skills = "// toolkit"
+h_skills = "Skills"
+kicker_writing = "// writing"
+h_writing = "Notes &amp; posts"
+all_writing = "All writing"
+kicker_code = "// open source"
+h_code = "Code"
+kicker_about = "// about"
+kicker_highlights = "// things that happened"
+kicker_contact = "// contact"
+kicker_path = "// path so far"
+h_path = "Experience &amp; education"
+avatar_alt = "Avatar"
+footer_built = "Built with <a href=\"https://www.getzola.org\" target=\"_blank\" rel=\"noopener\">Zola</a> (Rust) · Dark by design."
+rss = "Atom feed"
+
+[extra]
+# Everything below is used by the templates. Edit freely.
+name = "Tuan-Luc Huynh"
+nickname = "Louis Do"
+role = "PhD student · Applied ML"
+affiliation = "Monash University"
+location = "Melbourne, Australia"
+email = "louisdo2108@gmail.com"
+
+# Top navigation
+# `key` is looked up in the translations below; `zh_url` is the Cantonese page, if there is one.
+nav = [
+  { key = "nav_research", url = "/publications/" },
+  { key = "nav_writing", url = "/posts/" },
+  { key = "nav_about", url = "/about/", zh_url = "/zh-hk/about/" },
+]
+
+# Social links (icon names map to SVGs in templates/macros/icons.html)
+socials = [
+  { name = "GitHub", icon = "github", url = "https://github.com/LouisDo2108" },
+  { name = "Google Scholar", icon = "scholar", url = "https://scholar.google.com/citations?user=QFkhDJcAAAAJ&hl=en" },
+  { name = "LinkedIn", icon = "linkedin", url = "https://www.linkedin.com/in/louis-tuan-luc-huynh/" },
+  { name = "Email", icon = "mail", url = "mailto:louisdo2108@gmail.com" },
+]

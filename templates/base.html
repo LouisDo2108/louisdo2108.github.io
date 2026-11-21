@@ -1,0 +1,80 @@
+{% import "macros/icons.html" as icons %}
+{%- set zh = lang == "zh-hk" -%}
+{#- Counterpart page in the other language: home and about exist in both; everything else is English-only. -#}
+{%- set cp = current_path | default(value="/") -%}
+{%- if zh %}{% set alt_path = cp | replace(from="/zh-hk/", to="/") %}{% set alt_hreflang = "en" %}
+{%- elif cp == "/" or cp == "/about/" %}{% set alt_path = "/zh-hk" ~ cp %}{% set alt_hreflang = "zh-Hant-HK" %}
+{%- else %}{% set alt_path = "/zh-hk/" %}{% set alt_hreflang = "zh-Hant-HK" %}{% endif -%}
+<!doctype html>
+<html lang="{% if zh %}zh-Hant-HK{% else %}en{% endif %}">
+<head>
+  <script>document.documentElement.classList.add("js")</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b0d10">
+  {%- block meta %}
+  {%- set page_title = trans(key="name", lang=lang) -%}
+  {%- set page_desc = config.description -%}
+  {%- if zh %}{% set page_desc = trans(key="description", lang=lang) %}{% endif -%}
+  {%- if page and page.title %}{% set page_title = page.title ~ " · " ~ trans(key="name", lang=lang) %}{% if page.description %}{% set page_desc = page.description %}{% elif page.summary %}{% set page_desc = page.summary | striptags | truncate(length=160) %}{% endif %}
+  {%- elif section and section.title and not section.path == "/" %}{% set page_title = section.title ~ " · " ~ trans(key="name", lang=lang) %}{% if section.description %}{% set page_desc = section.description %}{% endif %}{% endif %}
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_desc }}">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_desc }}">
+  <meta property="og:type" content="{% if page %}article{% else %}website{% endif %}">
+  <meta property="og:url" content="{{ current_url | default(value=config.base_url) }}">
+  <meta property="og:image" content="{{ get_url(path='avatar.png') }}">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="{{ current_url | default(value=config.base_url) }}">
+  {%- if zh or cp == "/" or cp == "/about/" %}
+  <link rel="alternate" hreflang="{{ alt_hreflang }}" href="{{ get_url(path=alt_path) }}">
+  {%- endif %}
+  {%- endblock meta %}
+  <link rel="icon" type="image/svg+xml" href="{{ get_url(path='favicon.svg') }}">
+  <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='atom.xml', trailing_slash=false) }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="{{ get_url(path='main.css', cachebust=true) }}">
+  <link rel="stylesheet" href="{{ get_url(path='syntax.css') }}">
+  {%- block head_extra %}{% endblock head_extra %}
+</head>
+<body class="{% block body_class %}{% endblock body_class %}">
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <a class="skip" href="#main">{{ trans(key="skip", lang=lang) }}</a>
+
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="{% if zh %}{{ get_url(path='/zh-hk/') }}{% else %}{{ get_url(path='/') }}{% endif %}"><span class="brand-name">{{ trans(key="brand", lang=lang) }}</span></a>
+      <ul class="nav-links">
+        {%- for item in config.extra.nav %}
+        {%- set href = item.url %}{% if zh and item.zh_url is defined %}{% set href = item.zh_url %}{% endif %}
+        {%- set active = cp is starting_with(href) %}
+        <li><a href="{{ get_url(path=href) }}"{% if active %} class="active" aria-current="page"{% endif %}>{{ trans(key=item.key, lang=lang) }}</a></li>
+        {%- endfor %}
+        <li><a class="nav-lang" href="{{ get_url(path=alt_path) }}" hreflang="{{ alt_hreflang }}" lang="{{ alt_hreflang }}" aria-label="{{ trans(key='lang_switch_label', lang=lang) }}" title="{{ trans(key='lang_switch_label', lang=lang) }}">{{ trans(key="lang_switch", lang=lang) }}</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" class="{% block main_class %}container{% endblock main_class %}">
+    {%- block content %}{% endblock content %}
+  </main>
+
+  <footer class="site-footer container">
+    <div class="footer-socials">
+      {%- for s in config.extra.socials %}
+      <a href="{{ s.url }}" aria-label="{{ s.name }}" title="{{ s.name }}"{% if not s.url is starting_with("mailto:") %} target="_blank" rel="noopener"{% endif %}>{{ icons::icon(name=s.icon) }}</a>
+      {%- endfor %}
+      <a href="{{ get_url(path='atom.xml', trailing_slash=false) }}" aria-label="{{ trans(key='rss', lang=lang) }}" title="{{ trans(key='rss', lang=lang) }}">{{ icons::icon(name="rss") }}</a>
+    </div>
+    <p class="footer-note">© {{ now() | date(format="%Y") }} {{ trans(key="name", lang=lang) }} · {{ trans(key="footer_built", lang=lang) | safe }}</p>
+  </footer>
+
+  <script src="{{ get_url(path='js/site.js', cachebust=true) }}" defer></script>
+  {%- block scripts %}{% endblock scripts %}
+</body>
+</html>

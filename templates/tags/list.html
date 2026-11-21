@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-head">
+  <p class="kicker mono">// index</p>
+  <h1>Tags</h1>
+  <ul class="tags tag-cloud">
+    {%- for t in terms %}<li><a href="{{ t.permalink }}">#{{ t.name }} <span class="count">{{ t.pages | length }}</span></a></li>{% endfor %}
+  </ul>
+</header>
+{% endblock content %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-head">
+  <a class="back mono" href="{{ get_url(path='/tags/') }}">← all tags</a>
+  <h1>#{{ term.name }}</h1>
+  <p class="muted">{{ term.pages | length }} post{{ term.pages | length | pluralize }}</p>
+</header>
+{% include "partials/post_list.html" %}
+{% endblock content %}

@@ -1,0 +1,5 @@
+{#- Usage: {{ figure(src="image.png", caption="Fig. 1. ...", width="60%") }} — src is relative to the post folder -#}
+<figure class="fig"{% if width %} style="--fig-w: {{ width }}"{% endif %}>
+  <img src="{{ src }}" alt="{{ alt | default(value=caption | default(value='')) | striptags }}" loading="lazy">
+  {%- if caption %}<figcaption>{{ caption | markdown(inline=true) | safe }}</figcaption>{% endif %}
+</figure>

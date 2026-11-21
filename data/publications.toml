@@ -1,0 +1,168 @@
+# Publications — newest first. Source of truth: the academic CV (Nov 2026).
+#
+# Fields
+#   title, authors (your name is highlighted automatically), venue, venue_short, year
+#   topic    : one of "retrieval", "continual", "vision", "medical", "multimodal" (used for filter chips)
+#   featured : true → also shown on the home page
+#   award    : optional short badge text
+#   note     : optional small note (e.g. "co-first author")
+#   links    : any of paper / arxiv / code / pdf / bib (bib is a URL or omitted)
+#   tldr     : one line, plain-language summary (shown on the home page + publications page)
+
+# ── Ph.D. work ────────────────────────────────────────────────────
+
+[[pubs]]
+title = "Efficient Temporal-aware Matryoshka Adaptation for Temporal Information Retrieval"
+authors = "Tuan-Luc Huynh, Weiqing Wang, Trung Le, Thuy-Trang Vu, Dragan Gašević, Yuan-Fang Li, Thanh-Toan Do"
+venue = "Conference on Empirical Methods in Natural Language Processing (EMNLP), Main"
+venue_short = "EMNLP 2026"
+year = 2026
+topic = ["retrieval", "continual"]
+featured = true
+note = "also accepted to the ACML 2026 Encore track"
+tldr = "TMRL: temporal-aware Matryoshka embeddings via LoRA for temporal retrieval and RAG — a 256-d index keeps 92% of nDCG@10 at a third of the storage."
+links = { paper = "https://aclanthology.org/2026.emnlp-main.249/", code = "https://github.com/LouisDo2108/TMRL" }
+
+[[pubs]]
+title = "Efficient Continual Adaptation of Generative Retrieval Systems over Dynamic Corpora"
+authors = "Tuan-Luc Huynh"
+venue = "ACM SIGIR Conference on Research and Development in Information Retrieval, Doctoral Colloquium"
+venue_short = "SIGIR 2026 DC"
+year = 2026
+topic = ["retrieval", "continual"]
+tldr = "Thesis overview: keeping generative retrievers current as corpora change, without rehearsal or full retraining."
+links = { paper = "https://dl.acm.org/doi/abs/10.1145/3805712.3808359" }
+
+[[pubs]]
+title = "MixLoRA-DSI: Dynamically Expandable Mixture-of-LoRA Experts for Rehearsal-Free Generative Retrieval over Dynamic Corpora"
+authors = "Tuan-Luc Huynh, Thuy-Trang Vu, Weiqing Wang, Trung Le, Dragan Gašević, Yuan-Fang Li, Thanh-Toan Do"
+venue = "Conference on Empirical Methods in Natural Language Processing (EMNLP), Main"
+venue_short = "EMNLP 2025"
+year = 2025
+topic = ["retrieval", "continual"]
+featured = true
+tldr = "Keeps a generative retriever current as new documents arrive by dynamically expanding a mixture of LoRA experts — no replay of old data."
+links = { paper = "https://aclanthology.org/2025.emnlp-main.20/", code = "https://github.com/LouisDo2108/MixLoRA-DSI" }
+
+[[pubs]]
+title = "PromptDSI: Prompt-based Rehearsal-free Instance-wise Incremental Learning for Document Retrieval"
+authors = "Tuan-Luc Huynh, Thuy-Trang Vu, Weiqing Wang, Yinwei Wei, Trung Le, Dragan Gašević, Yuan-Fang Li, Thanh-Toan Do"
+venue = "European Conference on Machine Learning and Principles and Practice of Knowledge Discovery in Databases (ECML PKDD), Research Track"
+venue_short = "ECML PKDD 2025"
+year = 2025
+topic = ["retrieval", "continual"]
+featured = true
+tldr = "Continually indexes new documents into a differentiable search index via prompt learning, mitigating forgetting without storing old data."
+links = { paper = "https://link.springer.com/chapter/10.1007/978-3-032-06109-6_22", arxiv = "https://arxiv.org/abs/2406.12593", code = "https://github.com/LouisDo2108/PromptDSI" }
+
+# ── Earlier work (vision and multimedia) ──────────────────────────
+
+[[pubs]]
+title = "Improving Laryngoscopy Image Analysis through Integration of Global Information and Local Features in VoFoCD Dataset"
+authors = "Thao Thi Phuong Dao, Tuan-Luc Huynh, Minh-Khoi Pham, Trung-Nghia Le, Tan-Cong Nguyen, Quang-Thuc Nguyen, Bich Anh Tran, Boi Ngoc Van, Chanh Cong Ha, Minh-Triet Tran"
+venue = "Journal of Imaging Informatics in Medicine, Springer"
+venue_short = "JIIM 2024"
+year = 2024
+topic = ["medical", "vision"]
+note = "co-first author"
+tldr = "MEAL: a multitask efficient transformer for vocal-fold classification and glottic landmark / lesion detection."
+links = { paper = "https://link.springer.com/article/10.1007/s10278-024-01068-z", code = "https://github.com/LouisDo2108/MEAL" }
+
+[[pubs]]
+title = "Efficient 3D Brain Tumor Segmentation with Axial-Coronal-Sagittal Embedding"
+authors = "Tuan-Luc Huynh, Thanh-Danh Le, Tam V. Nguyen, Trung-Nghia Le, Minh-Triet Tran"
+venue = "Pacific-Rim Symposium on Image and Video Technology (PSIVT), Springer"
+venue_short = "PSIVT 2023"
+year = 2023
+topic = ["medical", "vision"]
+featured = true
+award = "Best Paper Award"
+tldr = "Brings axial–coronal–sagittal (ACS) embeddings into nnU-Net for accurate and efficient 3D brain tumor segmentation."
+links = { paper = "https://link.springer.com/chapter/10.1007/978-981-97-0376-0_11", code = "https://github.com/LouisDo2108/ACS-nnU-Net" }
+
+[[pubs]]
+title = "SketchANIMAR: Sketch-based 3D Animal Fine-Grained Retrieval"
+authors = "Trung-Nghia Le, Tam V. Nguyen, Minh-Quan Le, Trong-Thuan Nguyen, Viet-Tham Huynh, Trong-Le Do, Khanh-Duy Le, Mai-Khiem Tran, Nhat Hoang-Xuan, Thang-Long Nguyen-Ho, Tuan-Luc Huynh, et al."
+venue = "Computers & Graphics, Elsevier"
+venue_short = "Computers & Graphics 2023"
+year = 2023
+topic = ["retrieval", "vision"]
+award = "2nd place, SHREC 2023"
+links = { paper = "https://www.sciencedirect.com/science/article/pii/S0097849323001644", arxiv = "https://arxiv.org/abs/2304.05731" }
+
+[[pubs]]
+title = "Advanced Augmentation and Ensemble Approaches for Classifying Long-Tailed Multi-Label Chest X-Rays"
+authors = "T.-H. Nguyen-Mau, Tuan-Luc Huynh, et al."
+venue = "ICCV Workshop on Computer Vision for Automated Medical Diagnosis (CVAMD)"
+venue_short = "ICCV CVAMD 2023"
+year = 2023
+topic = ["medical", "vision"]
+award = "Top-5 team, CXR-LT challenge"
+links = { pdf = "https://openaccess.thecvf.com/content/ICCV2023W/CVAMD/papers/Nguyen-Mau_Advanced_Augmentation_and_Ensemble_Approaches_for_Classifying_Long-Tailed_Multi-Label_Chest_ICCVW_2023_paper.pdf" }
+
+[[pubs]]
+title = "Medico Multimedia Task at MediaEval 2023: Transparent Tracking of Spermatozoa"
+authors = "Vajira Thambawita, Andrea M. Storås, Tuan-Luc Huynh, et al."
+venue = "MediaEval 2023 Workshop, CEUR Workshop Proceedings"
+venue_short = "MediaEval 2023"
+year = 2023
+topic = ["medical", "vision"]
+note = "task overview paper"
+links = { pdf = "https://ceur-ws.org/Vol-3658/paper1.pdf" }
+
+[[pubs]]
+title = "Tail-Aware Sperm Analysis for Transparent Tracking of Spermatozoa"
+authors = "Tuan-Luc Huynh, Huu-Hung Nguyen, Xuan-Nhat Hoang, Thao Thi Phuong Dao, Tien-Phat Nguyen, Viet-Tham Huynh, Hai-Dang Nguyen, Trung-Nghia Le, Minh-Triet Tran"
+venue = "MediaEval 2022 Workshop, CEUR Workshop Proceedings"
+venue_short = "MediaEval 2022"
+year = 2022
+topic = ["medical", "vision"]
+award = "Distinctive Mention"
+links = { pdf = "https://ceur-ws.org/Vol-3583/paper33.pdf", code = "https://github.com/LouisDo2108/MediaEval2022-TailAwareSpermDetection" }
+
+[[pubs]]
+title = "SHREC'22 Track: Sketch-based 3D Shape Retrieval in the Wild"
+authors = "Jie Qin, Shuaihang Yuan, Jiaxin Chen, Boulbaba Ben Amor, Yi Fang, Nhat Hoang-Xuan, Chi-Bien Chu, Khoi-Nguyen Nguyen-Ngoc, Thien-Tri Cao, Nhat-Khang Ngo, Tuan-Luc Huynh, et al."
+venue = "Computers & Graphics, Elsevier"
+venue_short = "Computers & Graphics 2022"
+year = 2022
+topic = ["retrieval", "vision"]
+links = { paper = "https://www.sciencedirect.com/science/article/abs/pii/S0097849322001261" }
+
+[[pubs]]
+title = "Multilingual Communication System with Deaf Individuals Utilizing Natural and Visual Languages"
+authors = "Tuan-Luc Huynh, Khoi-Nguyen Nguyen-Ngoc, Chi-Bien Chu, Minh-Triet Tran, Trung-Nghia Le"
+venue = "RIVF International Conference on Computing and Communication Technologies, IEEE"
+venue_short = "RIVF 2022"
+year = 2022
+topic = ["multimodal", "vision"]
+links = { paper = "https://ieeexplore.ieee.org/abstract/document/10013851/" }
+
+[[pubs]]
+title = "HCMUS at MediaEval 2021: Content-Based Misinformation Detection Using Contextualized Word Embedding from BERT"
+authors = "Tuan-Luc Huynh, Nhat-Khang Ngo, Phu-Van Nguyen, Thien-Tri Cao, Thanh-Danh Le, Hai-Dang Nguyen, Minh-Triet Tran"
+venue = "Working Notes Proceedings of the MediaEval 2021 Workshop, CEUR vol. 3181"
+venue_short = "MediaEval 2021"
+year = 2021
+topic = ["multimodal"]
+award = "2nd place, FakeNews task"
+links = { pdf = "https://ceur-ws.org/Vol-3181/paper76.pdf", code = "https://github.com/LouisDo2108/MediaEval2021Fakenews" }
+
+[[pubs]]
+title = "HCMUS at MediaEval 2021: Fine-tuning CLIP for Automatic News-Images Re-Matching"
+authors = "Thien-Tri Cao, Nhat-Khang Ngo, Thanh-Danh Le, Tuan-Luc Huynh, Ngoc-Thien Nguyen, Hai-Dang Nguyen, Minh-Triet Tran"
+venue = "Working Notes Proceedings of the MediaEval 2021 Workshop, CEUR vol. 3181"
+venue_short = "MediaEval 2021"
+year = 2021
+topic = ["multimodal", "retrieval"]
+award = "1st place, NewsImage task"
+links = { pdf = "https://ceur-ws.org/Vol-3181/paper48.pdf" }
+
+[[pubs]]
+title = "HCMUS at MediaEval 2021: Polyps Segmentation using TransFuse with Focal Tversky Loss"
+authors = "Nhat-Khang Ngo, Tuan-Luc Huynh, Thanh-Danh Le, Hai-Dang Nguyen, Minh-Triet Tran"
+venue = "Working Notes Proceedings of the MediaEval 2021 Workshop, CEUR vol. 3181"
+venue_short = "MediaEval 2021"
+year = 2021
+topic = ["medical", "vision"]
+links = { pdf = "https://ceur-ws.org/Vol-3181/paper54.pdf" }

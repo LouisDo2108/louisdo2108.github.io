@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "macros/pubs.html" as pubs %}
+
+{% block content %}
+{%- set pubdata = load_data(path="data/publications.toml") -%}
+<header class="page-head">
+  <p class="kicker mono reveal">// research</p>
+  <h1 class="reveal">{{ section.title }}</h1>
+  <div class="page-lede reveal">{{ section.content | safe }}</div>
+  <div class="filters reveal" role="group" aria-label="Filter by topic">
+    <button class="filter active" data-filter="all" aria-pressed="true">All <span class="count mono">{{ pubdata.pubs | length }}</span></button>
+    {%- for t in ["retrieval", "continual", "multimodal", "vision", "medical"] %}
+    <button class="filter" data-filter="{{ t }}" aria-pressed="false">{{ t | capitalize }}</button>
+    {%- endfor %}
+  </div>
+</header>
+
+{%- set years = pubdata.pubs | map(attribute="year") | unique | sort | reverse %}
+{%- for y in years %}
+<section class="year-group">
+  <h2 class="year mono">{{ y }}</h2>
+  <div class="pub-list">
+    {%- for p in pubdata.pubs | filter(attribute="year", value=y) %}
+      {{ pubs::pub(p=p) }}
+    {%- endfor %}
+  </div>
+</section>
+{%- endfor %}
+<p class="muted small">Full and up-to-date list on <a href="https://scholar.google.com/citations?user=QFkhDJcAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>.</p>
+{% endblock content %}

@@ -1,0 +1,153 @@
+# Profile data used by the home and about pages. Edit freely.
+# (Plain keys must come before any [[table]] sections in TOML.)
+
+# ── Highlights (about page) ───────────────────────────────────────
+highlights = [
+  "ACM SIGIR 2026 Doctoral Colloquium",
+  "Best Paper Award — PSIVT 2023",
+  "2nd place — SHREC 2023 sketch-based 3D animal retrieval",
+  "Top-5 team — ICCV 2023 CXR-LT challenge",
+  "Distinctive Mention — MediaEval 2022 Medico task",
+  "1st place NewsImage & 2nd place FakeNews — MediaEval 2021",
+  "Academic Excellence Award & full-tuition scholarship — University of Science, 2021–22",
+]
+
+highlights_zh = [
+  "ACM SIGIR 2026 博士生研討會（Doctoral Colloquium）",
+  "PSIVT 2023 最佳論文獎",
+  "SHREC 2023 草圖 3D 動物檢索比賽第二名",
+  "ICCV 2023 CXR-LT 挑戰賽前五名隊伍",
+  "MediaEval 2022 Medico 任務 Distinctive Mention",
+  "MediaEval 2021 NewsImage 第一名、FakeNews 第二名",
+  "自然科學大學學業優異獎及全額學費獎學金（2021–22）",
+]
+
+# ── Now (home page) ───────────────────────────────────────────────
+now = "Writing the thesis (due May 2027). Looking for an Applied Scientist internship from June 2027. Tutoring at Monash (500+ students so far)."
+now_zh = "寫緊畢業論文（2027 年 5 月交）。搵緊由 2027 年 6 月開始嘅 Applied Scientist 實習。喺 Monash 做緊 tutor（教過 500 幾個學生）。"
+
+# ── What I work on (home page cards) ──────────────────────────────
+[[focus]]
+label = "01"
+title = "Continual learning"
+title_zh = "持續學習"
+body_zh = "部署之後仲繼續學嘢嘅模型：吸收新資料同新任務，又唔會唔記得舊嘢，亦唔使將見過嘅嘢全部重溫一次。"
+body = "Models that keep learning after deployment — absorbing new data and tasks without forgetting, and without replaying everything they have seen."
+
+[[focus]]
+label = "02"
+title = "Information retrieval"
+title_zh = "資訊檢索"
+body_zh = "喺日日都變嘅語料庫上面做生成式同稠密檢索：建索引、更新、提供服務，成本要預計得到。"
+body = "Generative and dense retrieval over corpora that change every day: indexing, updating and serving with predictable cost."
+
+[[focus]]
+label = "03"
+title = "Multimodal representations"
+title_zh = "多模態表徵"
+body_zh = "視覺–語言嵌入（CLIP 嗰類），同埋點樣用 adapter、LoRA 同 prompt 有效率噉調整佢哋。"
+body = "Vision–language embeddings (CLIP-style) and how to adapt them efficiently with adapters, LoRA and prompts."
+
+[[focus]]
+label = "04"
+title = "Medical imaging"
+title_zh = "醫學影像"
+body_zh = "我起步嘅地方：MRI、內窺鏡同喉鏡影像嘅 3D 分割、偵測同追蹤。"
+body = "Where I started: 3D segmentation, detection and tracking for MRI, endoscopy and laryngoscopy data."
+
+# ── Toolkit (grouped skill chips) ─────────────────────────────────
+[[skills]]
+group = "Modelling"
+items = ["Continual / lifelong learning", "Generative & dense retrieval", "RAG", "Matryoshka embeddings", "LLM synthetic data generation", "Parameter-efficient fine-tuning (LoRA, MoE, prompts)", "Vision–language models", "3D segmentation (nnU-Net)", "Detection & tracking (YOLO)"]
+
+[[skills]]
+group = "Engineering"
+items = ["Python", "PyTorch", "Hugging Face Transformers / PEFT", "FAISS", "Pyserini", "Tevatron", "vLLM", "scikit-learn", "C++", "Slurm / HPC", "Git & Linux"]
+
+[[skills]]
+group = "Research craft"
+items = ["Experiment design & ablations", "Benchmark building", "Reproducing papers from scratch", "Technical writing (LaTeX)", "Challenge & workshop organisation"]
+
+# ── Experience timeline (about page) ──────────────────────────────
+[[experience]]
+when = "2023 — now"
+what = "PhD Student"
+where = "Monash University"
+what_zh = "博士生"
+where_zh = "蒙納士大學（Monash University）"
+detail_zh = "研究點樣喺不斷變化嘅語料庫上面，有效率噉持續調整生成式檢索系統（2027 年 5 月交論文）。第一作者論文：EMNLP 2026、EMNLP 2025、ECML PKDD 2025；SIGIR 2026 博士生研討會。"
+detail = "Efficient continual adaptation of generative retrieval systems over dynamic corpora (thesis submission May 2027). First-author papers at EMNLP 2026, EMNLP 2025 and ECML PKDD 2025; SIGIR 2026 Doctoral Colloquium."
+
+[[experience]]
+when = "2025 — now"
+what = "Sessional Academic"
+where = "Monash University"
+what_zh = "兼職教學人員（Sessional Academic）"
+where_zh = "蒙納士大學（Monash University）"
+detail_zh = "Intelligent Image and Video Analysis 首席導師；Deep Learning、NLP 同 AI for Everyone 導師，總共教過 500 幾個學生。"
+detail = "Head tutor for Intelligent Image and Video Analysis; tutor for Deep Learning, NLP and AI for Everyone — 500+ students."
+
+[[experience]]
+when = "2026 — now"
+what = "Subcontractor"
+what_zh = "分包商"
+where_zh = "Cedar Systems"
+detail_zh = "同生態學家一齊做無人機影像分割，用嚟識別澳洲雜草。"
+where = "Cedar Systems"
+detail = "Drone-image segmentation for Australian weed identification, built with ecologists."
+
+[[experience]]
+when = "2024"
+what = "Technical Consultant"
+what_zh = "技術顧問"
+where_zh = "Bush Heritage Australia"
+detail_zh = "為野外無人機影像整咗一條端到端嘅偵測同分割流程，交俾非技術背景嘅保育同事用。"
+where = "Bush Heritage Australia"
+detail = "End-to-end detection and segmentation pipeline for wild drone imagery, delivered to non-expert conservation staff."
+
+[[experience]]
+when = "2022 — 2023"
+what = "Research Assistant"
+what_zh = "研究助理"
+where_zh = "胡志明市國家大學自然科學大學 軟件工程實驗室（SELAB）"
+detail_zh = "醫學影像同檢索項目；合辦 MediaEval 2023 醫學多媒體任務。"
+where = "Software Engineering Lab (SELAB), University of Science, VNU-HCM"
+detail = "Medical imaging and retrieval projects; co-organised the MediaEval 2023 Medical Multimedia task."
+
+[[experience]]
+when = "2022"
+what = "Data Scientist Intern"
+what_zh = "數據科學實習生"
+where_zh = "FPT Telecom 應用數據科學中心"
+detail_zh = "用 1,000 幾萬條零售紀錄整客戶留存模型，每個月幫電話銷售排 5,000 至 10,000 個客；前 5,000 名嘅 precision 提升咗 1.6 倍。"
+where = "Center of Applied Data Science, FPT Telecom"
+detail = "Customer-retention models on 10M+ retail logs, ranking 5K–10K customers a month for telesales; lifted top-5K precision 1.6×."
+
+[[experience]]
+when = "2019 — 2023"
+what = "B.Sc. Computer Science (Advanced Program)"
+what_zh = "電腦科學學士（高級課程）"
+where_zh = "胡志明市國家大學自然科學大學"
+detail_zh = "GPA 3.95 / 4。論文：用 nnU-Net 做高效 3D 腦腫瘤分割。"
+where = "University of Science, VNU-HCM"
+detail = "GPA 3.95 / 4. Thesis: efficient brain tumor segmentation with nnU-Net."
+
+
+# ── Open source (home page) ───────────────────────────────────────
+[[projects]]
+name = "Awesome Continual Learning for IR"
+url = "https://github.com/LouisDo2108/Awesome-Continual-Learning-for-Information-Retrieval"
+body = "A curated, venue-tagged reading list on continual learning for text, multimodal and recommendation retrieval."
+tags = ["curation", "IR"]
+
+[[projects]]
+name = "C-CLIP (re-implementation)"
+url = "https://github.com/LouisDo2108/cclip"
+body = "Standalone re-implementation of ICLR'25 C-CLIP: per-task LoRA + contrastive knowledge consolidation for continual vision–language learning."
+tags = ["PyTorch", "CLIP", "LoRA"]
+
+[[projects]]
+name = "Perceptual Camouflage Score"
+url = "https://github.com/LouisDo2108/Perceptual-Camouflage-Score"
+body = "Unofficial re-implementation of the camouflage metric from “The Making and Breaking of Camouflage” (ICCV'23)."
+tags = ["vision", "metrics"]

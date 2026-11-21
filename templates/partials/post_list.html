@@ -1,0 +1,27 @@
+{%- set list = section.pages | default(value=term.pages | default(value=[])) %}
+{%- set_global current_year = 0 %}
+<div class="archive">
+{%- for p in list %}
+  {%- set y = p.year %}
+  {%- if y != current_year %}
+    {%- if not loop.first %}</ul>{% endif %}
+    <h2 class="year mono">{{ y }}</h2>
+    <ul class="post-cards">
+    {%- set_global current_year = y %}
+  {%- endif %}
+  <li class="reveal">
+    <a class="card post-card" href="{{ p.permalink }}">
+      <div class="post-card-top mono">
+        <span>{{ p.date | date(format="%b %d") }}</span>
+        <span>{{ p.reading_time }} min read</span>
+      </div>
+      <h3>{{ p.title }}</h3>
+      {%- if p.description %}<p>{{ p.description }}</p>{% elif p.summary %}<p>{{ p.summary | striptags | truncate(length=180) }}</p>{% endif %}
+      {%- if p.taxonomies.tags %}<ul class="tags">{% for t in p.taxonomies.tags %}<li>#{{ t }}</li>{% endfor %}</ul>{% endif %}
+    </a>
+  </li>
+  {%- if loop.last %}</ul>{% endif %}
+{%- else %}
+  <p class="muted">Nothing here yet — first notes coming soon.</p>
+{%- endfor %}
+</div>
