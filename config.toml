@@ -2,7 +2,7 @@
 base_url = "https://louisdo2108.github.io"
 title = "Tuan-Luc Huynh"
 author = "Tuan-Luc Huynh"
-description = "Tuan-Luc Huynh (Louis Do) — research engineer working on continual learning, retrieval and multimodal representation learning."
+description = "Tuan-Luc Huynh (Louis Do) — PhD researcher at Monash University working on continual adaptation of neural retrieval: generative and dense retrievers, RAG and multimodal retrieval."
 default_language = "en"
 
 compile_sass = true
@@ -50,6 +50,6 @@ nav = [
 socials = [
   { name = "GitHub", icon = "github", url = "https://github.com/LouisDo2108" },
   { name = "Google Scholar", icon = "scholar", url = "https://scholar.google.com/citations?user=QFkhDJcAAAAJ&hl=en" },
-  { name = "LinkedIn", icon = "linkedin", url = "https://www.linkedin.com/in/louisdo2108" },
+  { name = "LinkedIn", icon = "linkedin", url = "https://www.linkedin.com/in/louis-tuan-luc-huynh/" },
   { name = "Email", icon = "mail", url = "mailto:tuan.huynh1@monash.edu" },
 ]

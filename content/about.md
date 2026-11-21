@@ -8,6 +8,6 @@ I'm a PhD researcher at **Monash University** working on **continual learning fo
 
 Before the PhD I spent several years in computer vision and **medical imaging** at the University of Science (VNU-HCM): 3D brain tumor segmentation (a PSIVT 2023 best paper), laryngoscopy analysis, sperm tracking and a string of benchmark challenges. That background shaped how I work — I like strong baselines, honest ablations and code that other people can actually run.
 
-I'm open to **applied scientist / research engineer** roles where retrieval, adaptation and representation learning meet real products.
+I submit my thesis in May 2027 and I'm looking for a full-time **Applied Scientist internship** (3 or 6 months) from June 2027 — anywhere retrieval, adaptation and representation learning meet real products. I have Australian work rights and I'm happy to relocate.
 
 Outside work: travelling, landscape photography, brewing coffee and tea, manga, music and games. I speak Vietnamese, Cantonese, English and Mandarin.

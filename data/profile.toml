@@ -3,8 +3,11 @@
 
 # ── Highlights (about page) ───────────────────────────────────────
 highlights = [
+  "First-author papers at EMNLP 2026, EMNLP 2025 and ECML PKDD 2025",
+  "ACM SIGIR 2026 Doctoral Colloquium",
   "Best Paper Award — PSIVT 2023",
   "2nd place — SHREC 2023 sketch-based 3D animal retrieval",
+  "Top-5 team — ICCV 2023 CXR-LT challenge",
   "Distinctive Mention — MediaEval 2022 Medico task",
   "1st place NewsImage & 2nd place FakeNews — MediaEval 2021",
   "Academic Excellence Award & full-tuition scholarship — University of Science, 2021–22",
@@ -34,11 +37,11 @@ body = "Where I started: 3D segmentation, detection and tracking for MRI, endosc
 # ── Toolkit (grouped skill chips) ─────────────────────────────────
 [[skills]]
 group = "Modelling"
-items = ["Continual / lifelong learning", "Generative & dense retrieval", "Parameter-efficient fine-tuning (LoRA, MoE, prompts)", "Vision–language models", "3D segmentation (nnU-Net)", "Detection & tracking (YOLO)"]
+items = ["Continual / lifelong learning", "Generative & dense retrieval", "RAG", "Matryoshka embeddings", "LLM synthetic data generation", "Parameter-efficient fine-tuning (LoRA, MoE, prompts)", "Vision–language models", "3D segmentation (nnU-Net)", "Detection & tracking (YOLO)"]
 
 [[skills]]
 group = "Engineering"
-items = ["Python", "PyTorch", "Hugging Face Transformers / PEFT", "scikit-learn", "C++", "Multi-GPU training", "Slurm / HPC", "Git & Linux"]
+items = ["Python", "PyTorch", "Hugging Face Transformers / PEFT", "FAISS", "Pyserini", "Tevatron", "vLLM", "scikit-learn", "C++", "Slurm / HPC", "Git & Linux"]
 
 [[skills]]
 group = "Research craft"
@@ -49,7 +52,25 @@ items = ["Experiment design & ablations", "Benchmark building", "Reproducing pap
 when = "2023 — now"
 what = "PhD Researcher"
 where = "Monash University"
-detail = "Continual learning for information retrieval and multimodal models. Work published at EMNLP and ECML PKDD."
+detail = "Efficient continual adaptation of generative retrieval systems over dynamic corpora (thesis submission May 2027). First-author papers at EMNLP 2026, EMNLP 2025 and ECML PKDD 2025; SIGIR 2026 Doctoral Colloquium."
+
+[[experience]]
+when = "2025 — now"
+what = "Sessional Academic"
+where = "Monash University"
+detail = "Head tutor for Intelligent Image and Video Analysis; tutor for Deep Learning, NLP and AI for Everyone — 500+ students."
+
+[[experience]]
+when = "2026 — now"
+what = "Subcontractor"
+where = "Cedar Systems"
+detail = "Drone-image segmentation for Australian weed identification, built with ecologists."
+
+[[experience]]
+when = "2024"
+what = "Technical Consultant"
+where = "Bush Heritage Australia"
+detail = "End-to-end detection and segmentation pipeline for wild drone imagery, delivered to non-expert conservation staff."
 
 [[experience]]
 when = "2022 — 2023"
@@ -61,7 +82,7 @@ detail = "Medical imaging and retrieval projects; co-organised the MediaEval 202
 when = "2022"
 what = "Data Scientist Intern"
 where = "Center of Applied Data Science, FPT Telecom"
-detail = "Customer propensity modelling on transaction data: EDA, feature engineering and AutoML pipelines."
+detail = "Customer-retention models on 10M+ retail logs, ranking 5K–10K customers a month for telesales; lifted top-5K precision 1.6×."
 
 [[experience]]
 when = "2019 — 2023"
