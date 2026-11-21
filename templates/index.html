@@ -6,17 +6,18 @@
 {% block content %}
 {%- set profile = load_data(path="data/profile.toml") -%}
 {%- set pubdata = load_data(path="data/publications.toml") -%}
+{%- set zh = lang == "zh-hk" -%}
 
 <section class="hero">
   <div class="hero-text">
-    <p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span>{{ config.extra.role }} · {{ config.extra.affiliation }}</p>
+    <p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span>{{ trans(key="role", lang=lang) }} · {{ trans(key="affiliation", lang=lang) }}</p>
     <h1 class="hero-title reveal">
-      Hi, I'm {{ config.extra.name }}<span class="aka">— or just <em>{{ config.extra.nickname }}</em>.</span>
+      {% if zh %}你好，我係{{ trans(key="name", lang=lang) }}{% else %}Hi, I'm {{ trans(key="name", lang=lang) }}{% endif %}<span class="aka">{{ trans(key="aka", lang=lang) | safe }}</span>
     </h1>
     <div class="hero-lede reveal">{{ section.content | safe }}</div>
     <div class="hero-actions reveal">
-      <a class="btn btn-primary" href="{{ get_url(path='/publications/') }}">See my research {{ icons::icon(name="arrow") }}</a>
-      <a class="btn" href="{{ get_url(path=config.extra.cv) }}">{{ icons::icon(name="file") }} Download CV</a>
+      <a class="btn btn-primary" href="{{ get_url(path='/publications/') }}">{{ trans(key="see_research", lang=lang) }} {{ icons::icon(name="arrow") }}</a>
+      <a class="btn" href="{{ get_url(path=config.extra.cv) }}">{{ icons::icon(name="file") }} {{ trans(key="download_cv", lang=lang) }}</a>
       <div class="hero-socials">
         {%- for s in config.extra.socials %}
         <a href="{{ s.url }}" aria-label="{{ s.name }}" title="{{ s.name }}"{% if not s.url is starting_with("mailto:") %} target="_blank" rel="noopener"{% endif %}>{{ icons::icon(name=s.icon) }}</a>
@@ -30,22 +31,27 @@
       <span class="viz-pill mono" data-phase>task t · encoder after training</span>
       <span class="viz-pill mono">R@1 <b data-metric="r1">100%</b></span>
     </div>
-    <p class="visual-caption mono" aria-hidden="true">fig. 0 — labels survive, neighbours don't</p>
+    <p class="visual-caption mono">{{ trans(key="fig0", lang=lang) | safe }}</p>
     <div class="viz-tip mono" hidden></div>
   </div>
 </section>
 
+<section class="block now-block reveal">
+  <p class="kicker mono">{{ trans(key="kicker_now", lang=lang) }}</p>
+  <p class="now-text">{% if zh %}{{ profile.now_zh }}{% else %}{{ profile.now }}{% endif %}</p>
+</section>
+
 <section class="block">
   <header class="block-head reveal">
-    <p class="kicker mono">// focus</p>
-    <h2>What I work on</h2>
+    <p class="kicker mono">{{ trans(key="kicker_focus", lang=lang) }}</p>
+    <h2>{{ trans(key="h_focus", lang=lang) }}</h2>
   </header>
   <div class="focus-grid">
     {%- for f in profile.focus %}
     <article class="card focus-card reveal">
       <span class="focus-num mono">{{ f.label }}</span>
-      <h3>{{ f.title }}</h3>
-      <p>{{ f.body }}</p>
+      <h3>{% if zh %}{{ f.title_zh }}{% else %}{{ f.title }}{% endif %}</h3>
+      <p>{% if zh %}{{ f.body_zh }}{% else %}{{ f.body }}{% endif %}</p>
     </article>
     {%- endfor %}
   </div>
@@ -53,21 +59,21 @@
 
 <section class="block" id="why-retrieval">
   <header class="block-head reveal">
-    <p class="kicker mono">// the problem, in one picture</p>
-    <h2>Why continual retrieval is harder than classification</h2>
+    <p class="kicker mono">{{ trans(key="kicker_problem", lang=lang) }}</p>
+    <h2>{{ trans(key="h_problem", lang=lang) }}</h2>
   </header>
   <div class="viz-group reveal" data-viz-group>
     <div class="viz-panels">
       <figure class="viz-panel">
         <figcaption>
-          <span class="mono">Continual classification</span>
-          <span class="viz-stat mono">accuracy <b data-metric="acc">100%</b><span class="meter"><span data-bar="acc"></span></span></span>
+          <span class="mono">{{ trans(key="viz_cls", lang=lang) }}</span>
+          <span class="viz-stat mono">{{ trans(key="viz_acc", lang=lang) }} <b data-metric="acc">100%</b><span class="meter"><span data-bar="acc"></span></span></span>
         </figcaption>
         <div class="viz-stage"><canvas data-mode="classification" role="img" aria-label="Class regions for woman, child and man. After the encoder update the points move but stay inside their regions, so predictions are unchanged."></canvas></div>
       </figure>
       <figure class="viz-panel">
         <figcaption>
-          <span class="mono">Continual retrieval</span>
+          <span class="mono">{{ trans(key="viz_ret", lang=lang) }}</span>
           <span class="viz-stat mono">Recall@1 <b data-metric="r1">100%</b><span class="meter"><span data-bar="r1"></span></span></span>
         </figcaption>
         <div class="viz-stage"><canvas data-mode="retrieval" role="img" aria-label="Image-to-caption retrieval. After the encoder update the nearest captions change and the correct caption drops out of the top results."></canvas></div>
@@ -84,12 +90,9 @@
       <span class="viz-phase mono" data-phase aria-live="off">task t · encoder after training</span>
     </div>
     <p class="viz-caption">
-      Squares are image embeddings, circles are captions, and colours are concepts. When the encoder is fine-tuned on
-      task <em>t+1</em> (new data: strawberries), old embeddings drift; faint ghosts mark where they were.
-      They stay inside their class regions, so <strong>classification accuracy holds</strong>. But nearest neighbours
-      reshuffle, the right caption leaves the top-<em>k</em>, and <strong>Recall@1 collapses</strong>.
-      Retrieval needs methods that preserve the <em>geometry</em> of the space, not just the labels.
-      <span class="muted">Hover a point to read it · click any square to make it the query · drag the slider to scrub.</span>
+      {{ trans(key="viz_caption", lang=lang) | safe }}
+      <span class="viz-credit">{{ trans(key="viz_credit", lang=lang) | safe }}</span>
+      <span class="muted">{{ trans(key="viz_hint", lang=lang) }}</span>
     </p>
     <div class="viz-tip mono" hidden></div>
   </div>
@@ -97,9 +100,9 @@
 
 <section class="block">
   <header class="block-head reveal">
-    <p class="kicker mono">// selected publications</p>
-    <h2>Recent research</h2>
-    <a class="block-more" href="{{ get_url(path='/publications/') }}">All publications {{ icons::icon(name="arrow") }}</a>
+    <p class="kicker mono">{{ trans(key="kicker_pubs", lang=lang) }}</p>
+    <h2>{{ trans(key="h_pubs", lang=lang) }}</h2>
+    <a class="block-more" href="{{ get_url(path='/publications/') }}">{{ trans(key="all_pubs", lang=lang) }} {{ icons::icon(name="arrow") }}</a>
   </header>
   <div class="pub-list">
     {%- for p in pubdata.pubs | filter(attribute="featured", value=true) %}
@@ -110,8 +113,8 @@
 
 <section class="block">
   <header class="block-head reveal">
-    <p class="kicker mono">// toolkit</p>
-    <h2>Skills</h2>
+    <p class="kicker mono">{{ trans(key="kicker_skills", lang=lang) }}</p>
+    <h2>{{ trans(key="h_skills", lang=lang) }}</h2>
   </header>
   <div class="skills">
     {%- for g in profile.skills %}
@@ -128,9 +131,9 @@
 <section class="block two-col">
   <div>
     <header class="block-head reveal">
-      <p class="kicker mono">// writing</p>
-      <h2>Notes &amp; posts</h2>
-      <a class="block-more" href="{{ get_url(path='/posts/') }}">All writing {{ icons::icon(name="arrow") }}</a>
+      <p class="kicker mono">{{ trans(key="kicker_writing", lang=lang) }}</p>
+      <h2>{{ trans(key="h_writing", lang=lang) | safe }}</h2>
+      <a class="block-more" href="{{ get_url(path='/posts/') }}">{{ trans(key="all_writing", lang=lang) }} {{ icons::icon(name="arrow") }}</a>
     </header>
     {%- set posts = get_section(path="posts/_index.md") %}
     <ul class="post-list">
@@ -147,8 +150,8 @@
   </div>
   <div>
     <header class="block-head reveal">
-      <p class="kicker mono">// open source</p>
-      <h2>Code</h2>
+      <p class="kicker mono">{{ trans(key="kicker_code", lang=lang) }}</p>
+      <h2>{{ trans(key="h_code", lang=lang) }}</h2>
     </header>
     <div class="project-list">
       {%- for pr in profile.projects %}

@@ -3,12 +3,13 @@
 
 {% block content %}
 {%- set profile = load_data(path="data/profile.toml") -%}
+{%- set zh = lang == "zh-hk" -%}
 <header class="page-head about-head">
-  <img class="avatar reveal" src="{{ get_url(path='avatar.png') }}" alt="Avatar" width="132" height="132">
+  <img class="avatar reveal" src="{{ get_url(path='avatar.png') }}" alt="{{ trans(key="avatar_alt", lang=lang) }}" width="132" height="132">
   <div>
-    <p class="kicker mono reveal">// about</p>
-    <h1 class="reveal">{{ config.extra.name }} <span class="muted">({{ config.extra.nickname }})</span></h1>
-    <p class="mono muted reveal">{{ config.extra.role }} · {{ config.extra.affiliation }} · {{ config.extra.location }}</p>
+    <p class="kicker mono reveal">{{ trans(key="kicker_about", lang=lang) }}</p>
+    <h1 class="reveal">{{ trans(key="name", lang=lang) }} <span class="muted">({% if zh %}{{ config.extra.name }} / {% endif %}{{ config.extra.nickname }})</span></h1>
+    <p class="mono muted reveal">{{ trans(key="role", lang=lang) }} · {{ trans(key="affiliation", lang=lang) }} · {{ trans(key="location", lang=lang) }}</p>
   </div>
 </header>
 
@@ -17,18 +18,19 @@
 
   <aside class="about-side">
     <section class="reveal">
-      <h2 class="kicker mono">// highlights</h2>
+      <h2 class="kicker mono">{{ trans(key="kicker_highlights", lang=lang) }}</h2>
       <ul class="highlights">
-        {%- for h in profile.highlights %}<li>{{ h }}</li>{% endfor %}
+        {%- if zh %}{% set hl = profile.highlights_zh %}{% else %}{% set hl = profile.highlights %}{% endif %}
+        {%- for h in hl %}<li>{{ h }}</li>{% endfor %}
       </ul>
     </section>
     <section class="reveal">
-      <h2 class="kicker mono">// contact</h2>
+      <h2 class="kicker mono">{{ trans(key="kicker_contact", lang=lang) }}</h2>
       <ul class="contact">
         {%- for s in config.extra.socials %}
         <li><a href="{{ s.url }}"{% if not s.url is starting_with("mailto:") %} target="_blank" rel="noopener"{% endif %}>{{ icons::icon(name=s.icon) }} {{ s.name }}</a></li>
         {%- endfor %}
-        <li><a href="{{ get_url(path=config.extra.cv) }}">{{ icons::icon(name="file") }} CV (PDF)</a></li>
+        <li><a href="{{ get_url(path=config.extra.cv) }}">{{ icons::icon(name="file") }} {{ trans(key="cv_pdf", lang=lang) }}</a></li>
       </ul>
     </section>
   </aside>
@@ -36,17 +38,23 @@
 
 <section class="block">
   <header class="block-head reveal">
-    <p class="kicker mono">// path so far</p>
-    <h2>Experience &amp; education</h2>
+    <p class="kicker mono">{{ trans(key="kicker_path", lang=lang) }}</p>
+    <h2>{{ trans(key="h_path", lang=lang) | safe }}</h2>
   </header>
   <ol class="timeline">
     {%- for e in profile.experience %}
     <li class="reveal">
-      <span class="when mono">{{ e.when }}</span>
+      <span class="when mono">{% if zh %}{{ e.when | replace(from="now", to="而家") }}{% else %}{{ e.when }}{% endif %}</span>
       <div>
+        {%- if zh %}
+        <h3>{{ e.what_zh }}</h3>
+        <p class="where">{{ e.where_zh }}</p>
+        <p class="muted">{{ e.detail_zh }}</p>
+        {%- else %}
         <h3>{{ e.what }}</h3>
         <p class="where">{{ e.where }}</p>
         <p class="muted">{{ e.detail }}</p>
+        {%- endif %}
       </div>
     </li>
     {%- endfor %}
