@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "macros/digest.html" as digest %}
+
+{% block content %}
+{%- set papers = page.extra.papers | default(value=[]) %}
+{%- set revision = page.extra.revision | default(value=[]) %}
+<header class="page-head">
+  <p class="kicker mono reveal">// weekly digest · {{ page.extra.iso_week }}</p>
+  <h1 class="reveal">{{ page.title }}</h1>
+  <p class="digest-meta mono muted reveal">{{ papers | length }} new papers · {{ revision | length }} to revise · {{ page.date | date(format="%a %d %b") }} – {{ page.extra.week_end | date(format="%a %d %b %Y") }}</p>
+  {%- if page.extra.prototype %}
+  <p class="digest-proto reveal">Prototype: these are sample papers used only to preview the layout.</p>
+  {%- endif %}
+  {%- if page.extra.trend %}
+  <div class="page-lede reveal"><p><span class="mono digest-trend-label">trend of the week —</span> {{ page.extra.trend }}</p></div>
+  {%- endif %}
+</header>
+
+{%- if revision %}
+<section class="year-group digest-revision">
+  <h2 class="year mono">Revision · fundamentals worth re-reading</h2>
+  <div class="pub-list">
+    {%- for p in revision %}{{ digest::paper(p=p, base=page.permalink, revision=true) }}{% endfor %}
+  </div>
+</section>
+{%- endif %}
+
+{%- for t in ["retrieval", "agentic", "rl", "representation", "multimodal", "world-models"] %}
+  {%- set group = papers | filter(attribute="topic", value=t) %}
+  {%- if group %}
+<section class="year-group">
+  <h2 class="year mono">{{ digest::topic_label(t=t) }}</h2>
+  <div class="pub-list">
+    {%- for p in group %}{{ digest::paper(p=p, base=page.permalink) }}{% endfor %}
+  </div>
+</section>
+  {%- endif %}
+{%- endfor %}
+
+<nav class="digest-pager mono small">
+  {%- if page.lower %}<a href="{{ page.lower.permalink }}">← {{ page.lower.extra.iso_week }}</a>{% else %}<span></span>{% endif %}
+  <a href="{{ get_url(path='/digest/') }}">all weeks</a>
+  {%- if page.higher %}<a href="{{ page.higher.permalink }}">{{ page.higher.extra.iso_week }} →</a>{% else %}<span></span>{% endif %}
+</nav>
+{% endblock content %}

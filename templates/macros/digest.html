@@ -1,0 +1,45 @@
+{# Digest helpers. Topic keys → display labels. #}
+{% macro topic_label(t) %}
+{%- if t == "retrieval" %}Retrieval &amp; recommendation
+{%- elif t == "representation" %}Representation learning
+{%- elif t == "rl" %}Reinforcement learning
+{%- elif t == "agentic" %}Agents &amp; agentic RL
+{%- elif t == "multimodal" %}Multimodal reasoning
+{%- elif t == "world-models" %}World models
+{%- else %}{{ t | capitalize }}{% endif -%}
+{% endmacro topic_label %}
+
+{# One paper row. `base` is the week page's permalink (figures live next to index.md).
+   The title links to the direct PDF (proceedings PDF first, arXiv PDF as fallback). #}
+{% macro paper(p, base, revision=false) %}
+<article class="pub digest-paper{% if p.figure %} has-figure{% endif %} reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">{{ p.venue_short }}</span>
+    {%- if p.zotero_added is defined and p.zotero_added %}<span class="zotero-flag added" title="Added to my Zotero library this week">✓ added to Zotero-DB</span>
+    {%- elif p.in_zotero is defined and not p.in_zotero %}<span class="zotero-flag" title="Not in my Zotero library yet">+ add to Zotero-DB</span>{% endif %}
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title">
+      {%- set main = p.links.pdf | default(value=p.links.proceedings | default(value=p.links.arxiv | default(value=""))) -%}
+      {%- if main %}<a href="{{ main }}" target="_blank" rel="noopener">{{ p.title }}</a>{% else %}{{ p.title }}{% endif -%}
+    </h3>
+    <p class="pub-authors">{{ p.groups }}</p>
+    {%- if p.venue %}<p class="pub-venue-full">{{ p.venue }}</p>{% endif %}
+    {%- if p.why %}<p class="pub-tldr">{{ p.why }}</p>{% endif %}
+    {%- if p.use_now %}<p class="digest-use"><span class="mono">use it now →</span> {{ p.use_now }}</p>{% endif %}
+    <div class="pub-links">
+      {%- for kind in ["pdf", "proceedings", "arxiv", "code"] %}
+        {%- if p.links[kind] is defined %}<a class="chip-link" href="{{ p.links[kind] }}" target="_blank" rel="noopener">{{ kind }}</a>{% endif %}
+      {%- endfor %}
+    </div>
+  </div>
+  {%- if p.figure %}
+  <figure class="digest-fig">
+    <a href="{{ base }}{{ p.figure.file }}" target="_blank" rel="noopener" title="Open full size">
+      <img src="{{ base }}{{ p.figure.file }}" alt="{{ p.figure.caption | default(value='Key figure') | truncate(length=120) }}" loading="lazy">
+    </a>
+    {%- if p.figure.caption %}<figcaption>{{ p.figure.caption }} <span class="digest-fig-src">Source: the paper.</span></figcaption>{% endif %}
+  </figure>
+  {%- endif %}
+</article>
+{% endmacro paper %}

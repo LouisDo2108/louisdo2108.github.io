@@ -45,6 +45,7 @@ location = "澳洲墨爾本"
 skip = "跳到內容"
 nav_research = "研究"
 nav_writing = "文章"
+nav_digest = "論文週報"
 nav_about = "關於"
 lang_switch = "EN"
 lang_switch_label = "English version"
@@ -96,6 +97,7 @@ location = "Melbourne, Australia"
 skip = "Skip to content"
 nav_research = "Research"
 nav_writing = "Writing"
+nav_digest = "Digest"
 nav_about = "About"
 lang_switch = "粵"
 lang_switch_label = "廣東話版本"
@@ -145,6 +147,7 @@ email = "louisdo2108@gmail.com"
 nav = [
   { key = "nav_research", url = "/publications/" },
   { key = "nav_writing", url = "/posts/" },
+  { key = "nav_digest", url = "/digest/" },
   { key = "nav_about", url = "/about/", zh_url = "/zh-hk/about/" },
 ]
 
