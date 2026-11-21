@@ -7,4 +7,4 @@ sort_by = "date"
 paginate_by = 0
 +++
 
-Every Monday: three fundamental papers worth re-reading, then the ten papers from the past week I think are worth your time. Topics are retrieval (BM25 to dense, sparse and generative retrieval, and recommendation), agents and agentic RL, reinforcement learning, representation learning, multimodal reasoning and world models. Weeks follow ISO 8601 (Monday to Sunday).
+Every Monday: three fundamental papers worth re-reading, then the ten papers from the past week I think are worth your time. Topics are retrieval (BM25 to dense, sparse and generative retrieval, and recommendation), agents and agentic RL, reinforcement learning, representation learning, multimodal reasoning and world models.

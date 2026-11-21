@@ -7,7 +7,9 @@ Usage:
     python3 scripts/fetch_figure.py <arxiv_id> <out_dir> <slug> [--pick N]
         → downloads figure N (default: first caption that looks like an architecture/overview,
           else the first figure) to <out_dir>/<slug>.<ext>, shrinks it to ≤1400 px on macOS,
-          and prints {"file": ..., "caption": ..., "source": ...} or {"error": ...}.
+          and prints {"file": ..., "caption": ..., "source": ..., "license": ...} or {"error": ...}.
+        Only papers whose arXiv licence allows reuse (CC BY, BY-SA, BY-NC, BY-NC-SA, CC0) are
+        downloaded; otherwise it returns {"error": "license does not allow reuse", "license": ...}.
 
 Standard library + curl only (curl uses the system trust store).
 """
@@ -64,6 +66,28 @@ def figures_for(arxiv_id):
     return base, out
 
 
+REUSABLE = re.compile(r"creativecommons\.org/(licenses/(by|by-sa|by-nc|by-nc-sa)/[0-9.]+|publicdomain/zero/[0-9.]+)")
+
+
+def license_of(arxiv_id):
+    """Return (url, label, reusable) for the paper's arXiv licence."""
+    _, body = get(f"https://arxiv.org/abs/{arxiv_id}")
+    m = re.search(r'href="(https?://(?:creativecommons\.org/[a-z]+/[a-z0-9.-]+/[0-9.]+|arxiv\.org/licenses/[a-z0-9.-]+/[0-9.]+))',
+                  body.decode("utf-8", "replace"))
+    if not m:
+        return None, "unknown", False
+    url = m.group(1)
+    ok = bool(REUSABLE.search(url))
+    if "publicdomain/zero" in url:
+        label = "CC0"
+    elif "creativecommons.org/licenses/" in url:
+        kind, ver = url.rstrip("/").split("/")[-2:]
+        label = f"CC {kind.upper()} {ver}"
+    else:
+        label = "arXiv non-exclusive"
+    return url, label, ok
+
+
 def resolve(base, arxiv_id, src):
     # Paths are either "<id>vN/figs/x.png" (relative to /html/) or "x1.png" (relative to the paper dir).
     if src.startswith(arxiv_id.split("v")[0]):
@@ -89,6 +113,14 @@ def main():
         print(json.dumps({"error": "usage: fetch_figure.py <arxiv_id> <out_dir> <slug> [--pick N]"}))
         return
     out_dir, slug = args[1], re.sub(r"[^a-z0-9-]", "-", args[2].lower())
+    try:
+        lic_url, lic_label, reusable = license_of(arxiv_id)
+    except Exception as e:  # noqa: BLE001
+        print(json.dumps({"error": f"licence lookup failed: {e}"}))
+        return
+    if not reusable:
+        print(json.dumps({"error": "license does not allow reuse", "license": lic_label}))
+        return
     if not figs:
         print(json.dumps({"error": "no figure images in arXiv HTML"}))
         return
@@ -118,7 +150,7 @@ def main():
     caption = fig["caption"]
     if len(caption) > 300:
         caption = caption[:297].rsplit(" ", 1)[0] + "…"
-    print(json.dumps({"file": slug + ext, "caption": caption, "source": url}, ensure_ascii=False))
+    print(json.dumps({"file": slug + ext, "caption": caption, "source": url, "license": lic_label}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
