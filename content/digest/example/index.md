@@ -13,7 +13,7 @@ trend = "Prototype entries: well-known papers used only to preview the layout. R
 # ── How a week file works ─────────────────────────────────────────
 # [[extra.revision]] : 3 fundamental / high-impact papers to re-read (newer preferred).
 #                      in_zotero = false → shows "+ add to Zotero-DB".
-# [[extra.papers]]   : this week's new papers (at most 10), grouped on the page by `topic`
+# [[extra.papers]]   : this week's new papers (at most 5), grouped on the page by `topic`
 #                      (retrieval | agentic | rl | representation | multimodal | world-models).
 #                      retrieval covers BM25/TF-IDF, dense, sparse, generative retrieval and recsys;
 #                      agentic covers agents, tool use, agentic search and agentic RL.
