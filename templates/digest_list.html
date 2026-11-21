@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="page-head">
+  <p class="kicker mono reveal">// paper digest</p>
+  <h1 class="reveal">{{ section.title }}</h1>
+  <div class="page-lede reveal">{{ section.content | safe }}</div>
+</header>
+
+{%- set_global current_year = 0 %}
+<div class="archive">
+{%- for w in section.pages %}
+  {%- set y = w.year %}
+  {%- if y != current_year %}
+    {%- if not loop.first %}</ul>{% endif %}
+    <h2 class="year mono">{{ y }}</h2>
+    <ul class="post-list digest-weeks">
+    {%- set_global current_year = y %}
+  {%- endif %}
+  {%- set papers = w.extra.papers | default(value=[]) %}
+  <li class="post-item reveal">
+    <a href="{{ w.permalink }}">
+      <span class="post-date mono">{{ w.extra.iso_week | split(pat="-") | last }}</span>
+      <span>
+        <span class="post-title">{{ w.date | date(format="%d %b") }} – {{ w.extra.week_end | date(format="%d %b %Y") }}</span>
+        {%- set rev = w.extra.revision | default(value=[]) %}
+        {%- if rev %}<span class="digest-preview"><span class="mono">revise:</span> {% for p in rev %}{{ p.title }}{% if not loop.last %} · {% endif %}{% endfor %}</span>{% endif %}
+      </span>
+      <span class="post-meta mono small">{{ papers | length }} papers</span>
+    </a>
+  </li>
+  {%- if loop.last %}</ul>{% endif %}
+{%- else %}
+  <p class="muted">The first digest lands on Monday.</p>
+{%- endfor %}
+</div>
+{% endblock content %}

@@ -17,8 +17,8 @@
   --accent-glow: rgba(94, 234, 212, 0.14);
   --gold: #fcd34d;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang HK", "Noto Sans HK", "Microsoft JhengHei", sans-serif;
-  --font-serif: "Newsreader", ui-serif, Georgia, serif;
+  --font-sans: "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang HK", "Noto Sans HK", "Microsoft JhengHei", sans-serif;
+  --font-serif: var(--font-sans);
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --radius: 14px;
@@ -33,15 +33,14 @@
 //  Base
 // ─────────────────────────────────────────────────────────────
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 88px; }
+html { font-size: 112.5%; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 88px; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.65;
-  font-feature-settings: "cv11", "ss01", "ss03";
+  font-size: 1rem;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -509,3 +508,32 @@ pre:hover .copy-btn, .copy-btn:focus { opacity: 1; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .js .reveal { opacity: 1; transform: none; }
 }
+
+// ─────────────────────────────────────────────────────────────
+//  Paper digest
+// ─────────────────────────────────────────────────────────────
+.digest-meta { margin: 0 0 12px; font-size: 0.82rem; }
+.digest-proto {
+  display: inline-block; margin: 4px 0 14px; padding: 6px 12px; font-size: 0.86rem;
+  color: var(--gold); border: 1px dashed rgba(252, 211, 77, 0.4); border-radius: var(--radius-sm);
+}
+.digest-trend-label { color: var(--accent-2); font-size: 0.85em; }
+.digest-revision .venue-tag { color: var(--gold); background: rgba(252, 211, 77, 0.08); border-color: rgba(252, 211, 77, 0.28); }
+.zotero-flag {
+  font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-2); line-height: 1.4;
+  padding: 2px 8px; border: 1px dashed rgba(165, 180, 252, 0.45); border-radius: 6px;
+}
+.zotero-flag.added { color: var(--accent); border-style: solid; border-color: rgba(94, 234, 212, 0.35); }
+.digest-fig { grid-column: 2; margin: 2px 0 0; }
+.digest-fig a { display: block; background: #fff; border-radius: var(--radius-sm); padding: 10px; border: 1px solid var(--border); }
+.digest-fig img { display: block; width: 100%; max-height: 360px; object-fit: contain; }
+.digest-fig figcaption { margin-top: 8px; color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+.digest-fig-src { color: var(--faint); }
+@media (max-width: 640px) { .digest-fig { grid-column: 1; } }
+.digest-use { color: var(--text-soft); font-size: 0.9rem; margin: -4px 0 10px; }
+.digest-use .mono { color: var(--accent); font-size: 0.78rem; }
+.digest-weeks .post-item a { grid-template-columns: 56px 1fr auto; }
+.digest-preview { display: block; margin-top: 4px; color: var(--muted); font-size: 0.86rem; line-height: 1.45; }
+.digest-pager { display: flex; justify-content: space-between; gap: 12px; margin: 48px 0 8px; padding-top: 18px; border-top: 1px solid var(--border); }
+.digest-pager a { color: var(--muted); text-decoration: none; }
+.digest-pager a:hover { color: var(--accent); }
