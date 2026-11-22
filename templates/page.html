@@ -14,7 +14,7 @@
 <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
 <article class="post-article">
   <header class="post-head">
-    <a class="back mono" href="{{ get_url(path='/posts/') }}">← all writing</a>
+    <a class="back mono" href="{{ get_url(path='/posts/', trailing_slash=true) }}">← all writing</a>
     <h1>{{ page.title }}</h1>
     {%- if page.description %}<p class="post-desc">{{ page.description }}</p>{% endif %}
     <div class="post-info mono">

@@ -40,7 +40,7 @@
 
 <nav class="digest-pager mono small">
   {%- if page.lower %}<a href="{{ page.lower.permalink }}">← {{ page.lower.extra.iso_week }}</a>{% else %}<span></span>{% endif %}
-  <a href="{{ get_url(path='/digest/') }}">all weeks</a>
+  <a href="{{ get_url(path='/digest/', trailing_slash=true) }}">all weeks</a>
   {%- if page.higher %}<a href="{{ page.higher.permalink }}">{{ page.higher.extra.iso_week }} →</a>{% else %}<span></span>{% endif %}
 </nav>
 {% endblock content %}

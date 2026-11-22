@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="{{ current_url | default(value=config.base_url) }}">
   {%- if zh or cp == "/" or cp == "/about/" %}
-  <link rel="alternate" hreflang="{{ alt_hreflang }}" href="{{ get_url(path=alt_path) }}">
+  <link rel="alternate" hreflang="{{ alt_hreflang }}" href="{{ get_url(path=alt_path, trailing_slash=true) }}">
   {%- endif %}
   {%- endblock meta %}
   <link rel="icon" type="image/svg+xml" href="{{ get_url(path='icons/penguin.svg') }}">
@@ -50,14 +50,14 @@
 
   <header class="site-header">
     <nav class="nav container">
-      <a class="brand" href="{% if zh %}{{ get_url(path='/zh-hk/') }}{% else %}{{ get_url(path='/') }}{% endif %}"><span class="brand-name">{{ trans(key="brand", lang=lang) }}</span></a>
+      <a class="brand" href="{% if zh %}{{ get_url(path='/zh-hk/', trailing_slash=true) }}{% else %}{{ get_url(path='/', trailing_slash=true) }}{% endif %}"><span class="brand-name">{{ trans(key="brand", lang=lang) }}</span></a>
       <ul class="nav-links">
         {%- for item in config.extra.nav %}
         {%- set href = item.url %}{% if zh and item.zh_url is defined %}{% set href = item.zh_url %}{% endif %}
         {%- set active = cp is starting_with(href) %}
-        <li><a href="{{ get_url(path=href) }}"{% if active %} class="active" aria-current="page"{% endif %}>{{ trans(key=item.key, lang=lang) }}</a></li>
+        <li><a href="{{ get_url(path=href, trailing_slash=true) }}"{% if active %} class="active" aria-current="page"{% endif %}>{{ trans(key=item.key, lang=lang) }}</a></li>
         {%- endfor %}
-        <li><a class="nav-lang" href="{{ get_url(path=alt_path) }}" hreflang="{{ alt_hreflang }}" lang="{{ alt_hreflang }}" aria-label="{{ trans(key='lang_switch_label', lang=lang) }}" title="{{ trans(key='lang_switch_label', lang=lang) }}">{{ trans(key="lang_switch", lang=lang) }}</a></li>
+        <li><a class="nav-lang" href="{{ get_url(path=alt_path, trailing_slash=true) }}" hreflang="{{ alt_hreflang }}" lang="{{ alt_hreflang }}" aria-label="{{ trans(key='lang_switch_label', lang=lang) }}" title="{{ trans(key='lang_switch_label', lang=lang) }}">{{ trans(key="lang_switch", lang=lang) }}</a></li>
       </ul>
     </nav>
   </header>
