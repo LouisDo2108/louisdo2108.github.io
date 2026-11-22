@@ -17,6 +17,7 @@ BIB_URL = "https://raw.githubusercontent.com/LouisDo2108/Zotero-DB/main/My%20Lib
 
 
 def norm(s):
+    s = re.sub(r"^\s*\{?\[[^\]]*\]\}?\s*", "", s)  # drop the [VENUE'YY] prefix used in titles
     s = re.sub(r"\\[a-zA-Z]+", "", s)
     return re.sub(r"[^a-z0-9]", "", s.lower())
 

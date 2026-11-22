@@ -1,16 +1,27 @@
 #!/usr/bin/env python3
-"""Add arXiv papers to my Zotero library and append them to the Zotero-DB BibTeX backup.
+"""Add arXiv papers to my Zotero library, following my Zotero conventions, and refresh the BibTeX backup.
 
 Usage:
-    python3 scripts/zotero_add.py [--backup <path to My Library.bib>] [--collection "Paper digest"] \
-        <arxiv_id>[=<venue>] [<arxiv_id>[=<venue>] ...]
+    python3 scripts/zotero_add.py [--backup <path to My Library.bib>] <spec> [<spec> ...]
+
+Each <spec> is   <arxiv_id>|<venue>|<tags>|<collection>   (later fields optional, e.g. just the id):
+    "2306.13649|ICLR'24|llm,distillation,gkd|Machine Learning / LLM Foundations"
+    "2506.09985||ssl,video,v-jepa 2|Machine Learning / Computer Vision"      (arXiv-only)
+    "2501.01234|ICML'26 Workshop|cl,peft|Continual Learning / PEFT for CL"
+
+Conventions applied (see the zotero-conventions memory):
+  * title       "[VENUE'YY] Original Title", or "[arxiv'YY] ..." when there is no venue
+  * tags        lowercase; venue tag like "iclr24" (none for arXiv-only), plus "workshop" for workshops,
+                plus the area / method / concept tags you pass. No arXiv auto-tags.
+  * venue field conferenceName (conferences) or journalAbbreviation (journals) = short acronym
+  * citationKey <lastname>_<first title words>_<venueyy>  (e.g. agarwal_onpolicydistillatio_iclr24)
+  * collection  a leaf collection given by its full path ("Parent / Child"); parents and Cedar are refused
 
 The Zotero API key is read from the macOS Keychain (service "zotero-api-key") and is never printed.
 Store it once with:   security add-generic-password -a "$USER" -s zotero-api-key -w
 (macOS then prompts for the key, so it never appears in shell history.)
 
-For each id: skips it if the title is already in the library, otherwise creates a `preprint`
-item (or `conferencePaper` when a venue is given) from arXiv metadata and files it in the collection.
+Papers whose title is already in the library (ignoring the [VENUE'YY] prefix) are skipped.
 With --backup, it then waits (up to ~4 min) for Zotero desktop to sync the new items and rewrites the
 backup file with the full Better BibTeX export of the library (needs Zotero + Better BibTeX running).
 Prints one JSON line per paper plus a final summary line. Standard library + curl only.
@@ -52,7 +63,28 @@ def curl(url, key=None, method="GET", data=None, accept_json=True):
 
 
 def norm(s):
+    s = re.sub(r"^\s*\{?\[[^\]]*\]\}?\s*", "", s)  # ignore the [VENUE'YY] title prefix
     return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+JOURNALS = {"TMLR", "TPAMI", "JMLR", "TACL", "IJCV", "TIP", "TNNLS", "TKDE", "TOIS", "TMM", "TCSVT", "NMI"}
+
+
+def parse_venue(venue, arxiv_date):
+    """"ICLR'24" / "ICML'26 Workshop" / "" -> (prefix, acronym or None, year2, is_workshop, is_journal)."""
+    if not venue:
+        return f"arxiv'{arxiv_date[2:4]}", None, arxiv_date[2:4], False, False
+    m = re.fullmatch(r"\s*([A-Za-z][\w&-]*)'(\d{2})(\s+Workshop)?\s*", venue)
+    if not m:
+        raise ValueError(f"venue must look like ICLR'24 or ICML'26 Workshop, got {venue!r}")
+    acr, yy, ws = m.group(1), m.group(2), bool(m.group(3))
+    return f"{acr}'{yy}" + (" Workshop" if ws else ""), acr, yy, ws, acr.upper() in JOURNALS
+
+
+def citation_key(authors, title, venue_tag):
+    last = authors[0].rsplit(" ", 1)[-1] if authors else "anon"
+    words = "".join(re.sub(r"[^a-z0-9]", "", w.lower()) for w in title.split()[:3])[:19]
+    return f"{re.sub(r'[^a-z]', '', last.lower())}_{words}_{venue_tag}"
 
 
 def arxiv_meta(aid):
@@ -83,13 +115,10 @@ def creator(name):
 def main():
     args = sys.argv[1:]
     backup = None
-    collection_name = "Paper digest"
     if "--backup" in args:
         i = args.index("--backup"); backup = args[i + 1]; del args[i:i + 2]
-    if "--collection" in args:
-        i = args.index("--collection"); collection_name = args[i + 1]; del args[i:i + 2]
     if not args:
-        print(json.dumps({"error": "give at least one arXiv id"})); return
+        print(json.dumps({"error": "give at least one spec: <arxiv_id>|<venue>|<tags>|<collection>"})); return
 
     key = keychain_key()
     if not key:
@@ -101,56 +130,79 @@ def main():
     if not info.get("access", {}).get("user", {}).get("write"):
         print(json.dumps({"error": "this Zotero key has no write access"})); return
 
-    # collection (create if missing)
-    coll_key = None
+    # collections by full path; only leaves (no children) may be used
     code, colls = curl(f"{lib}/collections?limit=100", key=key)
-    if code == 200 and isinstance(colls, list):
-        coll_key = next((c["key"] for c in colls if c["data"]["name"] == collection_name), None)
-    if not coll_key:
-        code, res = curl(f"{lib}/collections", key=key, method="POST",
-                         data=json.dumps([{"name": collection_name}]))
-        if code == 200 and isinstance(res, dict) and res.get("successful"):
-            coll_key = next(iter(res["successful"].values()))["key"]
+    colls = colls if code == 200 and isinstance(colls, list) else []
+    by_key = {c["key"]: c["data"] for c in colls}
+    parents = {c["data"].get("parentCollection") for c in colls}
+
+    def cpath(k):
+        d = by_key[k]
+        return (cpath(d["parentCollection"]) + " / " if d.get("parentCollection") else "") + d["name"]
+    path_to_key = {cpath(k): k for k in by_key}
 
     created = []
-    for arg in args:
-        aid, _, venue = arg.partition("=")
+    for spec in args:
+        aid, venue, tags, coll = (spec.split("|") + ["", "", ""])[:4]
+        aid, coll = aid.strip(), coll.strip()
         if not re.fullmatch(r"\d{4}\.\d{4,5}(v\d+)?", aid):
             print(json.dumps({"id": aid, "status": "skipped", "reason": "not an arXiv id"})); continue
+        coll_key = None
+        if coll:
+            coll_key = path_to_key.get(coll)
+            reason = ("no such collection" if not coll_key else
+                      "not a leaf collection" if coll_key in parents else
+                      "Cedar is off limits" if coll.split(" / ")[0] == "Cedar" else "")
+            if reason:
+                print(json.dumps({"id": aid, "status": "skipped", "reason": f"{reason}: {coll}"}, ensure_ascii=False)); continue
         meta = arxiv_meta(aid)
         if not meta:
             print(json.dumps({"id": aid, "status": "error", "reason": "arXiv lookup failed"})); continue
+        try:
+            prefix, acr, yy, workshop, journal = parse_venue(venue.strip(), meta["date"])
+        except ValueError as e:
+            print(json.dumps({"id": aid, "status": "skipped", "reason": str(e)})); continue
         q = urllib.parse.quote(meta["title"][:80])
         code, hits = curl(f"{lib}/items?q={q}&qmode=titleCreatorYear&limit=10&itemType=-attachment", key=key)
         if code == 200 and isinstance(hits, list) and any(norm(h["data"].get("title", "")) == norm(meta["title"]) for h in hits):
             print(json.dumps({"id": aid, "title": meta["title"], "status": "already in Zotero"})); continue
+
+        venue_tag = f"{acr.lower()}{yy}" if acr else f"arxiv{yy}"
+        tag_list = ([venue_tag] if acr else []) + (["workshop"] if workshop else [])
+        tag_list += [t.strip().lower() for t in tags.split(",") if t.strip()]
+        tag_list = list(dict.fromkeys(tag_list))
+        title = f"[{prefix}] {meta['title']}"
         item = {
-            "itemType": "conferencePaper" if venue else "preprint",
-            "title": meta["title"],
+            "itemType": "journalArticle" if journal else "conferencePaper" if acr else "preprint",
+            "title": title,
             "creators": [creator(a) for a in meta["authors"]],
             "abstractNote": meta["abstract"],
             "date": meta["date"],
             "url": f"https://arxiv.org/abs/{aid}",
             "extra": f"arXiv: {aid}",
-            "tags": [{"tag": "paper-digest"}],
+            "citationKey": citation_key(meta["authors"], meta["title"], venue_tag),
+            "tags": [{"tag": t} for t in tag_list],
             "collections": [coll_key] if coll_key else [],
         }
-        if venue:
-            item["proceedingsTitle"] = venue
+        if journal:
+            item["journalAbbreviation"] = acr
+        elif acr:
+            item["conferenceName"] = acr
         else:
             item.update({"repository": "arXiv", "archiveID": f"arXiv:{aid}"})
         code, res = curl(f"{lib}/items", key=key, method="POST", data=json.dumps([item]))
         if code == 200 and isinstance(res, dict) and res.get("successful"):
             k = next(iter(res["successful"].values()))["key"]
             created.append((k, meta["title"]))
-            print(json.dumps({"id": aid, "title": meta["title"], "status": "added", "zotero_key": k}))
+            print(json.dumps({"id": aid, "title": title, "tags": tag_list, "collection": coll or None,
+                              "status": "added", "zotero_key": k}, ensure_ascii=False))
         else:
-            print(json.dumps({"id": aid, "title": meta["title"], "status": "error", "reason": f"HTTP {code}"}))
+            print(json.dumps({"id": aid, "title": title, "status": "error", "reason": f"HTTP {code}: {res}"}, ensure_ascii=False))
 
     backup_status = "not requested"
     if backup:
         backup_status = bbt_backup(backup, [t for _, t in created])
-    print(json.dumps({"summary": True, "added": len(created), "backup": backup_status, "collection": collection_name}))
+    print(json.dumps({"summary": True, "added": len(created), "backup": backup_status}))
 
 
 def bbt_backup(path, new_titles, tries=16, wait=15):
