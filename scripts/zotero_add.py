@@ -4,10 +4,11 @@
 Usage:
     python3 scripts/zotero_add.py [--backup <path to My Library.bib>] [--no-push] <spec> [<spec> ...]
     python3 scripts/zotero_add.py --backup <path to My Library.bib>      (only refresh + push the backup)
+    python3 scripts/zotero_add.py --collections                          (list the leaf collections you can file into)
 
 Each <spec> is   <arxiv_id>|<venue>|<tags>|<collection>   (later fields optional, e.g. just the id):
     "2306.13649|ICLR'24|llm,distillation,gkd|Machine Learning / LLM Foundations"
-    "2506.09985||ssl,video,v-jepa 2|Machine Learning / Computer Vision"      (arXiv-only)
+    "2506.09985||ssl,video,v-jepa 2|Machine Learning / Computer Vision / ViT" (arXiv-only)
     "2501.01234|ICML'26 Workshop|cl,peft|Continual Learning / PEFT for CL"
 
 Conventions applied (see the zotero-conventions memory):
@@ -122,12 +123,14 @@ def main():
     args = [a for a in args if a != "--no-push"]
     if "--backup" in args:
         i = args.index("--backup"); backup = args[i + 1]; del args[i:i + 2]
-    if not args and backup:
+    list_colls = "--collections" in args
+    args = [a for a in args if a != "--collections"]
+    if not args and backup and not list_colls:
         status = bbt_backup(backup, [])
         if push and status.startswith("written"):
             status += "; " + git_publish(backup, [])
         print(json.dumps({"summary": True, "added": 0, "backup": status})); return
-    if not args:
+    if not args and not list_colls:
         print(json.dumps({"error": "give at least one spec: <arxiv_id>|<venue>|<tags>|<collection>"})); return
 
     key = keychain_key()
@@ -150,6 +153,10 @@ def main():
         d = by_key[k]
         return (cpath(d["parentCollection"]) + " / " if d.get("parentCollection") else "") + d["name"]
     path_to_key = {cpath(k): k for k in by_key}
+    if list_colls:
+        for path in sorted(p for p, k in path_to_key.items() if k not in parents and not p.startswith("Cedar")):
+            print(path)
+        return
 
     created = []
     for spec in args:
