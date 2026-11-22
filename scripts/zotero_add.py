@@ -2,7 +2,8 @@
 """Add arXiv papers to my Zotero library, following my Zotero conventions, and refresh the BibTeX backup.
 
 Usage:
-    python3 scripts/zotero_add.py [--backup <path to My Library.bib>] <spec> [<spec> ...]
+    python3 scripts/zotero_add.py [--backup <path to My Library.bib>] [--no-push] <spec> [<spec> ...]
+    python3 scripts/zotero_add.py --backup <path to My Library.bib>      (only refresh + push the backup)
 
 Each <spec> is   <arxiv_id>|<venue>|<tags>|<collection>   (later fields optional, e.g. just the id):
     "2306.13649|ICLR'24|llm,distillation,gkd|Machine Learning / LLM Foundations"
@@ -24,6 +25,8 @@ Store it once with:   security add-generic-password -a "$USER" -s zotero-api-key
 Papers whose title is already in the library (ignoring the [VENUE'YY] prefix) are skipped.
 With --backup, it then waits (up to ~4 min) for Zotero desktop to sync the new items and rewrites the
 backup file with the full Better BibTeX export of the library (needs Zotero + Better BibTeX running).
+If that file sits in a git repo (Zotero-DB) and the export changed it, the file is committed and pushed
+to the repo's current branch; --no-push stops before the commit.
 Prints one JSON line per paper plus a final summary line. Standard library + curl only.
 """
 import json
@@ -115,8 +118,15 @@ def creator(name):
 def main():
     args = sys.argv[1:]
     backup = None
+    push = "--no-push" not in args
+    args = [a for a in args if a != "--no-push"]
     if "--backup" in args:
         i = args.index("--backup"); backup = args[i + 1]; del args[i:i + 2]
+    if not args and backup:
+        status = bbt_backup(backup, [])
+        if push and status.startswith("written"):
+            status += "; " + git_publish(backup, [])
+        print(json.dumps({"summary": True, "added": 0, "backup": status})); return
     if not args:
         print(json.dumps({"error": "give at least one spec: <arxiv_id>|<venue>|<tags>|<collection>"})); return
 
@@ -202,6 +212,8 @@ def main():
     backup_status = "not requested"
     if backup:
         backup_status = bbt_backup(backup, [t for _, t in created])
+        if push and backup_status.startswith("written"):
+            backup_status += "; " + git_publish(backup, [t for _, t in created])
     print(json.dumps({"summary": True, "added": len(created), "backup": backup_status}))
 
 
@@ -222,6 +234,32 @@ def bbt_backup(path, new_titles, tries=16, wait=15):
             return f"written ({len(re.findall(r'^@', bib, flags=re.M))} entries)"
         time.sleep(wait)
     return "timed out waiting for Zotero desktop to sync the new items; backup not rewritten"
+
+
+def git_publish(path, new_titles):
+    """Commit and push `path` if it lives in a git repo and changed."""
+    import os
+    repo = os.path.dirname(os.path.abspath(path))
+    git = lambda *a: subprocess.run(["git", "-C", repo, *a], capture_output=True, text=True, check=False)  # noqa: E731
+    if git("rev-parse", "--is-inside-work-tree").stdout.strip() != "true":
+        return "not a git repo, not pushed"
+    name = os.path.basename(path)
+    if not git("status", "--porcelain", "--", name).stdout.strip():
+        return "unchanged, nothing to push"
+    if new_titles:
+        shown = "; ".join(t[:60] for t in new_titles[:3]) + (f" (+{len(new_titles) - 3} more)" if len(new_titles) > 3 else "")
+        msg = f"Update Better BibTeX export (added: {shown})"
+    else:
+        msg = "Update Better BibTeX export"
+    r = git("add", "--", name)
+    if r.returncode == 0:
+        r = git("commit", "-q", "-m", msg, "--", name)
+    if r.returncode != 0:
+        return f"git commit failed: {(r.stderr or r.stdout).strip()[:200]}"
+    r = git("push", "-q")
+    if r.returncode != 0:
+        return f"committed but push failed: {r.stderr.strip()[:200]}"
+    return "committed and pushed " + git("rev-parse", "--short", "HEAD").stdout.strip()
 
 
 if __name__ == "__main__":
