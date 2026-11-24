@@ -1,6 +1,6 @@
 +++
 title = "BraTS 2018: A Beginner's Guide to Brain Tumor MRI"
-description = "MRI modalities, tumor sub-regions and annotation logic of the BraTS 2018 dataset — explained for ML people without a radiology background."
+description = "MRI modalities, tumor sub-regions and annotation logic of the BraTS 2018 dataset, explained for ML people without a radiology background."
 date = 2023-02-22
 updated = 2026-11-13
 aliases = ["/posts/brats2018/brats2018/"]
@@ -8,13 +8,13 @@ aliases = ["/posts/brats2018/brats2018/"]
 tags = ["medical-imaging", "segmentation", "datasets"]
 +++
 
-Brain tumor segmentation is a critical task in medical image analysis, and the BraTS (Brain Tumor Segmentation) challenge dataset is one of the most widely used benchmarks in the field. However, getting started with brain imaging can be intimidating, especially if you're not familiar with the complex medical jargon and annotations used in the data. In this blog post, we'll provide a beginner-friendly tutorial to the BraTS 2018 dataset, designed to help you get up to speed with the basics of brain imaging and understand the annotations used in the data.
+Brain tumor segmentation is an important task in medical image analysis. The BraTS (Brain Tumor Segmentation) challenge dataset is one of the most widely used benchmarks in the field. Brain imaging can be hard to start with, especially without a background in its medical terms and annotations. This post is a beginner's guide to the BraTS 2018 dataset. It covers the basics of brain imaging and the annotations used in the data.
 
 <!-- more -->
 
 ## Jargon explanation
 
-Before diving deep into the details, let us familiarize ourselves with the jargon.
+Before the details, here is the jargon.
 
 - **Necrosis** is the death of cells or tissues in the body, and in the context of BraTS data, it refers to the death of brain tissue, which can be caused by various factors such as injury, disease, or lack of oxygen.
 - **Peritumoral edematous/invaded tissue** refers to the tissue surrounding a brain tumor that has become swollen or infiltrated by the tumor.
@@ -23,8 +23,8 @@ Before diving deep into the details, let us familiarize ourselves with the jargo
 - In the context of glioblastoma brain tumors, **low-grade tumors (LGG)** are characterized by slower growth and less aggressive behavior, while **high-grade tumors (HGG)** are characterized by faster growth and more aggressive behavior.
   - The grade of glioblastoma is determined by the appearance of the tumor cells under a microscope and is used to predict the behavior of the tumor and guide treatment decisions.
   - Low-grade glioblastomas are generally considered to have a better prognosis than high-grade glioblastomas, which are more likely to grow and spread rapidly, making them more difficult to treat.
-  - It is important to note that the grade of glioblastoma can change over time, and regular monitoring and re-biopsy may be necessary to determine the current grade of the tumor.
-  - The default view provided in the papers are using the axial slices. There are 3 kind of slices:
+  - The grade can change over time, so regular monitoring and re-biopsy may be needed to find the current grade.
+  - The papers use axial slices by default. There are three kinds of slices:
 
 {{ figure(src="anatomy.png", caption="Fig. 1. Anatomical planes: axial, coronal and sagittal.", width="55%") }}
 
@@ -73,7 +73,7 @@ Brain imaging modalities can help visualize different aspects of the brain and i
 - T2-weighted scan (T2): This type of MRI scan visualizes the brain's white matter and fluid-filled spaces. It helps to identify conditions such as hydrocephalus, brain swelling, and multiple sclerosis.
 - T2 Fluid Attenuated Inversion Recovery (T2-FLAIR): This type of MRI scan visualizes the brain's white matter and fluid-filled spaces. It is performed after the application of a specific pulse sequence that helps to suppress the signal from cerebrospinal fluid, making it easier to visualize lesions and other abnormalities in the white matter.
 
-⇒ It is common to use a combination of these scans to get a more complete picture of the brain and its structures. More information about brain imaging modalities can be found at **[this link](https://case.edu/med/neurology/NR/MRI%20Basics.htm)**.
+It is common to use a combination of these scans to get a more complete picture of the brain and its structures. More information about brain imaging modalities can be found at **[this link](https://case.edu/med/neurology/NR/MRI%20Basics.htm)**.
 
 ## How to differentiate between MRI brain modalities?
 
@@ -87,17 +87,17 @@ Brain imaging modalities can help visualize different aspects of the brain and i
    - WM is located on top of the CSF
    - GM is near the skull/brain border
 3. Determine the color of CSF:
-   - CSF is white → T2-weighted
-   - CSF is black → T1-weighted (aka T1Gd) or T2-FLAIR
+   - CSF is white: T2-weighted
+   - CSF is black: T1-weighted (aka T1Gd) or T2-FLAIR
 4. Determine the WM and GM colors:
-   - If they follow the logical sense (GM is gray and WM is white) or if WM is brighter than GM → T1.
-   - If they do not follow the logical sense → T2-FLAIR.
+   - If they follow the logical sense (GM is gray and WM is white) or if WM is brighter than GM: T1.
+   - If they do not follow the logical sense: T2-FLAIR.
 
-If you are still unclear, make sure to checkout these two Youtube videos: **[Video1](https://www.youtube.com/watch?v=ka-HBXP5ERA)** and **[Video2](https://www.youtube.com/watch?v=UKLvLsK36qo)**.
+If you are still unclear, make sure to check out these two YouTube videos: **[Video1](https://www.youtube.com/watch?v=ka-HBXP5ERA)** and **[Video2](https://www.youtube.com/watch?v=UKLvLsK36qo)**.
 
 ## Annotations and Structures
 
-{{ figure(src="brats_example.png", caption="Fig. 3. Glioma sub-regions in BraTS 2014–15. (A) whole tumor (yellow) in T2-FLAIR; (B) tumor core (red) in T2; (C) active tumor (light blue) around the necrotic core (green) in T1Gd; (D) combined labels — ED (yellow), NET (red), NCR (green), AT (blue).") }}
+{{ figure(src="brats_example.png", caption="Fig. 3. Glioma sub-regions in BraTS 2014–15. (A) whole tumor (yellow) in T2-FLAIR; (B) tumor core (red) in T2; (C) active tumor (light blue) around the necrotic core (green) in T1Gd; (D) combined labels: ED (yellow), NET (red), NCR (green), AT (blue).") }}
 
 ### Labeled regions
 
@@ -150,7 +150,7 @@ If you are still unclear, make sure to checkout these two Youtube videos: **[Vid
     1. Start by delineating the sub-regions of interest from the outside tumor boundaries. In other words, begin with manual delineation of the abnormal signal in the T2-weighted images.
     2. Define the Whole Tumor (WT) and then address the Tumor Core (TC), including enhancing/non-enhancing/necrotic core.
 - In more details, here are the steps and explanations:
-    - Start with inspecting the T2-FLAIR → Hyper-intense regions (Bright) are ED (Label 2). Most of the time, ED are the outer boundaries of the Whole Tumor (WT).
+    - Start by inspecting the T2-FLAIR. Hyper-intense (bright) regions are ED (Label 2). Most of the time, ED are the outer boundaries of the Whole Tumor (WT).
     - Since we have no Tumor Core (TC) ground truth, we will define it using its definition: the union of NCR/NET (Label 1, 3) and AT/ET (Label 4).
     - We delineate the NCR/NET (Label 1, 3) and AT/ET at the same time using T1Gd, where:
     - NCR/NET are hypo-intense (darker) regions (Also true when comparing to T1)
@@ -160,9 +160,9 @@ If you are still unclear, make sure to checkout these two Youtube videos: **[Vid
     - Refine the union of Label 1, 3, and 4 when delineate the TC using T1Gd.
     - Pre-determine the outline of TC.
 
-⇒ By following these steps, you can obtain both Label 1, 3, and 4 so that you can union them all and get TC.
+By following these steps, you can obtain both Label 1, 3, and 4 so that you can union them all and get TC.
 
-I hope you enjoy reading. If you want to learn more about the brain's anatomy, I recommend visiting **[this site](https://www.imaios.com/en/e-anatomy/brain/)**, which has fantastic visualizations. I sometimes update old posts to keep them up-to-date.
+If you want to learn more about the brain's anatomy, I recommend visiting **[this site](https://www.imaios.com/en/e-anatomy/brain/)**, which has clear visualizations. I sometimes update old posts to keep them up-to-date.
 
 
 
