@@ -2,7 +2,8 @@
 title: "A Practical Primer on Hyperbolic Geometry for Representation Learning"
 date: 2026-11-25
 tags: [hyperbolic geometry, representation learning, vision-language models, retrieval]
-math: true
+extra:
+  math: true
 ---
 
 This post collects the hyperbolic geometry I needed while working on vision-language retrieval.
