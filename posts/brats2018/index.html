@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>document.documentElement.classList.add("js")</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b0d10">
+  <title>BraTS 2018: A Beginner&#x27;s Guide to Brain Tumor MRI · Tuan-Luc Huynh</title>
+  <meta name="description" content="MRI modalities, tumor sub-regions and annotation logic of the BraTS 2018 dataset, explained for ML people without a radiology background.">
+  <meta property="og:title" content="BraTS 2018: A Beginner&#x27;s Guide to Brain Tumor MRI · Tuan-Luc Huynh">
+  <meta property="og:description" content="MRI modalities, tumor sub-regions and annotation logic of the BraTS 2018 dataset, explained for ML people without a radiology background.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;posts&#x2F;brats2018&#x2F;">
+  <meta property="og:image" content="https://louisdo2108.github.io/avatar.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;posts&#x2F;brats2018&#x2F;">
+  <link rel="icon" type="image/svg+xml" href="https://louisdo2108.github.io/icons/penguin.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://louisdo2108.github.io/icons/penguin-32.png">
+  <link rel="apple-touch-icon" href="https://louisdo2108.github.io/icons/penguin-180.png">
+  <link rel="alternate" type="application/atom+xml" title="Tuan-Luc Huynh" href="https://louisdo2108.github.io/atom.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://louisdo2108.github.io/main.css?h=d1f394651d67f7c82d36">
+  <link rel="stylesheet" href="https://louisdo2108.github.io/syntax.css">
+
+</head>
+<body class="post">
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="https://louisdo2108.github.io/"><span class="brand-name">Louis Do</span></a>
+      <ul class="nav-links">
+        <li><a href="https://louisdo2108.github.io/publications/">Research</a></li>
+        <li><a href="https://louisdo2108.github.io/posts/" class="active" aria-current="page">Writing</a></li>
+        <li><a href="https://louisdo2108.github.io/digest/">Digest</a></li>
+        <li><a href="https://louisdo2108.github.io/about/">About</a></li>
+        <li><a class="nav-lang" href="https://louisdo2108.github.io/zh-hk/" hreflang="zh-Hant-HK" lang="zh-Hant-HK" aria-label="廣東話版本" title="廣東話版本">粵</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" class="container post-layout">
+<div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+<article class="post-article">
+  <header class="post-head">
+    <a class="back mono" href="https://louisdo2108.github.io/posts/">← all writing</a>
+    <h1>BraTS 2018: A Beginner&#x27;s Guide to Brain Tumor MRI</h1><p class="post-desc">MRI modalities, tumor sub-regions and annotation logic of the BraTS 2018 dataset, explained for ML people without a radiology background.</p>
+    <div class="post-info mono">
+      <time datetime="2023-02-22">February 22, 2023</time>
+      <span>·</span><span>10 min read</span><span>·</span><span>updated Nov 2026</span>
+    </div>
+    <ul class="tags"><li><a href="https://louisdo2108.github.io/tags/medical-imaging/">#medical-imaging</a></li><li><a href="https://louisdo2108.github.io/tags/segmentation/">#segmentation</a></li><li><a href="https://louisdo2108.github.io/tags/datasets/">#datasets</a></li></ul>
+  </header>
+
+  <div class="prose">
+    <p>Brain tumor segmentation is an important task in medical image analysis. The BraTS (Brain Tumor Segmentation) challenge dataset is one of the most widely used benchmarks in the field. Brain imaging can be hard to start with, especially without a background in its medical terms and annotations. This post is a beginner’s guide to the BraTS 2018 dataset. It covers the basics of brain imaging and the annotations used in the data.</p>
+<span id="continue-reading"></span><h2 id="jargon-explanation">Jargon explanation</h2>
+<p>Before the details, here is the jargon.</p>
+<ul>
+<li><strong>Necrosis</strong> is the death of cells or tissues in the body, and in the context of BraTS data, it refers to the death of brain tissue, which can be caused by various factors such as injury, disease, or lack of oxygen.</li>
+<li><strong>Peritumoral edematous/invaded tissue</strong> refers to the tissue surrounding a brain tumor that has become swollen or infiltrated by the tumor.
+<ul>
+<li>Edema is a condition in which fluid accumulates in the tissue, causing swelling, and can be a result of various factors, including inflammation, injury, or disease.</li>
+<li>Peritumoral means around the tumor.</li>
+</ul>
+</li>
+<li>In the context of gliomas (brain tumors that arise from glial cells), <strong>low-grade gliomas (LGG)</strong> are characterized by slower growth and less aggressive behavior, while <strong>high-grade gliomas (HGG)</strong> are characterized by faster growth and more aggressive behavior. Glioblastoma is the most aggressive type of HGG.
+<ul>
+<li>The grade of a glioma is determined by the appearance of the tumor cells under a microscope and is used to predict the behavior of the tumor and guide treatment decisions.</li>
+<li>Low-grade gliomas are generally considered to have a better prognosis than high-grade gliomas, which are more likely to grow and spread rapidly, making them more difficult to treat.</li>
+<li>The grade can change over time, so regular monitoring and re-biopsy may be needed to find the current grade.</li>
+<li>The papers use axial slices by default. There are three kinds of slices:</li>
+</ul>
+</li>
+</ul>
+
+<figure class="fig" style="--fig-w: 55%">
+  <img src="anatomy.png" alt="Fig. 1. Anatomical planes: axial, coronal and sagittal." loading="lazy"><figcaption>Fig. 1. Anatomical planes: axial, coronal and sagittal.</figcaption>
+</figure>
+<h2 id="data-descriptions">Data descriptions</h2>
+<ul>
+<li>Pre-operative MRI scans from multiple institutions that are multimodal, including:
+<ul>
+<li>Native (T1)</li>
+<li>Post-contrast T1-weighted (T1Gd)</li>
+<li>T2-Weighted (T2)</li>
+<li>T2 Fluid Attenuated Inversion Recovery (FLAIR)</li>
+</ul>
+</li>
+<li>Annotations for the following sub-regions:
+<ul>
+<li>GD-enhancing tumors (ET, 4)</li>
+<li>Peritumoral edema (ED, 2)</li>
+<li>Necrotic and non-enhancing tumor (NCR/NET, 1)</li>
+</ul>
+</li>
+<li>Data that has been pre-processed, including:
+<ul>
+<li>Co-registration to the same anatomical template</li>
+<li>Interpolation to the same resolution (1mm^3)</li>
+<li>Skull-stripping</li>
+</ul>
+</li>
+<li>The dataset was obtained from 19 institutions.</li>
+<li>Participants are allowed to use additional private data from their own institutions for data augmentation.</li>
+</ul>
+<h2 id="compared-to-brats16-and-sooner">Compared to BraTS16 and sooner</h2>
+<ul>
+<li>More routine 3T multimodal MRI scans that are significantly different from previous collections.</li>
+<li>All scans from the original TCIA (The Cancer Imaging Archive) glioma collections were radiologically assessed and categorized as pre- or post-operative.</li>
+<li>Experts annotated all pre-operative TCIA scans for the various sub-regions.</li>
+<li>This year, expert neuroradiologists evaluated the entire original TCIA glioma collections (TCGA-GBM, n=262 and TCGA-LGG, n=199).</li>
+<li>Each scan was categorized as pre- or post-operative, and all pre-operative TCIA scans (135 GBM and 108 LGG) were annotated by experts for the various glioma sub-regions.</li>
+<li>The annotated pre-operative scans were included in this year’s BraTS datasets.</li>
+</ul>
+<h2 id="evaluation-framework">Evaluation framework</h2>
+<ol>
+<li>Manual segmentation labels of tumor sub-regions.
+<ul>
+<li>Dice score, Hausdorff distance, sensitivity, specificity.</li>
+<li>BraTS12-13 are subsets of BraTS18, and people also calculate on these datasets, to compare with performances reported in the BraTS TMI.</li>
+<li>First place approach: 3D MRI brain tumor segmentation using autoencoder regularization.</li>
+</ul>
+</li>
+<li>Clinical data of overall survival.</li>
+</ol>
+<h2 id="brain-imaging-modalities-quick-comparison">Brain imaging modalities quick comparison</h2>
+<p>Brain imaging modalities can help visualize different aspects of the brain and its tissues. The following are common MRI imaging techniques used for brain imaging, each providing different information about the brain:</p>
+<ul>
+<li>T1-weighted scan (T1Gd): This type of MRI scan is performed after the administration of a contrast agent (gadolinium, for example) and highlights areas of abnormal tissue. It enhances the visibility of certain structures, such as tumors and blood vessels.</li>
+<li>T2-weighted scan (T2): This type of MRI scan visualizes the brain’s white matter and fluid-filled spaces. It helps to identify conditions such as hydrocephalus, brain swelling, and multiple sclerosis.</li>
+<li>T2 Fluid Attenuated Inversion Recovery (T2-FLAIR): This type of MRI scan visualizes the brain’s white matter and fluid-filled spaces. It is performed after the application of a specific pulse sequence that helps to suppress the signal from cerebrospinal fluid, making it easier to visualize lesions and other abnormalities in the white matter.</li>
+</ul>
+<p>It is common to use a combination of these scans to get a more complete picture of the brain and its structures. More information about brain imaging modalities can be found at <strong><a rel="noopener noreferrer" target="_blank" href="https://case.edu/med/neurology/NR/MRI%20Basics.htm">this link</a></strong>.</p>
+<h2 id="how-to-differentiate-between-mri-brain-modalities">How to differentiate between MRI brain modalities?</h2>
+
+<figure class="fig">
+  <img src="modalities.png" alt="Fig. 2. Common brain MRI modalities: T1-weighted, T2-weighted and T2-FLAIR." loading="lazy"><figcaption>Fig. 2. Common brain MRI modalities: T1-weighted, T2-weighted and T2-FLAIR.</figcaption>
+</figure>
+<ul>
+<li>Legends: - X: Cerebrospinal fluid (CSF) - Triangle: White matter (WM) (Inside / Near CSF) - Square: Gray matter (GM) (Outside / Far from CSF)
+To differentiate between MRI brain modalities, follow these steps:</li>
+</ul>
+<ol>
+<li>Choose axial slices of the MRI scan whose CSF is visible.</li>
+<li>Locate WM and GM:
+<ul>
+<li>WM is located on top of the CSF</li>
+<li>GM is near the skull/brain border</li>
+</ul>
+</li>
+<li>Determine the color of CSF:
+<ul>
+<li>CSF is white: T2-weighted</li>
+<li>CSF is black: T1-weighted (aka T1Gd) or T2-FLAIR</li>
+</ul>
+</li>
+<li>Determine the WM and GM colors:
+<ul>
+<li>If they follow the logical sense (GM is gray and WM is white) or if WM is brighter than GM: T1.</li>
+<li>If they do not follow the logical sense: T2-FLAIR.</li>
+</ul>
+</li>
+</ol>
+<p>If you are still unclear, make sure to check out these two YouTube videos: <strong><a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=ka-HBXP5ERA">Video1</a></strong> and <strong><a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=UKLvLsK36qo">Video2</a></strong>.</p>
+<h2 id="annotations-and-structures">Annotations and Structures</h2>
+
+<figure class="fig">
+  <img src="brats_example.png" alt="Fig. 3. Glioma sub-regions in BraTS 2014–15. (A) whole tumor (yellow) in T2-FLAIR; (B) tumor core (red) in T2; (C) active tumor (light blue) around the necrotic core (green) in T1Gd; (D) combined labels: ED (yellow), NET (red), NCR (green), AT (blue)." loading="lazy"><figcaption>Fig. 3. Glioma sub-regions in BraTS 2014–15. (A) whole tumor (yellow) in T2-FLAIR; (B) tumor core (red) in T2; (C) active tumor (light blue) around the necrotic core (green) in T1Gd; (D) combined labels: ED (yellow), NET (red), NCR (green), AT (blue).</figcaption>
+</figure>
+<h3 id="labeled-regions">Labeled regions</h3>
+<h4 id="necrotic-ncr-and-non-enhancing-tumor-core-net-label-1">Necrotic (NCR) and Non-Enhancing Tumor Core (NET, Label 1)</h4>
+<ul>
+<li>Typically hypo-intense (darker) in T1Gd when compared to T1.</li>
+<li>NET has been merged with NCR (Label 1) to represent non-enhancing tumor regions, transitional/pre-necrotic, and necrotic regions that belong to the non-enhancing part of the TC, and are typically resected in addition to the AT.</li>
+</ul>
+<h4 id="peritumoral-edematous-invaded-tissue-ed-label-2">Peritumoral Edematous/Invaded Tissue (ED, Label 2)</h4>
+<ul>
+<li>Hyper-intense signal in T2-FLAIR, which includes the complete extent of the disease, including the TC and ED.</li>
+</ul>
+<h4 id="active-tumor-at-aka-enhancing-tumor-et-label-4">Active Tumor (AT) aka Enhancing Tumor (ET, Label 4)</h4>
+<ul>
+<li>Biologically, AT represents regions where there is leakage of contrast through a disrupted blood-brain barrier, commonly seen in HGG.</li>
+<li>To delineate the AT in gliomas, it is recommended to use the T1Gd scans and the existing TC outline.
+<ul>
+<li>Set an intensity threshold within this label to distinguish between the high-intensity AT and the low-intensity NET/NCR regions.</li>
+<li>Choroid plexus and hemorrhage areas should not be labeled as they can be identified by comparing them to the T1 scan.</li>
+</ul>
+</li>
+</ul>
+<h3 id="tumor-sub-regions-for-evaluation">Tumor sub-regions for evaluation:</h3>
+<h4 id="whole-tumor-wt">Whole Tumor (WT)</h4>
+<ul>
+<li>Visible in T2-FLAIR: this sub-region represents the complete extent of the disease, including the tumor core (TC) and the peritumoral edematous/invaded tissue (ED).</li>
+<li>It is the union of all available labels and is usually the largest with a relatively smooth shape. Manual delineations can be made every third slice.</li>
+</ul>
+<h4 id="tumor-core-tc">Tumor Core (TC)</h4>
+<ul>
+<li>Visible in T2: this sub-region includes the bulk of the tumor that is typically removed during surgery.</li>
+<li>It is the union of labels 1, 3 (unlabeled, merged with 1), and 4. Non-enhancing tumor regions must be checked for in this sub-region.</li>
+<li>Its boundaries can be delineated on every other slice.</li>
+<li>Once the TC boundaries are defined, the remaining WT will correspond to the ED sub-region (Label 2), which is described by a hyper-intense signal on the T2-FLAIR volumes.</li>
+</ul>
+<h4 id="active-tumor-aka-enhanced-tumor-at-et">Active Tumor aka Enhanced Tumor (AT/ET)</h4>
+<ul>
+<li>Visible in T1Gd: this sub-region represents the active or enhancing tumor structures surrounding the cystic/necrotic components of the core.</li>
+<li>Areas in this sub-region show hyper-intensity (brighter) in T1Gd when compared to T1 and “healthy” white matter in T1Gd.</li>
+</ul>
+<h3 id="remarks-for-low-grade-gliomas-lgg">Remarks for Low Grade Gliomas (LGG)</h3>
+<ul>
+<li>LGGs do not exhibit much contrast enhancement or peritumoral edema.</li>
+<li>LGGs have less blood-brain-barrier disruption, which results in less contrast leak during the scan.</li>
+<li>LGGs without an apparent enhancing tumor (ET) area should consider only the necrotic/non-enhancing tumor (NET) and vasogenic edema (ED) labels, by observing the texture or intensity on T2-FLAIR images.</li>
+<li>LGGs without ET and without obvious differences across modalities should consider only the NET label, distinguishing between normal and abnormal brain tissue.</li>
+</ul>
+<h2 id="deducing-segmentations-takeaway-points">Deducing segmentations takeaway points</h2>
+<ul>
+<li>This is what the papers recommended:
+<ol>
+<li>Start by delineating the sub-regions of interest from the outside tumor boundaries. In other words, begin with manual delineation of the abnormal signal in the T2-weighted images.</li>
+<li>Define the Whole Tumor (WT) and then address the Tumor Core (TC), including enhancing/non-enhancing/necrotic core.</li>
+</ol>
+</li>
+<li>In more details, here are the steps and explanations:
+<ul>
+<li>Start by inspecting the T2-FLAIR. Hyper-intense (bright) regions are ED (Label 2). Most of the time, ED are the outer boundaries of the Whole Tumor (WT).</li>
+<li>Since we have no Tumor Core (TC) ground truth, we will define it using its definition: the union of NCR/NET (Label 1, 3) and AT/ET (Label 4).</li>
+<li>We delineate the NCR/NET (Label 1, 3) and AT/ET at the same time using T1Gd, where:</li>
+<li>NCR/NET are hypo-intense (darker) regions (Also true when comparing to T1)</li>
+<li>AT/ET are hyper-intense (brighter) regions, most of the time encircling NCR/NET. (Also true when comparing to T1)</li>
+<li>These two regions appear together with significant contrast in T1Gd.</li>
+<li>The axial slices of T2 can either be used to:</li>
+<li>Refine the union of Label 1, 3, and 4 when delineate the TC using T1Gd.</li>
+<li>Pre-determine the outline of TC.</li>
+</ul>
+</li>
+</ul>
+<p>By following these steps, you can obtain both Label 1, 3, and 4 so that you can union them all and get TC.</p>
+<p>If you want to learn more about the brain’s anatomy, I recommend visiting <strong><a rel="noopener noreferrer" target="_blank" href="https://www.imaios.com/en/e-anatomy/brain/">this site</a></strong>, which has clear visualizations. I sometimes update old posts to keep them up-to-date.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>Bakas, Spyridon, et al <a rel="noopener noreferrer" target="_blank" href="https://www.cbica.upenn.edu/sbia/Spyridon.Bakas/MICCAI_BraTS/MICCAI_BraTS_2018_proceedings_shortPapers.pdf">2018 International MICCAI BraTS Challenge - CBICA</a> MICCAI 2018.</li>
+<li>Bakas, Spyridon, et al <a rel="noopener noreferrer" target="_blank" href="https://web.archive.org/web/20210507154000/https://www.med.upenn.edu/sbia/brats2018/registration.html">Multimodal Brain Tumor Segmentation Challenge 2018</a> Section for Biomedical Image Analysis (SBIA) (2021).</li>
+<li>Bakas, Spyridon, et al <a rel="noopener noreferrer" target="_blank" href="https://arxiv.org/pdf/1811.02629.pdf">Identifying the Best Machine Learning Algorithms for Brain Tumor Segmentation, Progression Assessment, and Overall Survival Prediction in the BRATS Challenge</a> arXiv preprint arXiv:1811.02629 (2018).</li>
+<li>Bjoern H. Menze et al <a rel="noopener noreferrer" target="_blank" href="https://ieeexplore.ieee.org/document/6975210">The Multimodal Brain Tumor Image Segmentation Benchmark (BRATS)</a> IEEE Transactions on Medical Imaging (2015).</li>
+</ol>
+
+  </div>
+  <section class="cite">
+    <h2>Cite this note</h2>
+    <p class="muted small">Tuan-Luc Huynh. (Feb 2023). BraTS 2018: A Beginner&#x27;s Guide to Brain Tumor MRI. louisdo2108.github.io. https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;posts&#x2F;brats2018&#x2F;</p>
+<pre class="cite-bib"><code>@misc{huynh2023brats2018,
+  title  = "BraTS 2018: A Beginner&#x27;s Guide to Brain Tumor MRI",
+  author = "Huynh, Tuan-Luc",
+  year   = "2023",
+  month  = "Feb",
+  url    = "https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;posts&#x2F;brats2018&#x2F;"
+}</code></pre>
+  </section>
+
+  <nav class="post-nav"><a class="card" href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;posts&#x2F;blog_hyperbolic_geometry&#x2F;"><span class="mono muted">← newer</span>A Practical Primer on Hyperbolic Geometry for Representation Learning</a><a class="card right" href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;posts&#x2F;separable-convolutions&#x2F;"><span class="mono muted">older →</span>Separable Convolutions, Briefly</a>
+  </nav>
+</article>
+<aside class="toc" aria-label="Table of contents">
+  <p class="mono toc-title">On this page</p>
+  <ol>
+    <li><a href="#jargon-explanation">Jargon explanation</a>
+    </li>
+    <li><a href="#data-descriptions">Data descriptions</a>
+    </li>
+    <li><a href="#compared-to-brats16-and-sooner">Compared to BraTS16 and sooner</a>
+    </li>
+    <li><a href="#evaluation-framework">Evaluation framework</a>
+    </li>
+    <li><a href="#brain-imaging-modalities-quick-comparison">Brain imaging modalities quick comparison</a>
+    </li>
+    <li><a href="#how-to-differentiate-between-mri-brain-modalities">How to differentiate between MRI brain modalities?</a>
+    </li>
+    <li><a href="#annotations-and-structures">Annotations and Structures</a>
+      <ol><li><a href="#labeled-regions">Labeled regions</a></li><li><a href="#tumor-sub-regions-for-evaluation">Tumor sub-regions for evaluation:</a></li><li><a href="#remarks-for-low-grade-gliomas-lgg">Remarks for Low Grade Gliomas (LGG)</a></li></ol>
+    </li>
+    <li><a href="#deducing-segmentations-takeaway-points">Deducing segmentations takeaway points</a>
+    </li>
+    <li><a href="#references">References</a>
+    </li>
+  </ol>
+</aside>
+
+  </main>
+
+  <footer class="site-footer container">
+    <div class="footer-socials">
+      <a href="https:&#x2F;&#x2F;github.com&#x2F;LouisDo2108" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.27 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a>
+      <a href="https:&#x2F;&#x2F;scholar.google.com&#x2F;citations?user=QFkhDJcAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 1 9l4 2.55V17c0 2.21 3.13 4 7 4s7-1.79 7-4v-5.45L21 10.3V16h2V9L12 2Zm0 2.37L19.3 9 12 13.63 4.7 9 12 4.37ZM7 12.82l5 3.18 5-3.18V17c0 .87-2 2-5 2s-5-1.13-5-2v-4.18Z"/></svg></a>
+      <a href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;louis-tuan-luc-huynh&#x2F;" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+      <a href="mailto:louisdo2108@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 6.5h18v11H3zM3.5 7l8.5 6.5L20.5 7"/></svg></a>
+      <a href="https://louisdo2108.github.io/atom.xml" aria-label="Atom feed" title="Atom feed"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.4" fill="currentColor"/></svg></a>
+    </div>
+    <p class="footer-note">© 2026 Tuan-Luc Huynh · Built with <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a> (Rust) · Dark by design.</p>
+  </footer>
+
+  <script src="https://louisdo2108.github.io/js/site.js?h=ad0e2569710cb4d9d9d8" defer></script>
+
+</body>
+</html>

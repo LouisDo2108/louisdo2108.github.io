@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Tuan-Luc Huynh</title>
+    <subtitle>Tuan-Luc Huynh (Louis Do) — PhD student at Monash University working on continual adaptation of neural retrieval: generative and dense retrievers, RAG and multimodal retrieval.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://louisdo2108.github.io/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://louisdo2108.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-11-25T00:00:00+00:00</updated>
+    <id>https://louisdo2108.github.io/atom.xml</id>
+    <entry xml:lang="en">
+        <title>A Practical Primer on Hyperbolic Geometry for Representation Learning</title>
+        <published>2026-11-25T00:00:00+00:00</published>
+        <updated>2026-11-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Tuan-Luc Huynh
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://louisdo2108.github.io/posts/blog_hyperbolic_geometry/"/>
+        <id>https://louisdo2108.github.io/posts/blog_hyperbolic_geometry/</id>
+        
+        <content type="html" xml:base="https://louisdo2108.github.io/posts/blog_hyperbolic_geometry/">&lt;p&gt;This post collects the hyperbolic geometry I needed while working on vision-language retrieval.
+It is written as a reference: definitions, the formulas you actually implement, and short notes on why each piece matters.
+Most of the material comes from MERU, Hyperbolic Neural Networks++, Fully Hyperbolic Neural Networks and a few recent papers, which I cite at the end.&lt;&#x2F;p&gt;
+&lt;p&gt;Throughout, $c &amp;gt; 0$ is the (absolute) curvature, so the space has constant curvature $-c$.
+$\lVert \cdot \rVert$ is the Euclidean norm and $\langle \cdot, \cdot \rangle$ is the Euclidean inner product.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;1-why-hyperbolic-space&quot;&gt;1. Why hyperbolic space?&lt;&#x2F;h2&gt;
+&lt;p&gt;Concepts are hierarchical.
+“Dog” is a “mammal”, which is an “animal”.
+A photo of a black cat is more specific than the caption “a cat”.
+The number of nodes in a tree grows exponentially with depth.&lt;&#x2F;p&gt;
+&lt;p&gt;Euclidean space only has polynomial volume growth: a ball of radius $r$ in $\mathbb{R}^n$ has volume proportional to $r^n$.
+Embedding a large tree in it forces either very high dimension or high distortion.
+Hyperbolic space has exponential volume growth.
+For example, a circle of radius $r$ in the hyperbolic plane ($c = 1$) has circumference $2\pi \sinh r$, which grows like $e^r$.
+This makes it a natural home for tree-like data: general concepts sit near the origin, and specific concepts spread out toward the boundary where there is plenty of room.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;2-a-minimum-of-riemannian-geometry&quot;&gt;2. A minimum of Riemannian geometry&lt;&#x2F;h2&gt;
+&lt;p&gt;A &lt;strong&gt;Riemannian manifold&lt;&#x2F;strong&gt; $(\mathcal{M}, g)$ is a smooth $n$-dimensional manifold with a metric $g$ that assigns an inner product to each tangent space.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Tangent space&lt;&#x2F;strong&gt; $T_{\mathbf{x}}\mathcal{M}$: an $n$-dimensional vector space that linearly approximates $\mathcal{M}$ at $\mathbf{x}$.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Metric tensor&lt;&#x2F;strong&gt;: for $\mathbf{u}, \mathbf{v} \in T_{\mathbf{x}}\mathcal{M}$, $\langle \mathbf{u}, \mathbf{v} \rangle_{\mathbf{x}} = \mathbf{u}^\top g_{\mathbf{x}} \mathbf{v}$. Euclidean space is the case $g = \mathbf{I}_n$ everywhere.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Geodesic&lt;&#x2F;strong&gt;: the shortest constant-speed path between two points. Its length is the geodesic distance.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Exponential map&lt;&#x2F;strong&gt; $\exp_{\mathbf{x}} : T_{\mathbf{x}}\mathcal{M} \to \mathcal{M}$: follow the geodesic that starts at $\mathbf{x}$ with initial velocity $\mathbf{v}$ for unit time.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Logarithmic map&lt;&#x2F;strong&gt; $\log_{\mathbf{x}} : \mathcal{M} \to T_{\mathbf{x}}\mathcal{M}$: the inverse of $\exp_{\mathbf{x}}$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;In practice, the exponential and logarithmic maps are the bridge between ordinary neural networks (which output vectors in $\mathbb{R}^n$) and the manifold.&lt;&#x2F;p&gt;
+&lt;p&gt;Hyperbolic space has several equivalent models.
+They are isometric, so they describe the same geometry, but each one makes different operations cheap or stable.
+I cover the three that show up most often: the Poincaré ball, the Lorentz hyperboloid and the Klein model.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;3-how-tree-like-is-my-data-gromov-delta-hyperbolicity&quot;&gt;3. How tree-like is my data? Gromov $\delta$-hyperbolicity&lt;&#x2F;h2&gt;
+&lt;p&gt;Before choosing a hyperbolic model, it is useful to check whether the data is tree-like at all.
+Gromov $\delta$-hyperbolicity measures how far a metric space is from a tree.
+Lower $\delta$ means more tree-like, and $\delta = 0$ for an exact tree.&lt;&#x2F;p&gt;
+&lt;p&gt;For points $a, b, w$, the &lt;strong&gt;Gromov product&lt;&#x2F;strong&gt; is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+(a \mid b)_w = \tfrac{1}{2}\big(d(a, w) + d(b, w) - d(a, b)\big).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;The space is $\delta$-hyperbolic if, for all $a, b, c, w$ (four-point condition),&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+(a \mid c)_w ;\geq; \min\big((a \mid b)_w,\ (b \mid c)_w\big) - \delta .
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Computing $\delta$ on a sample of embeddings (usually normalised by the diameter of the sample) is a quick diagnostic used, for example, in hyperbolic fine-tuning of LLMs.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;4-the-poincare-ball-mathbb-b-n-c&quot;&gt;4. The Poincaré ball $\mathbb{B}^n_c$&lt;&#x2F;h2&gt;
+&lt;p&gt;$$
+\mathbb{B}^n_c = {\mathbf{x} \in \mathbb{R}^n : c\lVert \mathbf{x} \rVert^2 &amp;lt; 1}, \qquad
+g^{\mathbb{B}}&lt;em&gt;{\mathbf{x}} = \lambda&lt;&#x2F;em&gt;{\mathbf{x}}^2 , \mathbf{I}&lt;em&gt;n, \qquad
+\lambda&lt;&#x2F;em&gt;{\mathbf{x}} = \frac{2}{1 - c\lVert \mathbf{x} \rVert^2}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$\lambda_{\mathbf{x}}$ is the conformal factor.
+Because the metric is a scalar times the identity, the Poincaré ball is &lt;strong&gt;conformal&lt;&#x2F;strong&gt;: it preserves angles but not distances.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;gyrovector-operations&quot;&gt;Gyrovector operations&lt;&#x2F;h3&gt;
+&lt;p&gt;A gyrovector space gives points in hyperbolic space vector-like operations.
+The version for the Poincaré ball is the Möbius gyrovector space.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Möbius addition.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{x} \oplus_c \mathbf{y} =
+\frac{(1 + 2c\langle \mathbf{x}, \mathbf{y} \rangle + c\lVert \mathbf{y} \rVert^2),\mathbf{x} + (1 - c\lVert \mathbf{x} \rVert^2),\mathbf{y}}
+{1 + 2c\langle \mathbf{x}, \mathbf{y} \rangle + c^2\lVert \mathbf{x} \rVert^2 \lVert \mathbf{y} \rVert^2}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;It is neither commutative nor associative, which is worth remembering when it is used to compose updates.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Möbius scalar multiplication.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+r \otimes_c \mathbf{x} = \frac{1}{\sqrt{c}} \tanh!\big(r \tanh^{-1}(\sqrt{c}\lVert \mathbf{x} \rVert)\big) \frac{\mathbf{x}}{\lVert \mathbf{x} \rVert}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Möbius matrix-vector multiplication&lt;&#x2F;strong&gt; (for $\mathbf{M}\mathbf{x} \neq \mathbf{0}$).&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{M} \otimes_c \mathbf{x} = \frac{1}{\sqrt{c}} \tanh!\left(\frac{\lVert \mathbf{M}\mathbf{x} \rVert}{\lVert \mathbf{x} \rVert} \tanh^{-1}(\sqrt{c}\lVert \mathbf{x} \rVert)\right) \frac{\mathbf{M}\mathbf{x}}{\lVert \mathbf{M}\mathbf{x} \rVert}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;This equals $\exp_{\mathbf{0}}\big(\mathbf{M}\log_{\mathbf{0}}(\mathbf{x})\big)$: a linear layer applied in the tangent space at the origin.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;distance-exponential-and-logarithmic-maps&quot;&gt;Distance, exponential and logarithmic maps&lt;&#x2F;h3&gt;
+&lt;p&gt;$$
+d_{\mathbb{B}}(\mathbf{x}, \mathbf{y}) = \frac{2}{\sqrt{c}} \tanh^{-1}!\big(\sqrt{c},\lVert -\mathbf{x} \oplus_c \mathbf{y} \rVert\big).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\exp^{\mathbb{B}}&lt;em&gt;{\mathbf{x}}(\mathbf{v}) = \mathbf{x} \oplus_c \left(\tanh!\Big(\frac{\sqrt{c},\lambda&lt;&#x2F;em&gt;{\mathbf{x}} \lVert \mathbf{v} \rVert}{2}\Big) \frac{\mathbf{v}}{\sqrt{c}\lVert \mathbf{v} \rVert}\right),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\log^{\mathbb{B}}&lt;em&gt;{\mathbf{x}}(\mathbf{y}) = \frac{2}{\sqrt{c},\lambda&lt;&#x2F;em&gt;{\mathbf{x}}} \tanh^{-1}!\big(\sqrt{c},\lVert -\mathbf{x} \oplus_c \mathbf{y} \rVert\big) \frac{-\mathbf{x} \oplus_c \mathbf{y}}{\lVert -\mathbf{x} \oplus_c \mathbf{y} \rVert}.
+$$&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;notes&quot;&gt;Notes&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Points near the origin are close to everything. Distances between points near the boundary ($\lVert \mathbf{x} \rVert \to 1&#x2F;\sqrt{c}$) grow very fast.&lt;&#x2F;li&gt;
+&lt;li&gt;The $1 - c\lVert \mathbf{x} \rVert^2$ denominators make the ball numerically unstable near the boundary, especially in low precision.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;5-the-lorentz-hyperboloid-model-mathbb-h-n-c&quot;&gt;5. The Lorentz (hyperboloid) model $\mathbb{H}^n_c$&lt;&#x2F;h2&gt;
+&lt;p&gt;The Lorentz model places $n$-dimensional hyperbolic space on the upper sheet of a two-sheeted hyperboloid in $\mathbb{R}^{n+1}$.
+It is the model used by MERU, HyCoCLIP and most recent vision-language work, because it is more stable than the Poincaré ball.&lt;&#x2F;p&gt;
+&lt;p&gt;Write every $\mathbf{x} \in \mathbb{R}^{n+1}$ as $\mathbf{x} = (x_{\text{time}}, \mathbf{x}&lt;em&gt;{\text{space}})$ with $x&lt;&#x2F;em&gt;{\text{time}} \in \mathbb{R}$ and $\mathbf{x}_{\text{space}} \in \mathbb{R}^n$.
+The &lt;strong&gt;Lorentzian inner product&lt;&#x2F;strong&gt; has signature $(-, +, \dots, +)$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\langle \mathbf{x}, \mathbf{y} \rangle_{\mathcal{L}} = -x_{\text{time}}, y_{\text{time}} + \langle \mathbf{x}&lt;em&gt;{\text{space}}, \mathbf{y}&lt;&#x2F;em&gt;{\text{space}} \rangle.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;The model is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbb{H}^n_c = {\mathbf{x} \in \mathbb{R}^{n+1} : \langle \mathbf{x}, \mathbf{x} \rangle_{\mathcal{L}} = -1&#x2F;c,\ x_{\text{time}} &amp;gt; 0}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Equivalently, a point is on the hyperboloid if and only if its time component is determined by its space component:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+x_{\text{time}} = \sqrt{1&#x2F;c + \lVert \mathbf{x}_{\text{space}} \rVert^2}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;So in code you only store $\mathbf{x}&lt;em&gt;{\text{space}}$ and recompute $x&lt;&#x2F;em&gt;{\text{time}}$ when needed.
+The induced Lorentzian norm is $\lVert \mathbf{x} \rVert_{\mathcal{L}} = \sqrt{\lvert \langle \mathbf{x}, \mathbf{x} \rangle_{\mathcal{L}} \rvert}$.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;distance&quot;&gt;Distance&lt;&#x2F;h3&gt;
+&lt;p&gt;$$
+d_{\mathbb{H}}(\mathbf{x}, \mathbf{y}) = \frac{1}{\sqrt{c}} \cosh^{-1}!\big(-c,\langle \mathbf{x}, \mathbf{y} \rangle_{\mathcal{L}}\big).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;There is no fraction with a vanishing denominator, which is why it avoids the boundary problems of the Poincaré ball.
+In code, clamp the argument of $\cosh^{-1}$ to be at least $1 + \epsilon$.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;tangent-space-exponential-and-logarithmic-maps&quot;&gt;Tangent space, exponential and logarithmic maps&lt;&#x2F;h3&gt;
+&lt;p&gt;The tangent space at $\mathbf{x}$ is the set of vectors Lorentz-orthogonal to $\mathbf{x}$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+T_{\mathbf{x}}\mathbb{H}^n_c = {\mathbf{v} \in \mathbb{R}^{n+1} : \langle \mathbf{x}, \mathbf{v} \rangle_{\mathcal{L}} = 0}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\exp^{\mathbb{H}}&lt;em&gt;{\mathbf{x}}(\mathbf{v}) = \cosh(\sqrt{c}\lVert \mathbf{v} \rVert&lt;&#x2F;em&gt;{\mathcal{L}}),\mathbf{x} + \frac{\sinh(\sqrt{c}\lVert \mathbf{v} \rVert_{\mathcal{L}})}{\sqrt{c}\lVert \mathbf{v} \rVert_{\mathcal{L}}},\mathbf{v},
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\log^{\mathbb{H}}&lt;em&gt;{\mathbf{x}}(\mathbf{y}) = \frac{\cosh^{-1}(-c\langle \mathbf{x}, \mathbf{y} \rangle&lt;&#x2F;em&gt;{\mathcal{L}})}{\sqrt{(c\langle \mathbf{x}, \mathbf{y} \rangle_{\mathcal{L}})^2 - 1}}\ \mathrm{proj}&lt;em&gt;{\mathbf{x}}(\mathbf{y}),
+\qquad
+\mathrm{proj}&lt;&#x2F;em&gt;{\mathbf{x}}(\mathbf{u}) = \mathbf{u} + c,\langle \mathbf{x}, \mathbf{u} \rangle_{\mathcal{L}},\mathbf{x}.
+$$&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;the-trick-everyone-uses-lift-at-the-origin&quot;&gt;The trick everyone uses: lift at the origin&lt;&#x2F;h3&gt;
+&lt;p&gt;The origin of the hyperboloid is $\mathbf{O} = (1&#x2F;\sqrt{c}, \mathbf{0})$.
+Take an ordinary Euclidean feature $\mathbf{v}&lt;em&gt;{\text{euc}} \in \mathbb{R}^n$ (for example, the output of a CLIP encoder) and treat it as the tangent vector $\mathbf{v} = (0, \mathbf{v}&lt;&#x2F;em&gt;{\text{euc}})$ at $\mathbf{O}$.
+It is automatically in $T_{\mathbf{O}}\mathbb{H}^n_c$, so no projection is needed, and $\lVert \mathbf{v} \rVert_{\mathcal{L}} = \lVert \mathbf{v}_{\text{euc}} \rVert$.
+The exponential map then simplifies to&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{x}&lt;em&gt;{\text{space}} = \frac{\sinh(\sqrt{c}\lVert \mathbf{v}&lt;&#x2F;em&gt;{\text{euc}} \rVert)}{\sqrt{c}\lVert \mathbf{v}&lt;em&gt;{\text{euc}} \rVert},\mathbf{v}&lt;&#x2F;em&gt;{\text{euc}},
+\qquad
+x_{\text{time}} = \frac{\cosh(\sqrt{c}\lVert \mathbf{v}_{\text{euc}} \rVert)}{\sqrt{c}}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;This is how MERU turns a Euclidean image or text encoder into a hyperbolic one.
+MERU also multiplies the features by a learnable scalar before the lift, so the network can control how far from the origin embeddings land.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Norm now carries meaning.&lt;&#x2F;strong&gt;
+With $c = 1$, lift two tangent vectors $\mathbf{x}, \mathbf{y}$ and let $\theta$ be the angle between them. Then&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\langle \exp_{\mathbf{O}}(\mathbf{x}), \exp_{\mathbf{O}}(\mathbf{y}) \rangle_{\mathcal{L}} = -\cosh\lVert \mathbf{x} \rVert \cosh\lVert \mathbf{y} \rVert + \sinh\lVert \mathbf{x} \rVert \sinh\lVert \mathbf{y} \rVert \cos\theta .
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;This is the hyperbolic law of cosines, and $d_{\mathbb{H}} = \cosh^{-1}$ of its negative.
+Cosine similarity only sees $\theta$.
+The hyperbolic score also depends on both norms, so the radial position of an embedding changes rankings.
+If you lift a Euclidean model post hoc, the scale of its feature norms is therefore not a detail: it decides how much the geometry departs from plain cosine.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;linear-layers-on-the-hyperboloid&quot;&gt;Linear layers on the hyperboloid&lt;&#x2F;h3&gt;
+&lt;p&gt;A linear layer applied in the tangent space at the origin, $\exp_{\mathbf{O}}(\mathbf{W}\log_{\mathbf{O}}(\mathbf{x}))$, only realises a restricted family of Lorentz transformations.
+Chen et al. call it a &lt;strong&gt;Lorentz pseudo-rotation&lt;&#x2F;strong&gt;: it rotates and rescales the space part but contains no boost.
+The full family of Lorentz transformations is made of two parts.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Lorentz boost&lt;&#x2F;strong&gt;, for a velocity $\mathbf{v} \in \mathbb{R}^n$ with $\lVert \mathbf{v} \rVert &amp;lt; 1$ and $\gamma = 1&#x2F;\sqrt{1 - \lVert \mathbf{v} \rVert^2}$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{B} =
+\begin{bmatrix}
+\gamma &amp;amp; -\gamma \mathbf{v}^\top \
+-\gamma \mathbf{v} &amp;amp; \mathbf{I}_n + \frac{\gamma^2}{1 + \gamma} \mathbf{v}\mathbf{v}^\top
+\end{bmatrix}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Lorentz rotation&lt;&#x2F;strong&gt;, for $\tilde{\mathbf{R}} \in SO(n)$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{R} =
+\begin{bmatrix}
+1 &amp;amp; \mathbf{0}^\top \
+\mathbf{0} &amp;amp; \tilde{\mathbf{R}}
+\end{bmatrix}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Fully hyperbolic linear layer.&lt;&#x2F;strong&gt;
+Chen et al. avoid parameterising boosts and rotations directly.
+They apply any Euclidean map $f$ (for example $f(\mathbf{x}) = \mathbf{W}\mathbf{x} + \mathbf{b}$) to the full Lorentz vector to get the new space part, then recompute the time part so the output stays on the hyperboloid:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+f_c(\mathbf{x}) = \Big(\sqrt{\lVert f(\mathbf{x}) \rVert^2 + 1&#x2F;c},\ f(\mathbf{x})\Big).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Hypformer extends this to change curvature between layers, mapping $\mathbb{H}^n_{c_1} \to \mathbb{H}^{n’}_{c_2}$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+f^{\text{HTC}}_{c_1, c_2}(\mathbf{x}) = \sqrt{c_1&#x2F;c_2},\Big(\sqrt{\lVert f(\mathbf{x}) \rVert^2 + 1&#x2F;c_1},\ f(\mathbf{x})\Big).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;You can check that the output satisfies $\langle \mathbf{y}, \mathbf{y} \rangle_{\mathcal{L}} = -1&#x2F;c_2$.
+Its sibling HRC applies $f$ to the space part only, which is how Hypformer wraps layer norm, activations and dropout.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;averaging-points-the-lorentz-centroid&quot;&gt;Averaging points: the Lorentz centroid&lt;&#x2F;h3&gt;
+&lt;p&gt;The natural mean on a manifold is the Fréchet mean, which minimises the sum of squared geodesic distances.
+It has no closed form and needs an iterative solver, which is too slow inside a network.
+The &lt;strong&gt;Lorentz centroid&lt;&#x2F;strong&gt; instead minimises the squared Lorentzian distance $d^2_{\mathcal{L}}(\mathbf{x}, \mathbf{y}) = -2&#x2F;c - 2\langle \mathbf{x}, \mathbf{y} \rangle_{\mathcal{L}}$, and has a closed form.
+For points $\mathbf{x}_i$ with weights $w_i \geq 0$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\boldsymbol{\mu} = \frac{1}{\sqrt{c}} \cdot \frac{\sum_i w_i \mathbf{x}_i}{\big\lVert \sum_i w_i \mathbf{x}&lt;em&gt;i \big\rVert&lt;&#x2F;em&gt;{\mathcal{L}}}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Take the weighted Euclidean sum in ambient space, then rescale it back onto the hyperboloid.
+For points close together, the squared Lorentzian distance is close to the squared geodesic distance, so the centroid is a good surrogate for the Fréchet mean.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;pooling-without-collapsing-to-the-origin&quot;&gt;Pooling without collapsing to the origin&lt;&#x2F;h3&gt;
+&lt;p&gt;Averaging many tokens and projecting back pulls the result toward the origin.
+By convexity, the pooled point is strictly closer to the origin than the farthest token unless all tokens coincide.
+Since radius encodes specificity, naive pooling makes documents look more generic than their tokens.&lt;&#x2F;p&gt;
+&lt;p&gt;The Einstein midpoint weights each point by its Lorentz factor, which helps a little.
+On the hyperboloid (with $c = 1$) the Lorentz factor is simply $\gamma_{\mathbf{x}} = x_{\text{time}}$.
+HypRAG argues this weight grows only like $e^{\sqrt{c}\rho}$ at radius $\rho$, while volume grows like $e^{(n-1)\sqrt{c}\rho}$, so it still under-compensates.
+Their &lt;strong&gt;Outward Einstein Midpoint&lt;&#x2F;strong&gt; (OEM) adds an extra radial weight $\phi_p(\mathbf{x}) = \gamma_{\mathbf{x}}^p$ with $p &amp;gt; 0$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\boldsymbol{\mu}_{\text{OEM}} = \frac{\sum_i w_i,\phi_p(\mathbf{x}&lt;em&gt;i),\gamma&lt;&#x2F;em&gt;{\mathbf{x}_i},\mathbf{x}_i}{\sum_i w_i,\phi_p(\mathbf{x}&lt;em&gt;i),\gamma&lt;&#x2F;em&gt;{\mathbf{x}_i}},
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;followed by the same reprojection as the Lorentz centroid.
+Tokens far from the origin get much larger weight, which keeps the pooled embedding specific.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;radius-as-uncertainty&quot;&gt;Radius as uncertainty&lt;&#x2F;h3&gt;
+&lt;p&gt;Because radius encodes specificity, it can also be read as confidence.
+For a point lifted from the tangent vector $\mathbf{v}$, the ratio $\lVert \mathbf{x}&lt;em&gt;{\text{space}} \rVert &#x2F; x&lt;&#x2F;em&gt;{\text{time}}$ simplifies nicely:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\text{Uncertainty}(\mathbf{x}) = 1 - \frac{\lVert \mathbf{x}&lt;em&gt;{\text{space}} \rVert}{x&lt;&#x2F;em&gt;{\text{time}}} = 1 - \tanh!\big(\sqrt{c},\lVert \mathbf{v} \rVert\big) \in (0, 1].
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Points at the origin have maximal uncertainty, and uncertainty decays to zero as points move outward.
+Bui et al. use this to make representation updates backward compatible.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;6-the-klein-model-mathbb-k-n-c&quot;&gt;6. The Klein model $\mathbb{K}^n_c$&lt;&#x2F;h2&gt;
+&lt;p&gt;$$
+\mathbb{K}^n_c = {\mathbf{x} \in \mathbb{R}^n : c\lVert \mathbf{x} \rVert^2 &amp;lt; 1}, \qquad
+g^{\mathbb{K}}_{\mathbf{x}} = \frac{\mathbf{I}_n}{1 - c\lVert \mathbf{x} \rVert^2} + \frac{c,\mathbf{x}\mathbf{x}^\top}{(1 - c\lVert \mathbf{x} \rVert^2)^2}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Its key property: &lt;strong&gt;geodesics are Euclidean straight lines&lt;&#x2F;strong&gt;.
+That makes it the convenient model for anything involving segments and convex combinations.
+The price is that it is not conformal, so angles are distorted.&lt;&#x2F;p&gt;
+&lt;p&gt;Its gyrovector structure is the Einstein gyrovector space.
+With the Lorentz factor $\gamma_{\mathbf{x}} = 1&#x2F;\sqrt{1 - c\lVert \mathbf{x} \rVert^2}$, &lt;strong&gt;Einstein addition&lt;&#x2F;strong&gt; is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{x} \oplus_E \mathbf{y} = \frac{1}{1 + c\langle \mathbf{x}, \mathbf{y} \rangle}\left(\mathbf{x} + \frac{1}{\gamma_{\mathbf{x}}}\mathbf{y} + c,\frac{\gamma_{\mathbf{x}}}{1 + \gamma_{\mathbf{x}}}\langle \mathbf{x}, \mathbf{y} \rangle,\mathbf{x}\right).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Distance.&lt;&#x2F;strong&gt; The direct formula is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+d_{\mathbb{K}}(\mathbf{x}, \mathbf{y}) = \frac{1}{\sqrt{c}} \cosh^{-1}!\left(\frac{1 - c\langle \mathbf{x}, \mathbf{y} \rangle}{\sqrt{1 - c\lVert \mathbf{x} \rVert^2},\sqrt{1 - c\lVert \mathbf{y} \rVert^2}}\right),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;but it is unstable when the argument is close to 1.
+Klein Hyperbolic Metric Learning uses the equivalent gyrovector form instead:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+d_{\mathbb{K}}(\mathbf{x}, \mathbf{y}) = \frac{1}{\sqrt{c}} \tanh^{-1}!\big(\sqrt{c},\lVert -\mathbf{x} \oplus_E \mathbf{y} \rVert\big).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Einstein midpoint.&lt;&#x2F;strong&gt;
+The Einstein midpoint is the gyro-barycenter of a set of points in the Klein model: $\sum_i \gamma_i \mathbf{x}_i &#x2F; \sum_i \gamma_i$.
+Through the standard isometries it is equivalent to the Lorentz centroid (Shimizu et al.).
+Chen et al. still prefer the Lorentz centroid, because the Einstein midpoint requires a round trip between models and does not minimise a squared distance in theory.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;7-moving-between-models&quot;&gt;7. Moving between models&lt;&#x2F;h2&gt;
+&lt;p&gt;All three models are isometric.
+The maps below hold for general $c$, with $\mathbf{x} = (x_{\text{time}}, \mathbf{x}_{\text{space}}) \in \mathbb{H}^n_c$, $\mathbf{p} \in \mathbb{B}^n_c$ and $\mathbf{k} \in \mathbb{K}^n_c$.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;From&lt;&#x2F;th&gt;&lt;th&gt;To&lt;&#x2F;th&gt;&lt;th&gt;Map&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Lorentz&lt;&#x2F;td&gt;&lt;td&gt;Poincaré&lt;&#x2F;td&gt;&lt;td&gt;$\mathbf{p} = \dfrac{\mathbf{x}&lt;em&gt;{\text{space}}}{1 + \sqrt{c},x&lt;&#x2F;em&gt;{\text{time}}}$&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Poincaré&lt;&#x2F;td&gt;&lt;td&gt;Lorentz&lt;&#x2F;td&gt;&lt;td&gt;$\mathbf{x} = \left(\dfrac{1 + c\lVert \mathbf{p} \rVert^2}{\sqrt{c},(1 - c\lVert \mathbf{p} \rVert^2)},\ \dfrac{2\mathbf{p}}{1 - c\lVert \mathbf{p} \rVert^2}\right)$&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Lorentz&lt;&#x2F;td&gt;&lt;td&gt;Klein&lt;&#x2F;td&gt;&lt;td&gt;$\mathbf{k} = \dfrac{\mathbf{x}&lt;em&gt;{\text{space}}}{\sqrt{c},x&lt;&#x2F;em&gt;{\text{time}}}$&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Klein&lt;&#x2F;td&gt;&lt;td&gt;Lorentz&lt;&#x2F;td&gt;&lt;td&gt;$\mathbf{x} = \left(\dfrac{1}{\sqrt{c}\sqrt{1 - c\lVert \mathbf{k} \rVert^2}},\ \dfrac{\mathbf{k}}{\sqrt{1 - c\lVert \mathbf{k} \rVert^2}}\right)$&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Klein&lt;&#x2F;td&gt;&lt;td&gt;Poincaré&lt;&#x2F;td&gt;&lt;td&gt;$\mathbf{p} = \dfrac{\mathbf{k}}{1 + \sqrt{1 - c\lVert \mathbf{k} \rVert^2}}$&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Poincaré&lt;&#x2F;td&gt;&lt;td&gt;Klein&lt;&#x2F;td&gt;&lt;td&gt;$\mathbf{k} = \dfrac{2\mathbf{p}}{1 + c\lVert \mathbf{p} \rVert^2}$&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;A common pattern is to store and score in Lorentz, and convert to Poincaré or Klein only for operations that are easier there (Möbius addition, Einstein midpoints, visualisation in 2D).&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;8-entailment-cones-hierarchy-as-geometry&quot;&gt;8. Entailment cones: hierarchy as geometry&lt;&#x2F;h2&gt;
+&lt;p&gt;Distance alone is symmetric, but hierarchy is not: “animal” entails “cat”, not the reverse.
+&lt;strong&gt;Hyperbolic entailment cones&lt;&#x2F;strong&gt; (Ganea et al.) encode this asymmetry.
+Each point $\mathbf{x}$ owns a cone, and $\mathbf{y}$ is a child of $\mathbf{x}$ if $\mathbf{y}$ lies inside it.&lt;&#x2F;p&gt;
+&lt;p&gt;In the Lorentz parameterisation used by MERU, the &lt;strong&gt;half-aperture&lt;&#x2F;strong&gt; of the cone at $\mathbf{x}$ is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\text{aper}(\mathbf{x}) = \sin^{-1}!\left(\frac{2K}{\sqrt{c},\lVert \mathbf{x}_{\text{space}} \rVert}\right), \qquad K = 0.1 .
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;The aperture shrinks as the point moves outward.
+General concepts sit near the origin with wide cones, and specific concepts sit far out with narrow cones.&lt;&#x2F;p&gt;
+&lt;p&gt;The &lt;strong&gt;exterior angle&lt;&#x2F;strong&gt; $\text{ext}(\mathbf{x}, \mathbf{y}) = \pi - \angle \mathbf{O}\mathbf{x}\mathbf{y}$ measures how far $\mathbf{y}$ is from the cone axis:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\text{ext}(\mathbf{x}, \mathbf{y}) = \cos^{-1}!\left(\frac{y_{\text{time}} + x_{\text{time}}, c\langle \mathbf{x}, \mathbf{y} \rangle_{\mathcal{L}}}{\lVert \mathbf{x}&lt;em&gt;{\text{space}} \rVert \sqrt{(c\langle \mathbf{x}, \mathbf{y} \rangle&lt;&#x2F;em&gt;{\mathcal{L}})^2 - 1}}\right).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;The Euclidean version, from the law of cosines, is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\text{ext}^{\mathbb{E}}(\mathbf{x}, \mathbf{y}) = \cos^{-1}!\left(\frac{\lVert \mathbf{y} \rVert^2 - \lVert \mathbf{x} \rVert^2 - \lVert \mathbf{x} - \mathbf{y} \rVert^2}{2\lVert \mathbf{x} \rVert,\lVert \mathbf{x} - \mathbf{y} \rVert}\right).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;The relation holds when $\text{ext}(\mathbf{x}, \mathbf{y}) \leq \text{aper}(\mathbf{x})$, which gives the entailment loss&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{L}_{\text{EC}} = \max\big(0,\ \text{ext}(\mathbf{x}, \mathbf{y}) - \text{aper}(\mathbf{x})\big).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;In MERU, $\mathbf{x}$ is the text embedding and $\mathbf{y}$ the paired image: text is more general than the image it describes.
+HyCoCLIP extends this to compositional hierarchies with boxes and object crops.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;problems-with-the-aperture-and-what-replaced-it&quot;&gt;Problems with the aperture, and what replaced it&lt;&#x2F;h3&gt;
+&lt;p&gt;The aperture ties cone width to embedding norm.
+When $\lVert \mathbf{x}_{\text{space}} \rVert &amp;lt; 2K&#x2F;\sqrt{c}$, the argument of $\sin^{-1}$ exceeds 1 and must be clipped, and the cone becomes a half-space.
+ARGENT points out that models can exploit this: shrinking parent norms makes the cones trivially wide, which satisfies the loss while destroying the hierarchy.
+Recent work keeps the exterior angle but drops the aperture as a threshold.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Radial embeddings&lt;&#x2F;strong&gt; (Alper and Averbuch-Elor): contrast the exterior angle of a positive child against a negative child, $\text{ext}(\mathbf{x}, \mathbf{y}^+) - \text{ext}(\mathbf{x}, \mathbf{y}^-)$. The loss is deliberately asymmetric.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Global and local entailment&lt;&#x2F;strong&gt; (Sastry et al.): the radial loss is local. To enforce transitivity across a chain $\mathbf{x}&lt;em&gt;{j-1} \to \mathbf{x}&lt;em&gt;j \to \mathbf{x}&lt;&#x2F;em&gt;{j+1}$, they add a hinge that bounds $\text{ext}(\mathbf{x}&lt;&#x2F;em&gt;{j-1}, \mathbf{x}_{j+1})$ using the similarities along the chain, combined with a contrastive loss.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;ARGENT&lt;&#x2F;strong&gt; (Huynh et al.): an adaptive entailment loss, a Huber penalty on $h(\mathbf{x}, \mathbf{y}) \cdot \text{ext}(\mathbf{x}, \mathbf{y})$, where $h = 1$ for intra-modal pairs and $h = 1 - e^{-d_{\mathcal{L}}(\mathbf{x}, \mathbf{y})}$ for cross-modal pairs. A norm regulariser $\lVert \mathbf{x}&lt;em&gt;{\text{space}} \rVert^2 - \log \lVert \mathbf{x}&lt;&#x2F;em&gt;{\text{space}} \rVert$ keeps norms away from both zero and infinity.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;9-retrieval-and-fine-tuning-in-hyperbolic-space&quot;&gt;9. Retrieval and fine-tuning in hyperbolic space&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;scoring&quot;&gt;Scoring&lt;&#x2F;h3&gt;
+&lt;p&gt;Euclidean retrieval ranks by cosine similarity.
+Hyperbolic models rank by negative geodesic distance or by the Lorentzian inner product.
+Since $\cosh^{-1}$ is monotonic, $-d_{\mathbb{H}}(\mathbf{q}, \mathbf{d})$ and $\langle \mathbf{q}, \mathbf{d} \rangle_{\mathcal{L}}$ give &lt;strong&gt;the same ranking&lt;&#x2F;strong&gt;.
+They differ only as training logits, because the temperature in a contrastive loss interacts differently with each scale.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;hyperbolic-parameter-efficient-fine-tuning&quot;&gt;Hyperbolic parameter-efficient fine-tuning&lt;&#x2F;h3&gt;
+&lt;p&gt;The same operations can act on weights instead of embeddings.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;HyperET&lt;&#x2F;strong&gt; observes that Euclidean VLMs align vision and language at a single granularity, while hyperbolic radius can index granularity.
+It updates a pretrained matrix with a Möbius matrix multiplication,&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{W}’ = \log_{\mathbf{0}}\big(\mathbf{M} \otimes_c \exp_{\mathbf{0}}(\mathbf{W})\big),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\mathbf{M}$ is diagonal, block-diagonal or banded to keep it cheap.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;HypCL&lt;&#x2F;strong&gt; brings this idea to continual learning of CLIP.
+Instead of the additive LoRA update $\mathbf{W} + \mathbf{B}\mathbf{A}$, it uses a right-multiplicative update composed with Möbius addition:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{W}’ = \log_{\mathbf{0}}\big(\exp_{\mathbf{0}}(\mathbf{W}) \oplus_c \exp_{\mathbf{0}}(\mathbf{W}\mathbf{M})\big).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;After a sequence of tasks, the task updates are chained with Möbius additions anchored to the frozen weights, $\exp_{\mathbf{0}}(\mathbf{W}&lt;em&gt;0) \oplus_c \exp&lt;&#x2F;em&gt;{\mathbf{0}}(\mathbf{W}\mathbf{M}&lt;em&gt;1) \oplus_c \dots \oplus_c \exp&lt;&#x2F;em&gt;{\mathbf{0}}(\mathbf{W}\mathbf{M}_t)$.
+Because Möbius addition is not associative, the composition depends on task order, unlike the linear sum $\mathbf{W}_0 + \sum_i \alpha \mathbf{M}_i$ used by C-CLIP.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;HMCL&lt;&#x2F;strong&gt; works natively on the hyperboloid.
+It freezes a pretrained hyperbolic encoder, trains a light Lorentz linear head, and projects updates onto a subspace orthogonal to old-task representations.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;HypLoRA&lt;&#x2F;strong&gt; (Yang et al.) points out a trap: LoRA in the tangent space at the origin is just Euclidean LoRA, because $\log_{\mathbf{O}}(\exp_{\mathbf{O}}(\mathbf{v})) = \mathbf{v}$.
+Their fix applies the low-rank map to the space component on the manifold and recomputes the time component, so the update actually feels the curvature.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;10-practical-checklist&quot;&gt;10. Practical checklist&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Prefer the Lorentz model for storage and scoring. Keep only the space part and recompute the time part.&lt;&#x2F;li&gt;
+&lt;li&gt;Clamp the argument of $\cosh^{-1}$ (at least $1 + \epsilon$) and of $\tanh^{-1}$ (at most $1 - \epsilon$). Compute distances in float32 even under mixed precision.&lt;&#x2F;li&gt;
+&lt;li&gt;When lifting a Euclidean model, control the norm of features before $\exp_{\mathbf{O}}$ (a learnable scale, as in MERU). Without it, $\sinh$ and $\cosh$ overflow or the geometry collapses to cosine.&lt;&#x2F;li&gt;
+&lt;li&gt;Remember that a linear layer in the tangent space at the origin is still mostly Euclidean. Use fully hyperbolic layers if you need boosts.&lt;&#x2F;li&gt;
+&lt;li&gt;Use the Lorentz centroid, not a Euclidean mean, to average points. Use OEM-style weighting when pooling many tokens.&lt;&#x2F;li&gt;
+&lt;li&gt;Check $\delta$-hyperbolicity before assuming your data is tree-like.&lt;&#x2F;li&gt;
+&lt;li&gt;If you use entailment cones, watch the parent norms. If they shrink below $2K&#x2F;\sqrt{c}$, the cone loss has become trivial.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;K. Desai, M. Nickel, T. Rajpurohit, J. Johnson, R. Vedantam. &lt;em&gt;Hyperbolic Image-Text Representations&lt;&#x2F;em&gt; (MERU). ICML 2023.&lt;&#x2F;li&gt;
+&lt;li&gt;R. Shimizu, Y. Mukuta, T. Harada. &lt;em&gt;Hyperbolic Neural Networks++&lt;&#x2F;em&gt;. ICLR 2021.&lt;&#x2F;li&gt;
+&lt;li&gt;W. Chen et al. &lt;em&gt;Fully Hyperbolic Neural Networks&lt;&#x2F;em&gt;. ACL 2022.&lt;&#x2F;li&gt;
+&lt;li&gt;M. Law, R. Liao, J. Snell, R. Zemel. &lt;em&gt;Lorentzian Distance Learning for Hyperbolic Representations&lt;&#x2F;em&gt;. ICML 2019.&lt;&#x2F;li&gt;
+&lt;li&gt;O. Ganea, G. Bécigneul, T. Hofmann. &lt;em&gt;Hyperbolic Entailment Cones for Learning Hierarchical Embeddings&lt;&#x2F;em&gt;. ICML 2018.&lt;&#x2F;li&gt;
+&lt;li&gt;A. Ungar. &lt;em&gt;A Gyrovector Space Approach to Hyperbolic Geometry&lt;&#x2F;em&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;A. Pal et al. &lt;em&gt;Compositional Entailment Learning for Hyperbolic Vision-Language Models&lt;&#x2F;em&gt; (HyCoCLIP). ICLR 2025.&lt;&#x2F;li&gt;
+&lt;li&gt;N. Bui et al. &lt;em&gt;Learning Along the Arrow of Time: Hyperbolic Geometry for Backward-Compatible Representation Learning&lt;&#x2F;em&gt;. ICLR 2025.&lt;&#x2F;li&gt;
+&lt;li&gt;M. Yang et al. &lt;em&gt;Hypformer: Exploring Efficient Transformer Fully in Hyperbolic Space&lt;&#x2F;em&gt;. KDD 2024.&lt;&#x2F;li&gt;
+&lt;li&gt;N. He et al. &lt;em&gt;Hyperbolic Deep Learning for Foundation Models: A Survey&lt;&#x2F;em&gt;. KDD 2025.&lt;&#x2F;li&gt;
+&lt;li&gt;M. Yang, J. Liu, I. King, R. Ying. &lt;em&gt;Hyperbolic Fine-Tuning for Large Language Models&lt;&#x2F;em&gt; (HypLoRA). NeurIPS 2025.&lt;&#x2F;li&gt;
+&lt;li&gt;Z. Peng et al. &lt;em&gt;HyperET: Efficient Training in Hyperbolic Space for Multi-modal Large Language Models&lt;&#x2F;em&gt;. NeurIPS 2025.&lt;&#x2F;li&gt;
+&lt;li&gt;M. Alper, H. Averbuch-Elor. &lt;em&gt;Emergent Visual-Semantic Hierarchies in Image-Text Representations&lt;&#x2F;em&gt;. ECCV 2024.&lt;&#x2F;li&gt;
+&lt;li&gt;S. Sastry et al. &lt;em&gt;Global and Local Entailment Learning for Natural World Imagery&lt;&#x2F;em&gt;. ICCV 2025.&lt;&#x2F;li&gt;
+&lt;li&gt;C. Huynh et al. &lt;em&gt;ARGENT: Adaptive Hierarchical Image-Text Representations&lt;&#x2F;em&gt;. ECCV 2026.&lt;&#x2F;li&gt;
+&lt;li&gt;H. Madhu et al. &lt;em&gt;HypRAG: Hyperbolic Dense Retrieval for Retrieval Augmented Generation&lt;&#x2F;em&gt;. ICML 2026.&lt;&#x2F;li&gt;
+&lt;li&gt;Y. Zhang, B. Hu, H. Li, J. Hu. &lt;em&gt;Klein Hyperbolic Metric Learning&lt;&#x2F;em&gt;. ICML 2026.&lt;&#x2F;li&gt;
+&lt;li&gt;Q. Cheng, H. Yu, D.-W. Zhou, L. Zhang. &lt;em&gt;HypCL: Adapting CLIP in Hyperbolic Space for Continual Learning&lt;&#x2F;em&gt;. ICML 2026.&lt;&#x2F;li&gt;
+&lt;li&gt;J. Liu et al. &lt;em&gt;Hyperbolic Multimodal Continual Learning&lt;&#x2F;em&gt; (HMCL). ICML 2026.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Week 47 · 16–22 Nov 2026</title>
+        <published>2026-11-16T00:00:00+00:00</published>
+        <updated>2026-11-16T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Tuan-Luc Huynh
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://louisdo2108.github.io/digest/2026-w47/"/>
+        <id>https://louisdo2108.github.io/digest/2026-w47/</id>
+        
+        <content type="html" xml:base="https://louisdo2108.github.io/digest/2026-w47/"></content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Week 46 · 9–15 Nov 2026</title>
+        <published>2026-11-09T00:00:00+00:00</published>
+        <updated>2026-11-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Tuan-Luc Huynh
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://louisdo2108.github.io/digest/2026-w46/"/>
+        <id>https://louisdo2108.github.io/digest/2026-w46/</id>
+        
+        <content type="html" xml:base="https://louisdo2108.github.io/digest/2026-w46/"></content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>BraTS 2018: A Beginner&#x27;s Guide to Brain Tumor MRI</title>
+        <published>2023-02-22T00:00:00+00:00</published>
+        <updated>2026-11-13T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Tuan-Luc Huynh
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://louisdo2108.github.io/posts/brats2018/"/>
+        <id>https://louisdo2108.github.io/posts/brats2018/</id>
+        
+        <summary type="html">&lt;p&gt;Brain tumor segmentation is an important task in medical image analysis. The BraTS (Brain Tumor Segmentation) challenge dataset is one of the most widely used benchmarks in the field. Brain imaging can be hard to start with, especially without a background in its medical terms and annotations. This post is a beginner’s guide to the BraTS 2018 dataset. It covers the basics of brain imaging and the annotations used in the data.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Separable Convolutions, Briefly</title>
+        <published>2023-01-26T00:00:00+00:00</published>
+        <updated>2023-01-26T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Tuan-Luc Huynh
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://louisdo2108.github.io/posts/separable-convolutions/"/>
+        <id>https://louisdo2108.github.io/posts/separable-convolutions/</id>
+        
+        <summary type="html">&lt;p&gt;Separable convolutions trade a single expensive convolution for two cheap ones. This is a short note on the two flavors, spatial and depthwise, and their drawbacks.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

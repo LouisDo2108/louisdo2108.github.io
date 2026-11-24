@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>document.documentElement.classList.add("js")</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b0d10">
+  <title>Week 46 · 9–15 Nov 2026 · Tuan-Luc Huynh</title>
+  <meta name="description" content="Paper digest for ISO week 2026-W46: legible LLM-driven recommendation, robot-use agents trained with RL in simulation, coverage collapse in policy optimization, speculative self-distillation and action representations for world models.">
+  <meta property="og:title" content="Week 46 · 9–15 Nov 2026 · Tuan-Luc Huynh">
+  <meta property="og:description" content="Paper digest for ISO week 2026-W46: legible LLM-driven recommendation, robot-use agents trained with RL in simulation, coverage collapse in policy optimization, speculative self-distillation and action representations for world models.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;">
+  <meta property="og:image" content="https://louisdo2108.github.io/avatar.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;">
+  <link rel="icon" type="image/svg+xml" href="https://louisdo2108.github.io/icons/penguin.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://louisdo2108.github.io/icons/penguin-32.png">
+  <link rel="apple-touch-icon" href="https://louisdo2108.github.io/icons/penguin-180.png">
+  <link rel="alternate" type="application/atom+xml" title="Tuan-Luc Huynh" href="https://louisdo2108.github.io/atom.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://louisdo2108.github.io/main.css?h=d1f394651d67f7c82d36">
+  <link rel="stylesheet" href="https://louisdo2108.github.io/syntax.css">
+</head>
+<body class="">
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="https://louisdo2108.github.io/"><span class="brand-name">Louis Do</span></a>
+      <ul class="nav-links">
+        <li><a href="https://louisdo2108.github.io/publications/">Research</a></li>
+        <li><a href="https://louisdo2108.github.io/posts/">Writing</a></li>
+        <li><a href="https://louisdo2108.github.io/digest/" class="active" aria-current="page">Digest</a></li>
+        <li><a href="https://louisdo2108.github.io/about/">About</a></li>
+        <li><a class="nav-lang" href="https://louisdo2108.github.io/zh-hk/" hreflang="zh-Hant-HK" lang="zh-Hant-HK" aria-label="廣東話版本" title="廣東話版本">粵</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" class="container">
+<header class="page-head">
+  <p class="kicker mono reveal">// weekly digest · 2026-W46</p>
+  <h1 class="reveal">Week 46 · 9–15 Nov 2026</h1>
+  <p class="digest-meta mono muted reveal">5 new papers · 3 to revise · Mon 09 Nov – Sun 15 Nov 2026</p>
+  <p class="digest-ai small muted reveal">Curated weekly with AI assistance. Summaries can contain mistakes, so check the paper before citing. Figures are reproduced for review with credit to the authors; <a href="mailto:louisdo2108@gmail.com">contact me</a> to have one removed.</p>
+  <div class="page-lede reveal"><p><span class="mono digest-trend-label">trend of the week —</span> Post-training is the common thread this week: theory explains why REINFORCE-style updates can collapse a base model&#x27;s coverage, while self-distillation and RL in simulation push new knowledge and skills (even robot control) into open-weight models. On the retrieval side, LLM-written natural-language interest profiles are now a production retrieval key at Meta, and world models increasingly reuse pretrained video encoders such as V-JEPA 2 instead of learning actions from scratch.</p></div>
+</header>
+<section class="year-group digest-revision">
+  <h2 class="year mono">Revision · fundamentals worth re-reading</h2>
+  <div class="pub-list">
+<article class="pub digest-paper has-figure reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">NeurIPS 2023</span>
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title"><a href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2305.05065" target="_blank" rel="noopener">Recommender Systems with Generative Retrieval</a></h3>
+    <p class="pub-authors">Google, University of Wisconsin–Madison</p><p class="pub-venue-full">Advances in Neural Information Processing Systems</p><p class="pub-tldr">TIGER: items become tuples of semantic IDs and recommendation becomes generative retrieval, the base that this week&#x27;s generative recommenders (and CLEAR&#x27;s retrieval addressing) build on.</p>
+    <div class="pub-links"><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2305.05065" target="_blank" rel="noopener">pdf</a><a class="chip-link" href="https:&#x2F;&#x2F;doi.org&#x2F;10.52202&#x2F;075280-0452" target="_blank" rel="noopener">proceedings</a><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2305.05065" target="_blank" rel="noopener">arxiv</a>
+    </div>
+  </div>
+  <figure class="digest-fig">
+    <a href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;tiger.png" target="_blank" rel="noopener" title="Open full size">
+      <img src="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;tiger.png" alt="Figure 1: Overview of the TIGER framework. Sequential recommendation is expressed as generative retrieval by representin…" loading="lazy">
+    </a><figcaption>Figure 1: Overview of the TIGER framework. Sequential recommendation is expressed as generative retrieval by representing each item as a tuple of discrete semantic tokens. <span class="digest-fig-src">Source: the paper.</span></figcaption>
+  </figure>
+</article>
+
+<article class="pub digest-paper reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">ICLR 2024</span>
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title"><a href="https:&#x2F;&#x2F;proceedings.iclr.cc&#x2F;paper_files&#x2F;paper&#x2F;2024&#x2F;file&#x2F;5be69a584901a26c521c2b51e40a4c20-Paper-Conference.pdf" target="_blank" rel="noopener">On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes</a></h3>
+    <p class="pub-authors">Google DeepMind</p><p class="pub-venue-full">International Conference on Learning Representations</p><p class="pub-tldr">GKD: trains the student on its own samples with teacher feedback, the on-policy distillation baseline that Speculative Self-Distillation refines.</p>
+    <div class="pub-links"><a class="chip-link" href="https:&#x2F;&#x2F;proceedings.iclr.cc&#x2F;paper_files&#x2F;paper&#x2F;2024&#x2F;file&#x2F;5be69a584901a26c521c2b51e40a4c20-Paper-Conference.pdf" target="_blank" rel="noopener">pdf</a><a class="chip-link" href="https:&#x2F;&#x2F;proceedings.iclr.cc&#x2F;paper_files&#x2F;paper&#x2F;2024&#x2F;hash&#x2F;5be69a584901a26c521c2b51e40a4c20-Abstract-Conference.html" target="_blank" rel="noopener">proceedings</a><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2306.13649" target="_blank" rel="noopener">arxiv</a>
+    </div>
+  </div>
+</article>
+
+<article class="pub digest-paper has-figure reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">arXiv 2025</span>
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title"><a href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2506.09985" target="_blank" rel="noopener">V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning</a></h3>
+    <p class="pub-authors">Meta FAIR</p><p class="pub-venue-full">arXiv preprint</p><p class="pub-tldr">A self-supervised video encoder pretrained on 1M+ hours of video that also serves as an action-conditioned world model for planning; OnlyAct and several JEPA world models this week start from it.</p>
+    <div class="pub-links"><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2506.09985" target="_blank" rel="noopener">pdf</a><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2506.09985" target="_blank" rel="noopener">arxiv</a><a class="chip-link" href="https:&#x2F;&#x2F;github.com&#x2F;facebookresearch&#x2F;vjepa2" target="_blank" rel="noopener">code</a>
+    </div>
+  </div>
+  <figure class="digest-fig">
+    <a href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;vjepa2.png" target="_blank" rel="noopener" title="Open full size">
+      <img src="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;vjepa2.png" alt="Figure 1: V-JEPA 2 overview. The video model is pretrained with a mask-denoising objective on internet-scale video and i…" loading="lazy">
+    </a><figcaption>Figure 1: V-JEPA 2 overview. The video model is pretrained with a mask-denoising objective on internet-scale video and images, then used for understanding, prediction and robot planning. <span class="digest-fig-src">Source: the paper · CC BY 4.0.</span></figcaption>
+  </figure>
+</article>
+
+  </div>
+</section>
+<section class="year-group">
+  <h2 class="year mono">Retrieval &amp; recommendation</h2>
+  <div class="pub-list">
+<article class="pub digest-paper reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">arXiv 2026</span>
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title"><a href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.19110" target="_blank" rel="noopener">CLEAR: Legible and Steerable Recommendation via Grounded Natural-Language Interests</a></h3>
+    <p class="pub-authors">Meta</p><p class="pub-venue-full">arXiv preprint</p><p class="pub-tldr">A deployed recommender (Instagram, Facebook) whose user state is an editable list of LLM-inferred, behaviour-grounded interests; each interest drives lexical, behavioural and embedding retrieval plus ranking.</p>
+    <div class="pub-links"><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.19110" target="_blank" rel="noopener">pdf</a><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2611.19110" target="_blank" rel="noopener">arxiv</a>
+    </div>
+  </div>
+</article>
+
+  </div>
+</section>
+<section class="year-group">
+  <h2 class="year mono">Agents &amp; agentic RL</h2>
+  <div class="pub-list">
+<article class="pub digest-paper has-figure reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">arXiv 2026</span>
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title"><a href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.18562" target="_blank" rel="noopener">Training Reasoning Models in Simulation to Natively Use Real Robots</a></h3>
+    <p class="pub-authors">MIT, UC Berkeley, UCSD, NVIDIA</p><p class="pub-venue-full">arXiv preprint</p><p class="pub-tldr">Treats robot control like computer use: an open-weight 27B reasoning model is trained with RL purely in simulation to output end-effector poses, then transfers to unseen tasks, a new robot and a real dual-arm robot.</p>
+    <div class="pub-links"><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.18562" target="_blank" rel="noopener">pdf</a><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2611.18562" target="_blank" rel="noopener">arxiv</a><a class="chip-link" href="https:&#x2F;&#x2F;github.com&#x2F;mit-han-lab&#x2F;pear" target="_blank" rel="noopener">code</a>
+    </div>
+  </div>
+  <figure class="digest-fig">
+    <a href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;robot-use-rl.png" target="_blank" rel="noopener" title="Open full size">
+      <img src="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;robot-use-rl.png" alt="Figure 2: One round of robot use. Like a computer-use agent that observes a screenshot and outputs a click, the model ob…" loading="lazy">
+    </a><figcaption>Figure 2: One round of robot use. Like a computer-use agent that observes a screenshot and outputs a click, the model observes camera views and arm state, reasons, and outputs the next end-effector pose. <span class="digest-fig-src">Source: the paper.</span></figcaption>
+  </figure>
+</article>
+
+  </div>
+</section>
+<section class="year-group">
+  <h2 class="year mono">Reinforcement learning</h2>
+  <div class="pub-list">
+<article class="pub digest-paper has-figure reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">arXiv 2026</span>
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title"><a href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.14467" target="_blank" rel="noopener">A Theory of Policy Optimization in Post-Training: Coverage Collapse and Reference Resets</a></h3>
+    <p class="pub-authors">Microsoft Research, Kempner Institute at Harvard, UIUC, UCSD</p><p class="pub-venue-full">arXiv preprint</p><p class="pub-tldr">Shows REINFORCE (and so PPO&#x2F;GRPO) can drive the probability of optimal responses towards zero even as reward rises, and proves that resetting the KL reference to the latest policy restores convergence.</p><p class="digest-use"><span class="mono">use it now →</span> In long GRPO&#x2F;PPO runs, periodically reset the KL reference model to the current policy instead of keeping the base model fixed.</p>
+    <div class="pub-links"><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.14467" target="_blank" rel="noopener">pdf</a><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2611.14467" target="_blank" rel="noopener">arxiv</a>
+    </div>
+  </div>
+  <figure class="digest-fig">
+    <a href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;coverage-collapse.png" target="_blank" rel="noopener" title="Open full size">
+      <img src="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;coverage-collapse.png" alt="Figure 3: APMD keeps improving by resetting the reference policy; each surface shows the KL-regularized objective for on…" loading="lazy">
+    </a><figcaption>Figure 3: APMD keeps improving by resetting the reference policy; each surface shows the KL-regularized objective for one reference policy, coloured by reward. <span class="digest-fig-src">Source: the paper · CC BY 4.0.</span></figcaption>
+  </figure>
+</article>
+
+<article class="pub digest-paper has-figure reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">arXiv 2026</span>
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title"><a href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.12016" target="_blank" rel="noopener">Speculative Self-Distillation enables Efficient Knowledge Internalization</a></h3>
+    <p class="pub-authors">Stanford, ETH Zürich</p><p class="pub-venue-full">arXiv preprint</p><p class="pub-tldr">Internalizes new facts and skills by self-distillation where the document-conditioned teacher only intervenes on tokens where it disagrees with the student; near on-policy accuracy with 38–69% fewer supervised tokens and the least forgetting.</p><p class="digest-use"><span class="mono">use it now →</span> To bake updated documents into a model closed-book, let the student roll out and only take teacher tokens where the two next-token distributions diverge strongly.</p>
+    <div class="pub-links"><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.12016" target="_blank" rel="noopener">pdf</a><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2611.12016" target="_blank" rel="noopener">arxiv</a>
+    </div>
+  </div>
+  <figure class="digest-fig">
+    <a href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;ssd.png" target="_blank" rel="noopener" title="Open full size">
+      <img src="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;ssd.png" alt="Figure 1: Speculative Self-Distillation decoding loop. The student sees only the prompt, the teacher also sees the privi…" loading="lazy">
+    </a><figcaption>Figure 1: Speculative Self-Distillation decoding loop. The student sees only the prompt, the teacher also sees the privileged context, and the teacher takes over only where their next-token distributions diverge. <span class="digest-fig-src">Source: the paper.</span></figcaption>
+  </figure>
+</article>
+
+  </div>
+</section>
+<section class="year-group">
+  <h2 class="year mono">World models</h2>
+  <div class="pub-list">
+<article class="pub digest-paper has-figure reveal">
+  <div class="pub-venue">
+    <span class="venue-tag">arXiv 2026</span>
+  </div>
+  <div class="pub-body">
+    <h3 class="pub-title"><a href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.14420" target="_blank" rel="noopener">OnlyAct: Extracting Action Representations from Foundation Models for World Models</a></h3>
+    <p class="pub-authors">University of Oxford</p><p class="pub-venue-full">arXiv preprint</p><p class="pub-tldr">Instead of learning latent actions from scratch, adapts V-JEPA 2 with label-free contrastive training so frame-pair embeddings keep the motion and drop the scene, giving one action space that transfers across domains.</p>
+    <div class="pub-links"><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2611.14420" target="_blank" rel="noopener">pdf</a><a class="chip-link" href="https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2611.14420" target="_blank" rel="noopener">arxiv</a>
+    </div>
+  </div>
+  <figure class="digest-fig">
+    <a href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;onlyact.png" target="_blank" rel="noopener" title="Open full size">
+      <img src="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w46&#x2F;onlyact.png" alt="Figure 2: OnlyAct learning pipeline. Frame pairs are encoded by a pretrained foundation model with shared low-rank adapt…" loading="lazy">
+    </a><figcaption>Figure 2: OnlyAct learning pipeline. Frame pairs are encoded by a pretrained foundation model with shared low-rank adapters and trained contrastively to keep the action while discarding the scene. <span class="digest-fig-src">Source: the paper.</span></figcaption>
+  </figure>
+</article>
+
+  </div>
+</section>
+
+<nav class="digest-pager mono small"><a href="https:&#x2F;&#x2F;louisdo2108.github.io&#x2F;digest&#x2F;2026-w47&#x2F;">← 2026-W47</a>
+  <a href="https://louisdo2108.github.io/digest/">all weeks</a><span></span>
+</nav>
+
+  </main>
+
+  <footer class="site-footer container">
+    <div class="footer-socials">
+      <a href="https:&#x2F;&#x2F;github.com&#x2F;LouisDo2108" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.27 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a>
+      <a href="https:&#x2F;&#x2F;scholar.google.com&#x2F;citations?user=QFkhDJcAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 1 9l4 2.55V17c0 2.21 3.13 4 7 4s7-1.79 7-4v-5.45L21 10.3V16h2V9L12 2Zm0 2.37L19.3 9 12 13.63 4.7 9 12 4.37ZM7 12.82l5 3.18 5-3.18V17c0 .87-2 2-5 2s-5-1.13-5-2v-4.18Z"/></svg></a>
+      <a href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;louis-tuan-luc-huynh&#x2F;" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+      <a href="mailto:louisdo2108@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 6.5h18v11H3zM3.5 7l8.5 6.5L20.5 7"/></svg></a>
+      <a href="https://louisdo2108.github.io/atom.xml" aria-label="Atom feed" title="Atom feed"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.4" fill="currentColor"/></svg></a>
+    </div>
+    <p class="footer-note">© 2026 Tuan-Luc Huynh · Built with <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a> (Rust) · Dark by design.</p>
+  </footer>
+
+  <script src="https://louisdo2108.github.io/js/site.js?h=ad0e2569710cb4d9d9d8" defer></script>
+</body>
+</html>
