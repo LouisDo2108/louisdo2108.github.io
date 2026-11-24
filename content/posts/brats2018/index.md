@@ -20,9 +20,9 @@ Before the details, here is the jargon.
 - **Peritumoral edematous/invaded tissue** refers to the tissue surrounding a brain tumor that has become swollen or infiltrated by the tumor.
   - Edema is a condition in which fluid accumulates in the tissue, causing swelling, and can be a result of various factors, including inflammation, injury, or disease.
   - Peritumoral means around the tumor.
-- In the context of glioblastoma brain tumors, **low-grade tumors (LGG)** are characterized by slower growth and less aggressive behavior, while **high-grade tumors (HGG)** are characterized by faster growth and more aggressive behavior.
-  - The grade of glioblastoma is determined by the appearance of the tumor cells under a microscope and is used to predict the behavior of the tumor and guide treatment decisions.
-  - Low-grade glioblastomas are generally considered to have a better prognosis than high-grade glioblastomas, which are more likely to grow and spread rapidly, making them more difficult to treat.
+- In the context of gliomas (brain tumors that arise from glial cells), **low-grade gliomas (LGG)** are characterized by slower growth and less aggressive behavior, while **high-grade gliomas (HGG)** are characterized by faster growth and more aggressive behavior. Glioblastoma is the most aggressive type of HGG.
+  - The grade of a glioma is determined by the appearance of the tumor cells under a microscope and is used to predict the behavior of the tumor and guide treatment decisions.
+  - Low-grade gliomas are generally considered to have a better prognosis than high-grade gliomas, which are more likely to grow and spread rapidly, making them more difficult to treat.
   - The grade can change over time, so regular monitoring and re-biopsy may be needed to find the current grade.
   - The papers use axial slices by default. There are three kinds of slices:
 
@@ -69,7 +69,7 @@ Before the details, here is the jargon.
 
 Brain imaging modalities can help visualize different aspects of the brain and its tissues. The following are common MRI imaging techniques used for brain imaging, each providing different information about the brain:
 
-- T1-weighted scan (T1Gd): This type of MRI scan is performed after the administration of a contrast agent (Gadolinium for examples) and highlights areas of abnormal tissue. It enhances the visibility of certain structures, such as tumors and blood vessels.
+- T1-weighted scan (T1Gd): This type of MRI scan is performed after the administration of a contrast agent (gadolinium, for example) and highlights areas of abnormal tissue. It enhances the visibility of certain structures, such as tumors and blood vessels.
 - T2-weighted scan (T2): This type of MRI scan visualizes the brain's white matter and fluid-filled spaces. It helps to identify conditions such as hydrocephalus, brain swelling, and multiple sclerosis.
 - T2 Fluid Attenuated Inversion Recovery (T2-FLAIR): This type of MRI scan visualizes the brain's white matter and fluid-filled spaces. It is performed after the application of a specific pulse sequence that helps to suppress the signal from cerebrospinal fluid, making it easier to visualize lesions and other abnormalities in the white matter.
 
